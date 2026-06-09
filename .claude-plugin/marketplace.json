@@ -1,0 +1,12 @@
+{
+   "name":"claude-skills",
+   "owner":{
+      "name":"Laurentiu Irimia"
+   },
+   "plugins":[
+      {
+         "name":"sdd",
+         "source":"./plugins/spec-driven-development"
+      }
+   ]
+}
