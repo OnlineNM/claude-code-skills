@@ -67,3 +67,4 @@ When all tests pass, say:
 - Do NOT start without user confirmation of `/clear` and Bypass Permissions.
 - Do NOT modify tests to make them pass — fix the implementation instead.
 - Do NOT skip the test verification step even if executing-plans reports success.
+- Do NOT offer to merge, create a PR, or clean up branches/worktrees — that belongs in `/verify`, after the implementation has been validated.

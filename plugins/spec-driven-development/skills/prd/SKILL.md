@@ -37,7 +37,9 @@ Check with the user that these seams match their expectations before proceeding.
 
 ### Step 4 — Write the PRD
 
-Save to `docs/<idea-slug>-PRD.md`:
+Write directly to `docs/<idea-slug>-PRD.md` without displaying its full content in the console. Just confirm the path. Then tell the user: *"PRD written to `docs/<idea-slug>-PRD.md`. Please review it and let me know if you have any changes before we move on to the issues breakdown."* If the user provides feedback, update the file and ask again. Proceed to Step 5 only after the user approves the PRD.
+
+The PRD structure to use:
 
 ```markdown
 # <Feature Name> — PRD
@@ -102,7 +104,9 @@ Iterate until the user approves.
 
 ### Step 6 — Write one file per issue
 
-Write issues in dependency order (blockers first). For each approved issue, save to `docs/<idea-slug>-ISSUE-N.md`:
+Write issues in dependency order (blockers first). For each approved issue, write directly to `docs/<idea-slug>-ISSUE-N.md` without displaying its full content in the console. After all files are written, tell the user: *"N issue files written to `docs/<idea-slug>-ISSUE-1.md` … `docs/<idea-slug>-ISSUE-N.md`. Please review them and let me know if you have any changes or if you approve."* If the user provides feedback, update the relevant files and ask again. Only commit all docs (PRD + issues) to git when the user **explicitly approves** (e.g. "looks good", "approve", "done", "ok"). Do NOT commit automatically.
+
+Issue structure:
 
 ```markdown
 # <Feature Name> — Issue N: <Title>
@@ -124,8 +128,8 @@ precisely than prose — inline it and note it came from a prototype.
 
 ### Step 7 — Confirm
 
-Tell the user:
-> *"PRD saved to `docs/<idea-slug>-PRD.md`. N issues saved to `docs/<idea-slug>-ISSUE-1.md` … `docs/<idea-slug>-ISSUE-N.md`. To implement, pass each issue file to `/writing-plans`."*
+After the commit, tell the user:
+> *"PRD and issues committed. To implement, pass each issue file to `/plan-me`."*
 
 ## Output
 

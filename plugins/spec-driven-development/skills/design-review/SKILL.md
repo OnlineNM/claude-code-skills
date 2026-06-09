@@ -23,6 +23,17 @@ Pass the spec file path as an argument (ex: `docs/<idea-slug>-SPEC.md`), or plac
 
 ## Process
 
+### Step 1 — Identify idea-slug and branch strategy
+
+1. Derive `<idea-slug>` from `SPEC_FILE` path (e.g. `docs/user-auth-flow-SPEC.md` → `user-auth-flow`). Confirm with the user.
+2. Ask the user where changes should be committed:
+   - **main** — commit directly to the current branch
+   - **branch** — create and switch to `feature/<idea-slug>`
+   - **worktree** — create a git worktree at `../<idea-slug>` on branch `feature/<idea-slug>` using `superpowers:using-git-worktrees`
+3. Set up the chosen environment before proceeding.
+
+### Step 2 — Initialize and review
+
 Initialize `LOG_FILE`:
 ```
 # Spec Review Log: <feature>
@@ -51,15 +62,18 @@ codex exec resume "$THREAD_ID" -c sandbox_mode="read-only" --json \
 1. Read `/tmp/codex-verdict.txt`; append to `LOG_FILE`: `## Round <n> — Codex` + full critique.
 2. Check last line for verdict:
    - `VERDICT: APPROVED` → Resolution.
-   - `VERDICT: REVISE` → Claude decides what's worth acting on (Claude is final arbiter). Revise `SPEC_FILE`. Append `### Claude's response` to `LOG_FILE`: what changed, what was rejected, why. Increment round.
+   - `VERDICT: REVISE` → Claude decides what's worth acting on (Claude is final arbiter). Revise `SPEC_FILE` (file edit only — no git commit). Append `### Claude's response` to `LOG_FILE`: what changed, what was rejected, why. Increment round.
 3. If round > `MAX_ROUNDS` → Resolution (deadlock).
 
+**No git commits during the review loop** — only the final spec (after user approval) is committed.
+
 ### Resolution
-- **APPROVED:** Present final `SPEC_FILE`, 3-bullet summary of improvements, round count. Ask: *"Spec survived N rounds of Codex. Ready to move to implementation planning?"* Do NOT invoke `writing-plans` automatically.
-- **MAX_ROUNDS deadlock:** List each unresolved point + Claude's counter-position. Hand to user to break the tie.
+- **APPROVED:** Tell the user the spec path and round count. Ask: *"Spec survived N rounds of Codex. Please review `SPEC_FILE` and let me know if you approve or have any final changes."* Wait for explicit user approval before committing. Do NOT invoke `writing-plans` automatically.
+- **MAX_ROUNDS deadlock:** List each unresolved point + Claude's counter-position. Hand to user to break the tie. Wait for explicit user approval before committing.
 
 ## Hard Rules
 - Codex is read-only EVERY round — `-s read-only` first call, `-c sandbox_mode="read-only"` on every resume (resume rejects `-s`; use `-c sandbox_mode="read-only"` instead).
 - Loop ALWAYS terminates at `MAX_ROUNDS`.
 - Claude is final arbiter on every REVISE — don't cave to everything, don't ignore it.
 - Do NOT write code. Do NOT invoke `writing-plans` automatically.
+- Do NOT commit to git automatically — only commit when the user **explicitly approves**.

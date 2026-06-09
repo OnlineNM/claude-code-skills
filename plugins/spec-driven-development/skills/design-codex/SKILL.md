@@ -48,11 +48,20 @@ If the user has already cleared, proceed.
 ### Step 1 — Enter plan-mode
 Call `EnterPlanMode` immediately.
 
-### Step 2 — Run brainstorming
-Invoke `superpowers:brainstorming` with **one override**: do NOT invoke `writing-plans` at the end. Stop after the user approves the written spec.
+### Step 2 — Identify idea-slug and branch strategy
+
+1. From the user's description, derive `<idea-slug>`: kebab-case, 2-4 words (e.g. `user-auth-flow`). Propose it and confirm with the user.
+2. Ask the user where work should be committed:
+   - **main** — commit directly to the current branch
+   - **branch** — create and switch to `feature/<idea-slug>`
+   - **worktree** — create a git worktree at `../<idea-slug>` on branch `feature/<idea-slug>` using `superpowers:using-git-worktrees`
+3. Set up the chosen environment before proceeding.
+
+### Step 3 — Run brainstorming
+Invoke `superpowers:brainstorming` with **two overrides**: do NOT invoke `writing-plans` at the end. And do NOT display the spec content in the console or commit automatically — see Step 3.
 
 ### Step 3 — Write SPEC.md
-After the spec doc is approved, write a structured summary to `docs/<idea-slug>-SPEC.md`:
+After the brainstorming is complete, write a structured summary directly to `docs/<idea-slug>-SPEC.md` without displaying its full content in the console:
 
 ```markdown
 # Spec: <feature>
@@ -79,6 +88,12 @@ Initialize `docs/<idea-slug>-SPEC-REVIEW-LOG.md`:
 # Spec Review Log: <feature>
 Act 1 (brainstorming) complete — spec locked with user. MAX_ROUNDS=<n>.
 ```
+
+After writing both files:
+1. Tell the user: *"Spec written to `docs/<idea-slug>-SPEC.md`. Please review it and let me know if you have any changes or if you approve."*
+2. If the user provides feedback, update `docs/<idea-slug>-SPEC.md` accordingly and ask again.
+3. Only commit to git when the user **explicitly approves** (e.g. "looks good", "approve", "done", "ok"). Do NOT commit automatically.
+4. After the commit (or user approval without changes), proceed to Act 2.
 
 ---
 

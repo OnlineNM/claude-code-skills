@@ -68,6 +68,16 @@ REVISE — list of items to fix before the implementation can be considered comp
 
 If the verdict is REVISE, list exactly what needs to be fixed. Do NOT fix anything — that is the user's decision.
 
+### Step 5 — Offer merge and cleanup (PASS only)
+
+Only when the verdict is PASS, ask the user:
+
+> *"The implementation is validated. Would you like to merge and clean up?"*
+> - **Yes** — invoke `superpowers:finishing-a-development-branch` to handle merge into main and branch/worktree cleanup.
+> - **No** — stop here. Leave the branch/worktree as-is.
+
+Do NOT proceed with merge or cleanup without explicit user confirmation.
+
 ## Hard Rules
 
 - Do NOT fix any issues found during review.

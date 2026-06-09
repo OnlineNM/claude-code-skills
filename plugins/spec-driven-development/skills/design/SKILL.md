@@ -44,14 +44,29 @@ If the user has already cleared, proceed.
 ### Step 1 — Enter plan-mode
 Call `EnterPlanMode` immediately. All work happens in plan-mode to prevent accidental implementation.
 
-### Step 2 — Run brainstorming
-Invoke `superpowers:brainstorming` and follow it exactly, with **one override**:
+### Step 2 — Identify idea-slug and branch strategy
+
+1. From the user's description, derive `<idea-slug>`: kebab-case, 2-4 words (e.g. `user-auth-flow`). Propose it and confirm with the user.
+2. Ask the user where work should be committed:
+   - **main** — commit directly to the current branch
+   - **branch** — create and switch to `feature/<idea-slug>`
+   - **worktree** — create a git worktree at `../<idea-slug>` on branch `feature/<idea-slug>` using `superpowers:using-git-worktrees`
+3. Set up the chosen environment before proceeding.
+
+### Step 3 — Run brainstorming
+Invoke `superpowers:brainstorming` and follow it exactly, with **two overrides**:
 
 > **OVERRIDE — terminal state:** The final step of brainstorming normally transitions to `writing-plans`. Do NOT do this. The terminal state for spec-me is the user approving the written spec document. Stop there.
 
-Follow every other brainstorming step as written: explore project context, offer visual companion if applicable, ask clarifying questions one at a time, propose 2-3 approaches, present design sections, write and commit the spec document, run the spec self-review, ask the user to review the written spec.
+> **OVERRIDE — spec writing & commit:** When the spec is ready to be written:
+> 1. Write it directly to `docs/<idea-slug>-DESIGN.md` without displaying its full content in the console. Just confirm the path.
+> 2. Tell the user: *"Spec written to `docs/<idea-slug>-DESIGN.md`. Please review it and let me know if you have any changes or if you approve."*
+> 3. If the user provides feedback, update the file accordingly and ask again.
+> 4. Only commit to git when the user **explicitly approves** (e.g. "looks good", "approve", "done", "ok"). Do NOT commit automatically.
 
-### Step 3 — Confirm stop
+Follow every other brainstorming step as written: explore project context, offer visual companion if applicable, ask clarifying questions one at a time, propose 2-3 approaches, present design sections, run the spec self-review.
+
+### Step 4 — Confirm stop
 After the user approves the spec, say:
 
 > *"Spec complete and saved to `docs/<idea-slug>-DESIGN.md`. When you're ready to move to implementation planning, run `/writing-plans` in a new session (after `/clear`)."*

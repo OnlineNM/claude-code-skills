@@ -46,12 +46,18 @@ Use the `Skill` tool to invoke `superpowers:writing-plans` with these overrides:
 > **OVERRIDE 3 — tests:** For each implementation step, include the specific tests or verification commands that confirm that step is complete. Write tests before implementation code (TDD order).
 >
 > **OVERRIDE 4 — terminal state:** Stop after the plan is written and approved. Do NOT proceed to `executing-plans` or any implementation step.
+>
+> **OVERRIDE 5 — plan writing & commit:** When the plan is ready to be written:
+> 1. Write it directly to `docs/<idea-slug>-PLAN.md` (or `PLAN-N.md`) without displaying its full content in the console. Just confirm the path.
+> 2. Tell the user: *"Plan written to `docs/<idea-slug>-PLAN.md`. Please review it and let me know if you have any changes or if you approve."*
+> 3. If the user provides feedback, update the file accordingly and ask again.
+> 4. Only commit to git when the user **explicitly approves** (e.g. "looks good", "approve", "done", "ok"). Do NOT commit automatically.
 
 Follow every other writing-plans step as written.
 
 ### Step 4 — Confirm stop
 
-After the plan is written and user-approved, say:
+After the user approves and the plan is committed, say:
 
 > *"Plan saved to `docs/<idea-slug>-PLAN.md`. To implement, run `/executing-plans` in a new session (after `/clear`). Do NOT start executing now."*
 
