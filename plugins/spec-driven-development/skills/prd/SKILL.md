@@ -7,6 +7,10 @@ description: Transforms a DESIGN.md spec into a PRD document and one markdown fi
 
 Reads a DESIGN.md file and produces a structured PRD and one markdown file per issue.
 
+## Model & Thinking
+
+Use **Claude Sonnet** (`claude-sonnet`) with **medium thinking effort** for all reasoning in this skill.
+
 ## Invocation
 
 The user must pass the DESIGN.md file path explicitly:

@@ -7,6 +7,10 @@ description: Reviews an implementation against its plan. Reads a PLAN.md or PLAN
 
 Verifies that the code produced by `/implement-me` correctly implements the plan. Two passes: Claude checks plan compliance, Codex checks technical soundness.
 
+## Model & Thinking
+
+Use **Claude Sonnet** (`claude-sonnet`) with **medium thinking effort** for all reasoning in this skill.
+
 ## Invocation
 
 Pass the plan file path explicitly:

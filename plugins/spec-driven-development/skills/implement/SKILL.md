@@ -7,6 +7,10 @@ description: Implements a TDD plan from a PLAN.md or PLAN-N.md file. Requires /c
 
 Reads a PLAN.md or PLAN-N.md file and implements it step by step, verifying tests after each step.
 
+## Model & Thinking
+
+Use **Claude Sonnet** (`claude-sonnet`) with **medium thinking effort** for all reasoning in this skill.
+
 ## Invocation
 
 Pass the plan file path explicitly:

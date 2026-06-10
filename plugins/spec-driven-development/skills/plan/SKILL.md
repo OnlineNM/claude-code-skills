@@ -7,6 +7,10 @@ description: Transforms a DESIGN.md or ISSUE-N.md into a concrete TDD implementa
 
 Reads a DESIGN.md or ISSUE-N.md file and produces a TDD implementation plan saved locally. Stops before execution.
 
+## Model & Thinking
+
+Use **Claude Sonnet** (`claude-sonnet`) with **high thinking effort** (`ultrathink`) for all reasoning in this skill.
+
 ## Invocation
 
 Pass the input file path explicitly:

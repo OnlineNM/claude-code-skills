@@ -7,6 +7,10 @@ description: Adversarial Codex review of an existing spec — Act 2 only. Codex 
 
 Codex review only (Act 2). Use when you already have a spec and want a cross-model stress-test before implementation planning.
 
+## Model & Thinking
+
+Use **Claude Sonnet** (`claude-sonnet`) with **high thinking effort** (`ultrathink`) for all reasoning in this skill.
+
 Pass the spec file path as an argument (ex: `docs/<idea-slug>-SPEC.md`), or place `<idea-slug>-SPEC.md` în directorul `docs/`.
 
 ## Prerequisites

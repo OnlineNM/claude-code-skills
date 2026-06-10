@@ -9,6 +9,10 @@ Two acts, two jobs:
 - **Act 1** fixes the #1 failure mode: speccing the wrong thing.
 - **Act 2** fixes the #2 failure mode: a spec that sounds right but breaks.
 
+## Model & Thinking
+
+Use **Claude Sonnet** (`claude-sonnet`) with **high thinking effort** (`ultrathink`) for all reasoning in this skill.
+
 ## Language
 
 Ask all questions in the same language the project/feature description was written in (Romanian or English). Every question and proposed approach must match that language. Internal reasoning, plan artifacts, and `SPEC.md` may stay in English regardless.
