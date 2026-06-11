@@ -1,12 +1,20 @@
 {
-   "name":"claude-skills-laur",
-   "owner":{
-      "name":"Laurentiu Irimia"
-   },
-   "plugins":[
-      {
-         "name":"sdd",
-         "source":"./plugins/spec-driven-development"
-      }
-   ]
+  "name": "claude-skills-laur",
+  "owner": {
+    "name": "Laurentiu Irimia"
+  },
+  "plugins": [
+    {
+      "name": "sdd",
+      "source": "./plugins/spec-driven-development"
+    },
+    {
+      "name": "dbb",
+      "source": "./plugins/debug"
+    },
+    {
+      "name": "wbs",
+      "source": "./plogins/website"
+    }
+  ]
 }
