@@ -4,4 +4,4 @@ description: Tell the agent to zoom out and give broader context or a higher-lev
 disable-model-invocation: true
 ---
 
-I don't know this area of code well. Go up a layer of abstraction. Give me a map of all the relevant modules and callers, using the project's domain glossary vocabulary.
+I don't know this area of code well. Go up a layer of abstraction. Give me a map of all the relevant modules and callers, using the project's domain glossary vocabulary (`CONTEXT.md`). If `CONTEXT.md` doesn't exist, infer vocabulary from the codebase and note that the glossary is missing.
