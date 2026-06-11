@@ -14,7 +14,7 @@
     },
     {
       "name": "wbs",
-      "source": "./plogins/website"
+      "source": "./plugins/website"
     }
   ]
 }
