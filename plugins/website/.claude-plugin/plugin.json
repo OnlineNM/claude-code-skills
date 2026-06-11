@@ -1,6 +1,6 @@
 {
   "name": "wbs",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "Website tools for capturing and recreating UI: full-page screenshots from URLs and pixel-perfect HTML/Tailwind from images.",
   "author": {
     "name": "Laurentiu Irimia"
