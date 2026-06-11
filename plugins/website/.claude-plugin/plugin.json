@@ -1,7 +1,7 @@
 {
   "name": "wbs",
-  "version": "1.0.0",
-  "description": "Pixel-perfect UI recreation from screenshots: iterative HTML/Tailwind generation with screenshot comparison loop.",
+  "version": "1.1.1",
+  "description": "Website tools for capturing and recreating UI: full-page screenshots from URLs and pixel-perfect HTML/Tailwind from images.",
   "author": {
     "name": "Laurentiu Irimia"
   }
