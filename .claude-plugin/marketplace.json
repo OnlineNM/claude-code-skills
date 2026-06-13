@@ -15,6 +15,10 @@
     {
       "name": "wbs",
       "source": "./plugins/website"
+    },
+    {
+      "name": "notify",
+      "source": "./plugins/notify"
     }
   ]
 }

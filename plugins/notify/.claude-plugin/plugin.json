@@ -1,0 +1,8 @@
+{
+  "name": "notify",
+  "version": "1.0.0",
+  "description": "Notification utility skills: toggle Telegram notifications and other local hook management.",
+  "author": {
+    "name": "Laurentiu Irimia"
+  }
+}
