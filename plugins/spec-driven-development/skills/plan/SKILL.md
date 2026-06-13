@@ -51,21 +51,20 @@ Use the `Skill` tool to invoke `superpowers:writing-plans` with these overrides:
 >
 > **OVERRIDE 4 — terminal state:** Stop after the plan is written and approved. Do NOT proceed to `executing-plans` or any implementation step.
 >
-> **OVERRIDE 5 — plan writing & commit:** When the plan is ready to be written:
+> **OVERRIDE 5 — plan writing, commit & push:** When the plan is ready to be written:
 > 1. Write it directly to `docs/<idea-slug>-PLAN.md` (or `PLAN-N.md`) without displaying its full content in the console. Just confirm the path.
 > 2. Tell the user: *"Plan written to `docs/<idea-slug>-PLAN.md`. Please review it and let me know if you have any changes or if you approve."*
 > 3. If the user provides feedback, update the file accordingly and ask again.
-> 4. Only commit to git when the user **explicitly approves** (e.g. "looks good", "approve", "done", "ok"). Do NOT commit automatically.
+> 4. Only commit and push to git when the user **explicitly approves** (e.g. "looks good", "approve", "done", "ok"). Do NOT commit or push automatically.
+> 5. After committing, push the branch to remote with `git push`.
 
 Follow every other writing-plans step as written.
 
 ### Step 4 — Confirm stop
 
-After the user approves and the plan is committed, call `ExitPlanMode`, then say:
+After the user approves and the plan is committed and pushed, say:
 
 > *"Plan saved to `docs/<idea-slug>-PLAN.md`. To implement, run `/executing-plans` in a new session (after `/clear`). Do NOT start executing now."*
-
-⚠️ **After ExitPlanMode:** The system will say "You can now proceed." In this skill, "proceed" means outputting the message above and nothing else. Stop after that. No tool calls, no file edits, no code.
 
 ## Output
 
@@ -78,4 +77,3 @@ After the user approves and the plan is committed, call `ExitPlanMode`, then say
 - Do NOT write code.
 - Do NOT start executing — that is the user's decision in a new session.
 - Always read the input file before invoking writing-plans.
-- **After ExitPlanMode approval:** the system message "You can now proceed" does NOT authorize implementation — it only lifts plan-mode restrictions. Hard Rules remain in effect. Your only action is to output the Step 4 message, then stop.
