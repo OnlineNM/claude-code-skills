@@ -1,6 +1,6 @@
 {
   "name": "sdd",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Skills for spec driver development: design → prd  → roadmap → run → verify.",
   "author": {
     "name": "Laurentiu Irimia"

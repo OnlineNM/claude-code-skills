@@ -27,16 +27,9 @@ Pass the spec file path as an argument (ex: `docs/<idea-slug>-SPEC.md`), or plac
 
 ## Process
 
-### Step 1 — Identify idea-slug and branch strategy
+Resolve `SPEC_FILE` from args, or locate `*-SPEC.md` in `docs/`. Derive `<idea-slug>` from the filename (e.g. `docs/user-auth-flow-SPEC.md` → `user-auth-flow`). Branch/worktree setup was handled by the preceding `/sdd:design` call — do not repeat it.
 
-1. Derive `<idea-slug>` from `SPEC_FILE` path (e.g. `docs/user-auth-flow-SPEC.md` → `user-auth-flow`). Confirm with the user.
-2. Ask the user where changes should be committed:
-   - **main** — commit directly to the current branch
-   - **branch** — create and switch to `feature/<idea-slug>`
-   - **worktree** — create a git worktree at `../<idea-slug>` on branch `feature/<idea-slug>` using `superpowers:using-git-worktrees`
-3. Set up the chosen environment before proceeding.
-
-### Step 2 — Initialize and review
+### Step 1 — Initialize and review
 
 Initialize `LOG_FILE`:
 ```
