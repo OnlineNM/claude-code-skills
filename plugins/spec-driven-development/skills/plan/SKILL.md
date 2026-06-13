@@ -51,6 +51,10 @@ Use the `Skill` tool to invoke `superpowers:writing-plans` with these overrides:
 >
 > **OVERRIDE 4 — terminal state:** Stop after the plan is written and approved. Do NOT proceed to `executing-plans` or any implementation step.
 >
+> **OVERRIDE 6 — agentic worker instruction:** In the generated plan document, replace any "For agentic workers" line with exactly:
+> `**For agentic workers:** Use superpowers:subagent-driven-development to implement this plan task-by-task. Each task must follow superpowers:test-driven-development.`
+> Do NOT mention superpowers:executing-plans anywhere in the plan.
+>
 > **OVERRIDE 5 — plan writing & review:** When the plan is ready to be written:
 > 1. Write it directly to `docs/<idea-slug>-PLAN.md` (or `PLAN-N.md`) without displaying its full content in the console. Just confirm the path.
 > 2. Tell the user: *"Plan written to `docs/<idea-slug>-PLAN.md`. Please review it and let me know if you have any changes or if you approve."*
