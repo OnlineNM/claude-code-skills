@@ -22,13 +22,12 @@ If no path is provided, stop and ask: *"Please specify the plan file path, e.g. 
 
 ## Before Starting
 
-Two prerequisites that the user must complete manually before re-invoking this skill:
+One prerequisite that the user must complete manually before re-invoking this skill:
 
-1. **Run `/clear`** — start with a clean context so the full context window is available for implementation.
-2. **Enable Bypass Permissions** — activate via the shield icon in the Claude Code UI, or pass `--dangerously-skip-permissions` when launching Claude Code from the CLI. This allows uninterrupted execution without permission prompts on every file write or command.
+1. **Enable Bypass Permissions** — activate via the shield icon in the Claude Code UI, or pass `--dangerously-skip-permissions` when launching Claude Code from the CLI. This allows uninterrupted execution without permission prompts on every file write or command.
 
 Tell the user:
-> *"Before I start: have you run `/clear` and enabled Bypass Permissions (shield icon or `--dangerously-skip-permissions`)? Confirm and I'll proceed."*
+> *"Before I start: have you enabled Bypass Permissions (shield icon or `--dangerously-skip-permissions`)? Confirm and I'll proceed."*
 
 If the user confirms, proceed. If not, wait.
 
@@ -68,7 +67,7 @@ When all tests pass, say:
 
 ## Hard Rules
 
-- Do NOT start without user confirmation of `/clear` and Bypass Permissions.
+- Do NOT start without user confirmation of Bypass Permissions.
 - Do NOT modify tests to make them pass — fix the implementation instead.
 - Do NOT skip the test verification step even if executing-plans reports success.
 - Do NOT offer to merge, create a PR, or clean up branches/worktrees — that belongs in `/verify`, after the implementation has been validated.
