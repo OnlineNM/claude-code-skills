@@ -51,20 +51,29 @@ Use the `Skill` tool to invoke `superpowers:writing-plans` with these overrides:
 >
 > **OVERRIDE 4 — terminal state:** Stop after the plan is written and approved. Do NOT proceed to `executing-plans` or any implementation step.
 >
-> **OVERRIDE 5 — plan writing, commit & push:** When the plan is ready to be written:
+> **OVERRIDE 5 — plan writing & review:** When the plan is ready to be written:
 > 1. Write it directly to `docs/<idea-slug>-PLAN.md` (or `PLAN-N.md`) without displaying its full content in the console. Just confirm the path.
 > 2. Tell the user: *"Plan written to `docs/<idea-slug>-PLAN.md`. Please review it and let me know if you have any changes or if you approve."*
 > 3. If the user provides feedback, update the file accordingly and ask again.
-> 4. Only commit and push to git when the user **explicitly approves** (e.g. "looks good", "approve", "done", "ok"). Do NOT commit or push automatically.
-> 5. After committing, push the branch to remote with `git push`.
+> 4. When the user explicitly approves (e.g. "looks good", "approve", "done", "ok"), return control — do NOT commit here.
 
 Follow every other writing-plans step as written.
 
-### Step 4 — Confirm stop
+### Step 4 — Commit and push
 
-After the user approves and the plan is committed and pushed, say:
+After `writing-plans` returns (user has approved the plan):
 
-> *"Plan saved to `docs/<idea-slug>-PLAN.md`. To implement, run `/executing-plans` in a new session (after `/clear`). Do NOT start executing now."*
+1. `git add docs/<idea-slug>-PLAN.md` (or `PLAN-N.md`)
+2. `git commit -m "docs: add implementation plan for <idea-slug>"`
+3. `git push`
+
+Do NOT skip this step. Do NOT wait for additional user input — approval in Step 3 is sufficient.
+
+### Step 5 — Confirm stop
+
+After committing and pushing, say:
+
+> *"Plan saved and pushed to `docs/<idea-slug>-PLAN.md`. To implement, run `/implement` with the plan file path."*
 
 ## Output
 
@@ -77,3 +86,4 @@ After the user approves and the plan is committed and pushed, say:
 - Do NOT write code.
 - Do NOT start executing — that is the user's decision in a new session.
 - Always read the input file before invoking writing-plans.
+- Always commit and push after user approves — do NOT skip Step 4.
