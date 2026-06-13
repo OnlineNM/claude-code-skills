@@ -42,14 +42,14 @@ spec-me-review started. MAX_ROUNDS=<n>. Reviewing: <SPEC_FILE>.
 
 ### Round 1 — fresh session (capture thread_id)
 ```bash
-codex exec -s read-only --json -o /tmp/codex-verdict.txt "$(cat REVIEW_PROMPT)" \
+codex exec --json -o /tmp/codex-verdict.txt "$(cat REVIEW_PROMPT)" \
   2>/dev/null | grep '"type":"thread.started"'
 ```
 Parse `thread_id` from `{"type":"thread.started","thread_id":"..."}`. Critique is in `/tmp/codex-verdict.txt`.
 
 ### Rounds 2..MAX — resume same session
 ```bash
-codex exec resume "$THREAD_ID" -c sandbox_mode="read-only" --json \
+codex exec resume "$THREAD_ID" --json \
   -o /tmp/codex-verdict.txt \
   "I revised the spec. Re-review <SPEC_FILE> — check whether your prior findings are addressed and flag anything new. End with VERDICT: APPROVED or VERDICT: REVISE." \
   2>/dev/null >/dev/null
@@ -69,7 +69,7 @@ codex exec resume "$THREAD_ID" -c sandbox_mode="read-only" --json \
 - **MAX_ROUNDS deadlock:** List each unresolved point + Claude's counter-position. Hand to user to break the tie. Wait for explicit user approval before committing.
 
 ## Hard Rules
-- Codex is read-only EVERY round — `-s read-only` first call, `-c sandbox_mode="read-only"` on every resume (resume rejects `-s`; use `-c sandbox_mode="read-only"` instead).
+- Codex runs without sandbox flags — `-s read-only` / `-c sandbox_mode="read-only"` block filesystem reads via bwrap and must NOT be used.
 - Loop ALWAYS terminates at `MAX_ROUNDS`.
 - Claude is final arbiter on every REVISE — don't cave to everything, don't ignore it.
 - Do NOT write code. Do NOT invoke `writing-plans` automatically.
