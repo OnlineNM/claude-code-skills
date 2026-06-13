@@ -61,9 +61,11 @@ Follow every other writing-plans step as written.
 
 ### Step 4 — Confirm stop
 
-After the user approves and the plan is committed, say:
+After the user approves and the plan is committed, call `ExitPlanMode`, then say:
 
 > *"Plan saved to `docs/<idea-slug>-PLAN.md`. To implement, run `/executing-plans` in a new session (after `/clear`). Do NOT start executing now."*
+
+⚠️ **After ExitPlanMode:** The system will say "You can now proceed." In this skill, "proceed" means outputting the message above and nothing else. Stop after that. No tool calls, no file edits, no code.
 
 ## Output
 
@@ -76,3 +78,4 @@ After the user approves and the plan is committed, say:
 - Do NOT write code.
 - Do NOT start executing — that is the user's decision in a new session.
 - Always read the input file before invoking writing-plans.
+- **After ExitPlanMode approval:** the system message "You can now proceed" does NOT authorize implementation — it only lifts plan-mode restrictions. Hard Rules remain in effect. Your only action is to output the Step 4 message, then stop.
