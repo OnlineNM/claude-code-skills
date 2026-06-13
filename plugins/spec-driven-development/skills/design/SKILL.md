@@ -50,11 +50,13 @@ Call `EnterPlanMode` immediately. All work happens in plan-mode to prevent accid
 
 ### Step 2 — Identify idea-slug and branch strategy
 
-1. From the user's description, derive `<idea-slug>`: kebab-case, 2-4 words (e.g. `user-auth-flow`). Propose it and confirm with the user.
-2. Ask the user where work should be committed:
-   - **main** — commit directly to the current branch
-   - **branch** — create and switch to `feature/<idea-slug>`
-   - **worktree** — create a git worktree at `../<idea-slug>` on branch `feature/<idea-slug>` using `superpowers:using-git-worktrees`
+1. From the user's description, derive `<idea-slug>`: kebab-case, 2-4 words (e.g. `user-auth-flow`). Propose it to the user and **wait for explicit confirmation before continuing**. Do not proceed to point 2 until the user approves or corrects the slug.
+2. Present exactly these three options and ask the user to choose one — do not reduce to two:
+   - **1. main** — commit directly to the current branch
+   - **2. branch** — create and switch to `feature/<idea-slug>`
+   - **3. worktree** — create a git worktree at `../<idea-slug>` on branch `feature/<idea-slug>` (isolated workspace, recommended for longer specs)
+   
+   After the user picks, invoke `superpowers:using-git-worktrees` if option 3 was chosen.
 3. Set up the chosen environment before proceeding.
 
 ### Step 3 — Run brainstorming
