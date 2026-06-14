@@ -66,8 +66,8 @@ Call `EnterPlanMode` immediately.
 ### Step 3 — Run brainstorming
 Invoke `superpowers:brainstorming` with **two overrides**: do NOT invoke `writing-plans` at the end. And do NOT display the spec content in the console or commit automatically — see Step 3.
 
-### Step 3 — Write SPEC.md
-After the brainstorming is complete, write a structured summary directly to `docs/<idea-slug>-SPEC.md` without displaying its full content in the console:
+### Step 3 — Write DESIGN.md
+After the brainstorming is complete, write a structured summary directly to `docs/<idea-slug>-DESIGN.md` without displaying its full content in the console:
 
 ```markdown
 # Spec: <feature>
@@ -89,15 +89,15 @@ _Locked via brainstorming — by Claude + <user>_
 <explicit bounds established during brainstorming>
 ```
 
-Initialize `docs/<idea-slug>-SPEC-REVIEW-LOG.md`:
+Initialize `docs/<idea-slug>-DESIGN-REVIEW-LOG.md`:
 ```
 # Spec Review Log: <feature>
 Act 1 (brainstorming) complete — spec locked with user. MAX_ROUNDS=<n>.
 ```
 
 After writing both files:
-1. Tell the user: *"Spec written to `docs/<idea-slug>-SPEC.md`. Please review it and let me know if you have any changes or if you approve."*
-2. If the user provides feedback, update `docs/<idea-slug>-SPEC.md` accordingly and ask again.
+1. Tell the user: *"Spec written to `docs/<idea-slug>-DESIGN.md`. Please review it and let me know if you have any changes or if you approve."*
+2. If the user provides feedback, update `docs/<idea-slug>-DESIGN.md` accordingly and ask again.
 3. Only commit to git when the user **explicitly approves** (e.g. "looks good", "approve", "done", "ok"). Do NOT commit automatically.
 4. After the commit (or user approval without changes), proceed to Act 2.
 
@@ -114,8 +114,8 @@ After writing both files:
 | Var | Default | Meaning |
 |-----|---------|---------|
 | `MAX_ROUNDS` | `5` | Hard cap on review rounds |
-| `SPEC_FILE` | `docs/<idea-slug>-SPEC.md` | The spec Act 1 produced |
-| `LOG_FILE` | `docs/<idea-slug>-SPEC-REVIEW-LOG.md` | Append-only argument transcript |
+| `SPEC_FILE` | `docs/<idea-slug>-DESIGN.md` | The spec Act 1 produced |
+| `LOG_FILE` | `docs/<idea-slug>-DESIGN-REVIEW-LOG.md` | Append-only argument transcript |
 
 ### Review prompt (sent each round)
 > You are an adversarial reviewer for a feature spec. Be skeptical and specific — your job is to find what breaks, not to be agreeable. Read the spec at `SPEC.md` and any repo files you need (you are read-only). Identify concrete flaws: missing requirements, ambiguous behavior, security implications, wrong assumptions, scope creep risks, simpler alternatives. For each flaw, give a one-line fix. Do NOT modify any files. End your reply with EXACTLY one line: `VERDICT: APPROVED` if the spec is sound enough to proceed to implementation planning, or `VERDICT: REVISE` if it still has material problems.
@@ -136,10 +136,19 @@ codex exec resume "$THREAD_ID" -c sandbox_mode="read-only" --json \
 ```
 
 ### Each round
-1. Read `/tmp/codex-verdict.txt`; append to `LOG_FILE`: `## Round <n> — Codex` + full critique.
-2. Check last line for verdict:
+1. Append Codex output to log:
+```bash
+echo "## Round <n> — Codex" >> "$LOG_FILE"
+cat /tmp/codex-verdict.txt >> "$LOG_FILE"
+```
+2. Check last line of `/tmp/codex-verdict.txt` for verdict:
    - `VERDICT: APPROVED` → Resolution.
-   - `VERDICT: REVISE` → Claude decides what's worth acting on (Claude is final arbiter). Revise `SPEC_FILE`. Append `### Claude's response` to `LOG_FILE`: what changed, what was rejected, why. Increment round.
+   - `VERDICT: REVISE` → Claude decides what's worth acting on (Claude is final arbiter). Revise `SPEC_FILE`. Then append Claude's response to log:
+```bash
+echo "### Claude's response" >> "$LOG_FILE"
+echo "<what changed, what was rejected, why>" >> "$LOG_FILE"
+```
+   Increment round.
 3. If round > `MAX_ROUNDS` → Resolution (deadlock).
 
 ### Resolution

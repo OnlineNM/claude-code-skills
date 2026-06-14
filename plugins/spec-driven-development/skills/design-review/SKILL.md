@@ -11,7 +11,7 @@ Codex review only (Act 2). Use when you already have a spec and want a cross-mod
 
 Use **Claude Sonnet** (`claude-sonnet`) with **high thinking effort** (`ultrathink`) for all reasoning in this skill.
 
-Pass the spec file path as an argument (ex: `docs/<idea-slug>-SPEC.md`), or place `<idea-slug>-SPEC.md` în directorul `docs/`.
+Pass the spec file path as an argument (ex: `docs/<idea-slug>-DESIGN.md`), or place `<idea-slug>-DESIGN.md` în directorul `docs/`.
 
 ## Prerequisites
 - `codex --version` ≥ 0.130
@@ -22,12 +22,12 @@ Pass the spec file path as an argument (ex: `docs/<idea-slug>-SPEC.md`), or plac
 | Var | Default | Meaning |
 |-----|---------|---------|
 | `MAX_ROUNDS` | `5` | Hard cap on review rounds |
-| `SPEC_FILE` | `docs/<idea-slug>-SPEC.md` | Path to the spec to review |
-| `LOG_FILE` | `docs/<idea-slug>-SPEC-REVIEW-LOG.md` | Append-only argument transcript |
+| `SPEC_FILE` | `docs/<idea-slug>-DESIGN.md` | Path to the spec to review |
+| `LOG_FILE` | `docs/<idea-slug>-DESIGN-REVIEW-LOG.md` | Append-only argument transcript |
 
 ## Process
 
-Resolve `SPEC_FILE` from args, or locate `*-SPEC.md` in `docs/`. Derive `<idea-slug>` from the filename (e.g. `docs/user-auth-flow-SPEC.md` → `user-auth-flow`). Branch/worktree setup was handled by the preceding `/sdd:design` call — do not repeat it.
+Resolve `SPEC_FILE` from args, or locate `*-DESIGN.md` in `docs/`. Derive `<idea-slug>` from the filename (e.g. `docs/user-auth-flow-DESIGN.md` → `user-auth-flow`). Branch/worktree setup was handled by the preceding `/sdd:design` call — do not repeat it.
 
 ### Step 1 — Initialize and review
 
@@ -56,10 +56,19 @@ codex exec resume "$THREAD_ID" --json \
 ```
 
 ### Each round
-1. Read `/tmp/codex-verdict.txt`; append to `LOG_FILE`: `## Round <n> — Codex` + full critique.
-2. Check last line for verdict:
+1. Append Codex output to log:
+```bash
+echo "## Round <n> — Codex" >> "$LOG_FILE"
+cat /tmp/codex-verdict.txt >> "$LOG_FILE"
+```
+2. Check last line of `/tmp/codex-verdict.txt` for verdict:
    - `VERDICT: APPROVED` → Resolution.
-   - `VERDICT: REVISE` → Claude decides what's worth acting on (Claude is final arbiter). Revise `SPEC_FILE` (file edit only — no git commit). Append `### Claude's response` to `LOG_FILE`: what changed, what was rejected, why. Increment round.
+   - `VERDICT: REVISE` → Claude decides what's worth acting on (Claude is final arbiter). Revise `SPEC_FILE` (file edit only — no git commit). Then append Claude's response to log:
+```bash
+echo "### Claude's response" >> "$LOG_FILE"
+echo "<what changed, what was rejected, why>" >> "$LOG_FILE"
+```
+   Increment round.
 3. If round > `MAX_ROUNDS` → Resolution (deadlock).
 
 **No git commits during the review loop** — only the final spec (after user approval) is committed.
