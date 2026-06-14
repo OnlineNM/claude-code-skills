@@ -15,7 +15,7 @@ Use **Claude Sonnet** (`claude-sonnet`) with **high thinking effort** (`ultrathi
 
 ## Language
 
-Ask all questions in the same language the project/feature description was written in (Romanian or English). Every question and proposed approach must match that language. Internal reasoning, plan artifacts, and `SPEC.md` may stay in English regardless.
+Ask all questions in the same language the project/feature description was written in (Romanian or English). Every question and proposed approach must match that language. Internal reasoning, plan artifacts, and `DESIGN.md` may stay in English regardless.
 
 ## Persistence
 
@@ -49,12 +49,28 @@ If the user has already cleared, proceed.
 
 ## ACT 1 — SPEC (you ↔ Claude)
 
-### Step 1 — Enter plan-mode
+### Step 1 — Git dirty-state check
+Run `git status`. If there are any uncommitted, unstaged, or untracked files, tell the user to commit or stash changes before proceeding. Do NOT continue.
+
+### Step 2 — Enter plan-mode
 Call `EnterPlanMode` immediately.
 
-### Step 2 — Identify idea-slug and branch strategy
+### Step 3 — Identify idea-slug and branch strategy
 
-1. From the user's description, derive `<idea-slug>`: kebab-case, 2-4 words (e.g. `user-auth-flow`). Propose it to the user and **wait for explicit confirmation before continuing**. Do not proceed to point 2 until the user approves or corrects the slug.
+#### ⛔ CHECKPOINT 1 — Slug approval (MANDATORY, do not skip)
+
+1. From the user's description, derive `<idea-slug>` using these rules:
+   - Lowercase, kebab-case
+   - Only `a-z`, `0-9`, `-`
+   - Replace spaces and punctuation with `-`
+   - Collapse multiple `-` into one
+   - Trim `-` from start and end
+   - Maximum 40 characters
+
+   Propose the slug to the user and **wait for explicit confirmation before continuing**. Do NOT proceed until the user approves or corrects it.
+
+#### ⛔ CHECKPOINT 2 — Branch strategy (MANDATORY, do not skip)
+
 2. Present exactly these three options and ask the user to choose one — do not reduce to two:
    - **1. main** — commit directly to the current branch
    - **2. branch** — create and switch to `feature/<idea-slug>`
@@ -63,10 +79,10 @@ Call `EnterPlanMode` immediately.
    After the user picks, invoke `superpowers:using-git-worktrees` if option 3 was chosen.
 3. Set up the chosen environment before proceeding.
 
-### Step 3 — Run brainstorming
-Invoke `superpowers:brainstorming` with **two overrides**: do NOT invoke `writing-plans` at the end. And do NOT display the spec content in the console or commit automatically — see Step 3.
+### Step 4 — Run brainstorming
+Invoke `superpowers:brainstorming` with **two overrides**: do NOT invoke `writing-plans` at the end. And do NOT display the spec content in the console or commit automatically — see Step 5.
 
-### Step 3 — Write DESIGN.md
+### Step 5 — Write DESIGN.md
 After the brainstorming is complete, write a structured summary directly to `docs/<idea-slug>-DESIGN.md` without displaying its full content in the console:
 
 ```markdown
@@ -118,7 +134,7 @@ After writing both files:
 | `LOG_FILE` | `docs/<idea-slug>-DESIGN-REVIEW-LOG.md` | Append-only argument transcript |
 
 ### Review prompt (sent each round)
-> You are an adversarial reviewer for a feature spec. Be skeptical and specific — your job is to find what breaks, not to be agreeable. Read the spec at `SPEC.md` and any repo files you need (you are read-only). Identify concrete flaws: missing requirements, ambiguous behavior, security implications, wrong assumptions, scope creep risks, simpler alternatives. For each flaw, give a one-line fix. Do NOT modify any files. End your reply with EXACTLY one line: `VERDICT: APPROVED` if the spec is sound enough to proceed to implementation planning, or `VERDICT: REVISE` if it still has material problems.
+> You are an adversarial reviewer for a feature spec. Be skeptical and specific — your job is to find what breaks, not to be agreeable. Read the spec at `DESIGN.md` and any repo files you need (you are read-only). Identify concrete flaws: missing requirements, ambiguous behavior, security implications, wrong assumptions, scope creep risks, simpler alternatives. For each flaw, give a one-line fix. Do NOT modify any files. End your reply with EXACTLY one line: `VERDICT: APPROVED` if the spec is sound enough to proceed to implementation planning, or `VERDICT: REVISE` if it still has material problems.
 
 ### Round 1 — fresh session (capture thread_id)
 ```bash
@@ -131,7 +147,7 @@ Parse `thread_id` from `{"type":"thread.started","thread_id":"..."}`. Critique i
 ```bash
 codex exec resume "$THREAD_ID" -c sandbox_mode="read-only" --json \
   -o /tmp/codex-verdict.txt \
-  "I revised the spec. Re-review SPEC.md — check whether your prior findings are addressed and flag anything new. End with VERDICT: APPROVED or VERDICT: REVISE." \
+  "I revised the spec. Re-review DESIGN.md — check whether your prior findings are addressed and flag anything new. End with VERDICT: APPROVED or VERDICT: REVISE." \
   2>/dev/null >/dev/null
 ```
 
@@ -152,13 +168,22 @@ echo "<what changed, what was rejected, why>" >> "$LOG_FILE"
 3. If round > `MAX_ROUNDS` → Resolution (deadlock).
 
 ### Resolution
-- **APPROVED:** Present final `SPEC_FILE`, 3-bullet summary of what the two acts improved, round count. Ask: *"Spec grilled + survived N rounds of Codex. Ready to move to implementation planning?"* Do NOT invoke `writing-plans` automatically — wait for the user.
+- **APPROVED:** Output this summary, then ask *"Ready to move to implementation planning?"* Do NOT invoke `writing-plans` automatically — wait for the user.
+```
+Title:     <feature title>
+Slug:      <idea-slug>
+Mode:      Branch | Worktree | Main
+Spec file: docs/<idea-slug>-DESIGN.md
+Log file:  docs/<idea-slug>-DESIGN-REVIEW-LOG.md
+Rounds:    N
+```
+  Also give a 3-bullet summary of what the two acts improved.
 - **MAX_ROUNDS deadlock:** List each unresolved point + Claude's counter-position. Hand to user to break the tie.
 
 ---
 
 ## Hard Rules
-- Act 1 always precedes Act 2 — no SPEC.md until brainstorming has actually resolved with the user.
+- Act 1 always precedes Act 2 — no DESIGN.md until brainstorming has actually resolved with the user.
 - Codex is read-only EVERY round — `-s read-only` first call, `-c sandbox_mode="read-only"` on every resume.
 - Loop ALWAYS terminates at `MAX_ROUNDS`.
 - Claude is final arbiter on every REVISE — don't cave to everything, don't ignore it.

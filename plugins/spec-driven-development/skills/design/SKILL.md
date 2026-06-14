@@ -45,12 +45,28 @@ If the user has already cleared, proceed.
 
 ## Process
 
-### Step 1 — Enter plan-mode
+### Step 1 — Git dirty-state check
+Run `git status`. If there are any uncommitted, unstaged, or untracked files, tell the user to commit or stash changes before proceeding. Do NOT continue.
+
+### Step 2 — Enter plan-mode
 Call `EnterPlanMode` immediately. All work happens in plan-mode to prevent accidental implementation.
 
-### Step 2 — Identify idea-slug and branch strategy
+### Step 3 — Identify idea-slug and branch strategy
 
-1. From the user's description, derive `<idea-slug>`: kebab-case, 2-4 words (e.g. `user-auth-flow`). Propose it to the user and **wait for explicit confirmation before continuing**. Do not proceed to point 2 until the user approves or corrects the slug.
+#### ⛔ CHECKPOINT 1 — Slug approval (MANDATORY, do not skip)
+
+1. From the user's description, derive `<idea-slug>` using these rules:
+   - Lowercase, kebab-case
+   - Only `a-z`, `0-9`, `-`
+   - Replace spaces and punctuation with `-`
+   - Collapse multiple `-` into one
+   - Trim `-` from start and end
+   - Maximum 40 characters
+   
+   Propose the slug to the user and **wait for explicit confirmation before continuing**. Do NOT proceed until the user approves or corrects it.
+
+#### ⛔ CHECKPOINT 2 — Branch strategy (MANDATORY, do not skip)
+
 2. Present exactly these three options and ask the user to choose one — do not reduce to two:
    - **1. main** — commit directly to the current branch
    - **2. branch** — create and switch to `feature/<idea-slug>`
@@ -59,7 +75,7 @@ Call `EnterPlanMode` immediately. All work happens in plan-mode to prevent accid
    After the user picks, invoke `superpowers:using-git-worktrees` if option 3 was chosen.
 3. Set up the chosen environment before proceeding.
 
-### Step 3 — Run brainstorming
+### Step 4 — Run brainstorming
 Invoke `superpowers:brainstorming` and follow it exactly, with **two overrides**:
 
 > **OVERRIDE — terminal state:** The final step of brainstorming normally transitions to `writing-plans`. Do NOT do this. The terminal state for spec-me is the user approving the written spec document. Stop there.
@@ -72,10 +88,19 @@ Invoke `superpowers:brainstorming` and follow it exactly, with **two overrides**
 
 Follow every other brainstorming step as written: explore project context, offer visual companion if applicable, ask clarifying questions one at a time, propose 2-3 approaches, present design sections, run the spec self-review.
 
-### Step 4 — Confirm stop
-After the user approves the spec, say:
+### Step 5 — Confirm stop
+After the user approves the spec, output this summary:
 
-> *"Spec complete and saved to `docs/<idea-slug>-DESIGN.md`. When you're ready to move to implementation planning, run `/writing-plans` in a new session (after `/clear`)."*
+```
+Title:     <feature title>
+Slug:      <idea-slug>
+Mode:      Branch | Worktree | Main
+Branch:    <branch_name>        (omit if Main)
+Worktree:  <worktree_path>      (omit unless Worktree)
+Spec file: docs/<idea-slug>-DESIGN.md
+```
+
+Then say: *"When you're ready to move to implementation planning, run `/sdd:plan` in a new session (after `/clear`)."*
 
 ## Output
 
