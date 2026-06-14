@@ -17,8 +17,8 @@
       "source": "./plugins/website"
     },
     {
-      "name": "notify",
-      "source": "./plugins/notify"
+      "name": "telegram",
+      "source": "./plugins/telegram"
     }
   ]
 }
