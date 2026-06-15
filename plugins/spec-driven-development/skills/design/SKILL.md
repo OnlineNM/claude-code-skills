@@ -17,22 +17,7 @@ Ask all questions in the same language the project/feature description was writt
 
 ## Persistence
 
-Maintain a session file at `docs/<idea-slug>-SESSION.md` to survive context compaction during long sessions.
-
-**At the start:** check if the file exists. If yes, read it and resume — don't revisit already-settled decisions. If no, create it:
-```markdown
-# Spec: <Idea Name>
-Started: <YYYY-MM-DD>
-
-## Summary
-<one-paragraph description of what's being specced>
-
-## Decisions Reached
-<!-- updated at each brainstorming checkpoint -->
-
-## Open Questions
-<!-- updated as new questions surface -->
-```
+Maintain `docs/<idea-slug>-SESSION.md` throughout the session. Creation is handled by ⛔ CHECKPOINT 2 — this section describes upkeep only.
 
 **During the session:** update `Decisions Reached` and `Open Questions` after each major brainstorming checkpoint (approach chosen, design section approved, etc.) — not necessarily after every message.
 
@@ -65,7 +50,27 @@ Call `EnterPlanMode` immediately. All work happens in plan-mode to prevent accid
    
    Propose the slug to the user and **wait for explicit confirmation before continuing**. Do NOT proceed until the user approves or corrects it.
 
-#### ⛔ CHECKPOINT 2 — Branch strategy (MANDATORY, do not skip)
+#### ⛔ CHECKPOINT 2 — Session file (MANDATORY, do not skip)
+
+Immediately after the slug is confirmed, create `docs/<idea-slug>-SESSION.md`. Do this **now** — before the branch question, before brainstorming, before anything else. Do not defer or skip this because the session feels "short" or "simple": short sessions still get interrupted by context compaction.
+
+```markdown
+# Spec: <Idea Name>
+Started: <YYYY-MM-DD>
+
+## Summary
+<one-paragraph description of what's being specced>
+
+## Decisions Reached
+<!-- updated at each brainstorming checkpoint -->
+
+## Open Questions
+<!-- updated as new questions surface -->
+```
+
+If the file already exists, read it and resume — skip decisions already settled.
+
+#### ⛔ CHECKPOINT 3 — Branch strategy (MANDATORY, do not skip)
 
 2. Present exactly these three options and ask the user to choose one — do not reduce to two:
    - **1. main** — commit directly to the current branch
