@@ -41,33 +41,68 @@ Extract `<idea-slug>` from the filename:
 - `docs/auth-forms-PLAN.md` → slug = `auth-forms`
 - `docs/auth-forms-PLAN-1.md` → slug = `auth-forms`, plan = `1`
 
-### Step 2 — Run executing-plans
+### Step 2 — Dispatch implementation subagent
 
-Use the `Skill` tool to invoke `superpowers:executing-plans` with this override:
+**Always** dispatch implementation to a subagent — never run it inline, regardless of plan size. A clean, uncontaminated context is required for reliable implementation.
 
-> **OVERRIDE — input:** The plan comes from the file read in Step 1, not from conversation context or a default plan file location.
+Use the `Agent` tool to spawn a subagent with this prompt (substitute actual plan content):
 
-Follow every other executing-plans step as written.
+```
+You are implementing a TDD plan. Read this plan carefully and execute it step by step.
 
-### Step 3 — Verify tests
+<plan>
+<PLAN_CONTENT>
+</plan>
 
-After executing-plans completes, run all tests defined in the plan file. Every test must pass before declaring the implementation done.
+Instructions:
+- Use the `superpowers:subagent-driven-development` skill to implement this plan task-by-task.
+- Each task must follow `superpowers:test-driven-development`.
+- Do NOT skip any step.
+- Do NOT modify tests to make them pass — fix the implementation instead.
+- After all tasks are complete, run the full test suite and confirm all tests pass.
+- Report back: which tasks were completed, which tests passed, and any issues encountered.
+```
 
-If any test fails:
-1. Identify the failing test and its error output.
-2. Fix the implementation (minimal change — do not alter the test).
-3. Re-run the failing test.
-4. Repeat until all tests pass.
+Replace `<PLAN_CONTENT>` with the full content of the plan file read in Step 1.
+
+Wait for the implementation subagent to complete before proceeding.
+
+### Step 3 — Dispatch testing subagent
+
+After the implementation subagent completes, dispatch a **separate** testing subagent — never run tests inline. A separate subagent ensures the test run happens with a clean context, independent of implementation decisions.
+
+Use the `Agent` tool to spawn a subagent with this prompt:
+
+```
+You are verifying an implementation against a TDD plan. Do NOT modify any code.
+
+<plan>
+<PLAN_CONTENT>
+</plan>
+
+Instructions:
+- Read the test commands and verification steps defined in the plan above.
+- Run every test and verification command.
+- Report: which tests passed, which failed (with error output), and an overall PASS / FAIL verdict.
+- Do NOT fix anything — only report what you find.
+```
+
+Replace `<PLAN_CONTENT>` with the full content of the plan file.
+
+If the testing subagent reports any failures:
+1. Spawn a new **fix subagent** using the Agent tool, giving it the failing test output and the plan content. Instruct it to fix only the failing implementation (minimal change, do not alter tests).
+2. Re-dispatch the testing subagent.
+3. Repeat until all tests pass.
 
 ### Step 4 — Confirm
 
-When all tests pass, say:
+When the testing subagent reports all tests pass, say:
 
 > *"Implementation complete. All tests defined in `docs/<idea-slug>-PLAN.md` pass."*
 
 ## Hard Rules
 
 - Do NOT start without user confirmation of Bypass Permissions.
+- Do NOT run implementation or tests inline — always dispatch to subagents via the Agent tool.
 - Do NOT modify tests to make them pass — fix the implementation instead.
-- Do NOT skip the test verification step even if executing-plans reports success.
 - Do NOT offer to merge, create a PR, or clean up branches/worktrees — that belongs in `/verify`, after the implementation has been validated.
