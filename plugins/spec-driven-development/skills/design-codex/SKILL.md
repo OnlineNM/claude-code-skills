@@ -1,6 +1,6 @@
 ---
 name: design-codex
-description: Two-act spec hardening. ACT 1 (you ↔ Claude) — collaborative brainstorming produces an approved spec (2-3 approaches, visual companion, one question at a time). ACT 2 (Claude ↔ Codex) — OpenAI Codex adversarially reviews the spec in a read-only sandbox until APPROVED or MAX_ROUNDS cap. Use when user says "spec me codex", "spec and stress-test", or is defining a high-stakes feature (auth, schema, payments, concurrency) and wants collaborative exploration AND a cross-model sanity check before implementation planning.
+description: Two-act spec hardening. ACT 1 (you ↔ Claude) — collaborative brainstorming produces an approved spec (2-3 approaches, visual companion, one question at a time). ACT 2 (Claude ↔ Codex) — OpenAI Codex adversarially reviews the spec (content passed inline — no filesystem sandbox) until APPROVED or MAX_ROUNDS cap. Use when user says "spec me codex", "spec and stress-test", or is defining a high-stakes feature (auth, schema, payments, concurrency) and wants collaborative exploration AND a cross-model sanity check before implementation planning.
 ---
 
 # Spec-Me-Codex — Collaborative Spec + Adversarial Review
@@ -133,21 +133,38 @@ After writing both files:
 | `SPEC_FILE` | `docs/<idea-slug>-DESIGN.md` | The spec Act 1 produced |
 | `LOG_FILE` | `docs/<idea-slug>-DESIGN-REVIEW-LOG.md` | Append-only argument transcript |
 
-### Review prompt (sent each round)
-> You are an adversarial reviewer for a feature spec. Be skeptical and specific — your job is to find what breaks, not to be agreeable. Read the spec at `DESIGN.md` and any repo files you need (you are read-only). Identify concrete flaws: missing requirements, ambiguous behavior, security implications, wrong assumptions, scope creep risks, simpler alternatives. For each flaw, give a one-line fix. Do NOT modify any files. End your reply with EXACTLY one line: `VERDICT: APPROVED` if the spec is sound enough to proceed to implementation planning, or `VERDICT: REVISE` if it still has material problems.
+### Review prompt strategy
+
+Spec content is passed **inline** in the prompt — do NOT rely on Codex reading from the filesystem (bwrap sandbox blocks it). Claude reads `$SPEC_FILE` and embeds it directly.
 
 ### Round 1 — fresh session (capture thread_id)
 ```bash
-codex exec -s read-only --json -o /tmp/codex-verdict.txt "$(cat REVIEW_PROMPT)" \
+SPEC_CONTENT=$(cat "$SPEC_FILE")
+REVIEW_PROMPT="You are an adversarial reviewer for a feature spec. Be skeptical and specific — your job is to find what breaks, not to be agreeable. Here is the spec to review:
+
+---
+${SPEC_CONTENT}
+---
+
+Identify concrete flaws: missing requirements, ambiguous behavior, security implications, wrong assumptions, scope creep risks, simpler alternatives. For each flaw, give a one-line fix. Do NOT modify any files. End your reply with EXACTLY one line: \`VERDICT: APPROVED\` if the spec is sound enough to proceed to implementation planning, or \`VERDICT: REVISE\` if it still has material problems."
+
+codex exec --json -o /tmp/codex-verdict.txt "$REVIEW_PROMPT" \
   2>/dev/null | grep '"type":"thread.started"'
 ```
 Parse `thread_id` from `{"type":"thread.started","thread_id":"..."}`. Critique is in `/tmp/codex-verdict.txt`.
 
 ### Rounds 2..MAX — resume same session
 ```bash
-codex exec resume "$THREAD_ID" -c sandbox_mode="read-only" --json \
+SPEC_CONTENT=$(cat "$SPEC_FILE")
+codex exec resume "$THREAD_ID" --json \
   -o /tmp/codex-verdict.txt \
-  "I revised the spec. Re-review DESIGN.md — check whether your prior findings are addressed and flag anything new. End with VERDICT: APPROVED or VERDICT: REVISE." \
+  "I revised the spec. Here is the updated version:
+
+---
+${SPEC_CONTENT}
+---
+
+Re-review — check whether your prior findings are addressed and flag anything new. End with VERDICT: APPROVED or VERDICT: REVISE." \
   2>/dev/null >/dev/null
 ```
 
@@ -184,7 +201,7 @@ Rounds:    N
 
 ## Hard Rules
 - Act 1 always precedes Act 2 — no DESIGN.md until brainstorming has actually resolved with the user.
-- Codex is read-only EVERY round — `-s read-only` first call, `-c sandbox_mode="read-only"` on every resume.
+- Pass spec content **inline** every round — do NOT use `-s read-only` or `-c sandbox_mode="read-only"` (bwrap blocks filesystem reads, Codex will fail silently and hallucinate).
 - Loop ALWAYS terminates at `MAX_ROUNDS`.
 - Claude is final arbiter on every REVISE — don't cave to everything, don't ignore it.
 - Do NOT write code during either act.

@@ -37,21 +37,38 @@ Initialize `LOG_FILE`:
 spec-me-review started. MAX_ROUNDS=<n>. Reviewing: <SPEC_FILE>.
 ```
 
-### Review prompt
-> You are an adversarial reviewer for a feature spec. Be skeptical and specific — your job is to find what breaks, not to be agreeable. Read the spec at `<SPEC_FILE>` and any repo files you need (you are read-only). Identify concrete flaws: missing requirements, ambiguous behavior, security implications, wrong assumptions, scope creep risks, simpler alternatives. For each flaw, give a one-line fix. Do NOT modify any files. End your reply with EXACTLY one line: `VERDICT: APPROVED` if the spec is sound enough to proceed to implementation planning, or `VERDICT: REVISE` if it still has material problems.
+### Review prompt strategy
+
+Spec content is passed **inline** in the prompt — do NOT ask Codex to read from the filesystem (bwrap sandbox blocks it even without explicit sandbox flags). Claude reads `$SPEC_FILE` and embeds it directly.
 
 ### Round 1 — fresh session (capture thread_id)
 ```bash
-codex exec --json -o /tmp/codex-verdict.txt "$(cat REVIEW_PROMPT)" \
+SPEC_CONTENT=$(cat "$SPEC_FILE")
+REVIEW_PROMPT="You are an adversarial reviewer for a feature spec. Be skeptical and specific — your job is to find what breaks, not to be agreeable. Here is the spec to review:
+
+---
+${SPEC_CONTENT}
+---
+
+Identify concrete flaws: missing requirements, ambiguous behavior, security implications, wrong assumptions, scope creep risks, simpler alternatives. For each flaw, give a one-line fix. Do NOT modify any files. End your reply with EXACTLY one line: \`VERDICT: APPROVED\` if the spec is sound enough to proceed to implementation planning, or \`VERDICT: REVISE\` if it still has material problems."
+
+codex exec --json -o /tmp/codex-verdict.txt "$REVIEW_PROMPT" \
   2>/dev/null | grep '"type":"thread.started"'
 ```
 Parse `thread_id` from `{"type":"thread.started","thread_id":"..."}`. Critique is in `/tmp/codex-verdict.txt`.
 
 ### Rounds 2..MAX — resume same session
 ```bash
+SPEC_CONTENT=$(cat "$SPEC_FILE")
 codex exec resume "$THREAD_ID" --json \
   -o /tmp/codex-verdict.txt \
-  "I revised the spec. Re-review <SPEC_FILE> — check whether your prior findings are addressed and flag anything new. End with VERDICT: APPROVED or VERDICT: REVISE." \
+  "I revised the spec. Here is the updated version:
+
+---
+${SPEC_CONTENT}
+---
+
+Re-review — check whether your prior findings are addressed and flag anything new. End with VERDICT: APPROVED or VERDICT: REVISE." \
   2>/dev/null >/dev/null
 ```
 
@@ -78,7 +95,7 @@ echo "<what changed, what was rejected, why>" >> "$LOG_FILE"
 - **MAX_ROUNDS deadlock:** List each unresolved point + Claude's counter-position. Hand to user to break the tie. Wait for explicit user approval before committing.
 
 ## Hard Rules
-- Codex runs without sandbox flags — `-s read-only` / `-c sandbox_mode="read-only"` block filesystem reads via bwrap and must NOT be used.
+- Pass spec content **inline** every round — do NOT use `-s read-only` or `-c sandbox_mode="read-only"`, and do NOT ask Codex to read from the filesystem path (bwrap blocks filesystem reads, Codex will fail silently and hallucinate).
 - Loop ALWAYS terminates at `MAX_ROUNDS`.
 - Claude is final arbiter on every REVISE — don't cave to everything, don't ignore it.
 - Do NOT write code. Do NOT invoke `writing-plans` automatically.
