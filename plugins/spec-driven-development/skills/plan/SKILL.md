@@ -63,21 +63,20 @@ Use the `Skill` tool to invoke `superpowers:writing-plans` with these overrides:
 
 Follow every other writing-plans step as written.
 
-### Step 4 — Commit and push
+### Step 4 — Commit
 
 After `writing-plans` returns (user has approved the plan):
 
 1. `git add docs/<idea-slug>-PLAN.md` (or `PLAN-N.md`)
 2. `git commit -m "docs: add implementation plan for <idea-slug>"`
-3. `git push`
 
-Do NOT skip this step. Do NOT wait for additional user input — approval in Step 3 is sufficient.
+Do NOT push. Do NOT skip this step. Do NOT wait for additional user input — approval in Step 3 is sufficient.
 
 ### Step 5 — Confirm stop
 
-After committing and pushing, say:
+After committing, say:
 
-> *"Plan saved and pushed to `docs/<idea-slug>-PLAN.md`. To implement, run `/implement` with the plan file path."*
+> *"Plan saved to `docs/<idea-slug>-PLAN.md`. To implement, run `/implement` with the plan file path."*
 
 ## Output
 
@@ -90,4 +89,4 @@ After committing and pushing, say:
 - Do NOT write code.
 - Do NOT start executing — that is the user's decision in a new session.
 - Always read the input file before invoking writing-plans.
-- Always commit and push after user approves — do NOT skip Step 4.
+- Always commit after user approves — do NOT skip Step 4. Do NOT push.
