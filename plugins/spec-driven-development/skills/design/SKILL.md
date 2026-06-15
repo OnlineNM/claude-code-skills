@@ -80,16 +80,22 @@ Invoke `superpowers:brainstorming` and follow it exactly, with **two overrides**
 
 > **OVERRIDE — terminal state:** The final step of brainstorming normally transitions to `writing-plans`. Do NOT do this. The terminal state for spec-me is the user approving the written spec document. Stop there.
 
-> **OVERRIDE — spec writing & commit:** When the spec is ready to be written:
+> **OVERRIDE — spec writing:** When the spec is ready to be written:
 > 1. Write it directly to `docs/<idea-slug>-DESIGN.md` without displaying its full content in the console. Just confirm the path.
 > 2. Tell the user: *"Spec written to `docs/<idea-slug>-DESIGN.md`. Please review it and let me know if you have any changes or if you approve."*
 > 3. If the user provides feedback, update the file accordingly and ask again.
-> 4. Only commit to git when the user **explicitly approves** (e.g. "looks good", "approve", "done", "ok"). Do NOT commit automatically. Do NOT push — commit only.
+> 4. When the user explicitly approves, proceed to Step 5.
 
 Follow every other brainstorming step as written: explore project context, offer visual companion if applicable, ask clarifying questions one at a time, propose 2-3 approaches, present design sections, run the spec self-review.
 
-### Step 5 — Confirm stop
-After the user approves the spec, output this summary:
+### Step 5 — Commit and confirm stop
+After the user approves the spec, propose a git commit — list the files to be staged and ask for confirmation:
+- `docs/<idea-slug>-DESIGN.md`
+- `docs/<idea-slug>-SESSION.md` (if it exists)
+
+On confirmation, commit with message `docs: <idea-slug> spec approved`. Do NOT push.
+
+Then output this summary:
 
 ```
 Title:     <feature title>

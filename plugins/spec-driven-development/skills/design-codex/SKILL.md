@@ -185,7 +185,7 @@ echo "<what changed, what was rejected, why>" >> "$LOG_FILE"
 3. If round > `MAX_ROUNDS` → Resolution (deadlock).
 
 ### Resolution
-- **APPROVED:** Output this summary, then ask *"Ready to move to implementation planning?"* Do NOT invoke `writing-plans` automatically — wait for the user.
+- **APPROVED:** Output this summary and give a 3-bullet summary of what the two acts improved:
 ```
 Title:     <feature title>
 Slug:      <idea-slug>
@@ -194,8 +194,15 @@ Spec file: docs/<idea-slug>-DESIGN.md
 Log file:  docs/<idea-slug>-DESIGN-REVIEW-LOG.md
 Rounds:    N
 ```
-  Also give a 3-bullet summary of what the two acts improved.
-- **MAX_ROUNDS deadlock:** List each unresolved point + Claude's counter-position. Hand to user to break the tie.
+  Then propose a git commit — list the files to be staged and ask for confirmation:
+  - `docs/<idea-slug>-DESIGN.md`
+  - `docs/<idea-slug>-DESIGN-REVIEW-LOG.md`
+  - `docs/<idea-slug>-SESSION.md` (if it exists)
+
+  On user approval, commit with message `docs: finalize <idea-slug> spec (brainstorming + Codex review)`. Do NOT push.
+
+  Then ask: *"Ready to move to implementation planning?"* Do NOT invoke `writing-plans` automatically — wait for the user.
+- **MAX_ROUNDS deadlock:** List each unresolved point + Claude's counter-position. Hand to user to break the tie. After the user resolves, propose the same commit as above.
 
 ---
 

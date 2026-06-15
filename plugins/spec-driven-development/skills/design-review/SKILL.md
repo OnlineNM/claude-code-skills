@@ -91,8 +91,15 @@ echo "<what changed, what was rejected, why>" >> "$LOG_FILE"
 **No git commits during the review loop** — only the final spec (after user approval) is committed.
 
 ### Resolution
-- **APPROVED:** Tell the user the spec path and round count. Ask: *"Spec survived N rounds of Codex. Please review `SPEC_FILE` and let me know if you approve or have any final changes."* Wait for explicit user approval before committing. Do NOT invoke `writing-plans` automatically.
-- **MAX_ROUNDS deadlock:** List each unresolved point + Claude's counter-position. Hand to user to break the tie. Wait for explicit user approval before committing.
+- **APPROVED:** Tell the user the spec path and round count. Ask: *"Spec survived N rounds of Codex. Please review `SPEC_FILE` and let me know if you approve or have any final changes."*
+
+  On user approval, propose a git commit — list the files to be staged and ask for confirmation:
+  - `$SPEC_FILE`
+  - `$LOG_FILE`
+
+  On confirmation, commit with message `docs: <idea-slug> spec approved after Codex review`. Do NOT push. Do NOT invoke `writing-plans` automatically.
+
+- **MAX_ROUNDS deadlock:** List each unresolved point + Claude's counter-position. Hand to user to break the tie. After the user resolves, follow the same approval → commit flow as above.
 
 ## Hard Rules
 - Pass spec content **inline** every round — do NOT use `-s read-only` or `-c sandbox_mode="read-only"`, and do NOT ask Codex to read from the filesystem path (bwrap blocks filesystem reads, Codex will fail silently and hallucinate).
