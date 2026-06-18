@@ -99,6 +99,8 @@ After committing, say:
 
 > *"Plan saved to `docs/<idea-slug>-PLAN.md`. To implement, run `/implement` with the plan file path."*
 
+⛔ **HARD STOP — do not continue past this point.** ExitPlanMode approval is approval of the plan document only — it is NOT authorization to implement. The plan file is the only deliverable of this skill. Return control to the user immediately after Step 6.
+
 ## Output
 
 - `docs/<idea-slug>-PLAN.md` — TDD implementation plan derived from a DESIGN.md or PRD.md
