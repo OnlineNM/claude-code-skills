@@ -9,7 +9,7 @@
       "source": "./plugins/spec-driven-development"
     },
     {
-      "name": "dbb",
+      "name": "dbg",
       "source": "./plugins/debug"
     },
     {
