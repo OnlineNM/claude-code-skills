@@ -1,11 +1,11 @@
 ---
 name: plan
-description: Transforms a DESIGN.md or ISSUE-N.md into a concrete TDD implementation plan saved as docs/<idea-slug>-PLAN.md (or PLAN-N.md for issues). Enters plan-mode, invokes writing-plans, stops before execution. Use when user says "plan me", "plan this", "make a plan from", or wants to turn a spec or issue into a step-by-step implementation plan.
+description: Transforms a DESIGN.md, PRD.md, or ISSUE-N.md into a concrete TDD implementation plan saved as docs/<idea-slug>-PLAN.md (or PLAN-N.md for issues). Enters plan-mode, invokes writing-plans, stops before execution. When invoked with a PRD.md or ISSUE-N.md (complex workflow after /prd), first confirms slug and sets up a branch or worktree before planning. Use when user says "plan me", "plan this", "make a plan from", or wants to turn a spec, PRD, or issue into a step-by-step implementation plan.
 ---
 
-# Plan-Me — Spec or Issue to Implementation Plan
+# Plan-Me — Spec, PRD, or Issue to Implementation Plan
 
-Reads a DESIGN.md or ISSUE-N.md file and produces a TDD implementation plan saved locally. Stops before execution.
+Reads a DESIGN.md, PRD.md, or ISSUE-N.md file and produces a TDD implementation plan saved locally. Stops before execution.
 
 ## Model & Thinking
 
@@ -16,9 +16,10 @@ Use **Claude Sonnet** (`claude-sonnet`) with **high thinking effort** (`ultrathi
 Pass the input file path explicitly:
 
 > `/plan-me docs/<idea-slug>-DESIGN.md`
+> `/plan-me docs/<idea-slug>-PRD.md`
 > `/plan-me docs/<idea-slug>-ISSUE-N.md`
 
-If no path is provided, stop and ask: *"Please specify the input file path, e.g. `docs/auth-forms-DESIGN.md` or `docs/auth-forms-ISSUE-1.md`."*
+If no path is provided, stop and ask: *"Please specify the input file path, e.g. `docs/auth-forms-DESIGN.md`, `docs/auth-forms-PRD.md`, or `docs/auth-forms-ISSUE-1.md`."*
 
 ## Before Starting
 
@@ -31,15 +32,35 @@ If the user has already cleared, proceed.
 
 Read the file at the provided path. If it does not exist, stop and tell the user.
 
-Extract `<idea-slug>` and determine the output path:
-- `docs/auth-forms-DESIGN.md` → slug = `auth-forms`, output = `docs/auth-forms-PLAN.md`
-- `docs/auth-forms-ISSUE-1.md` → slug = `auth-forms`, issue = `1`, output = `docs/auth-forms-PLAN-1.md`
+Determine the **input type** and extract `<idea-slug>` and the output path:
+- `docs/auth-forms-DESIGN.md` → type = DESIGN, slug = `auth-forms`, output = `docs/auth-forms-PLAN.md`
+- `docs/auth-forms-PRD.md` → type = PRD, slug = `auth-forms`, output = `docs/auth-forms-PLAN.md`
+- `docs/auth-forms-ISSUE-1.md` → type = ISSUE, slug = `auth-forms`, issue = `1`, output = `docs/auth-forms-PLAN-1.md`
 
-### Step 2 — Enter plan-mode
+### Step 2 — Branch setup (PRD and ISSUE inputs only)
+
+**Skip this step entirely if the input is a DESIGN.md** — the branch or worktree was already established by `/design` or `/design-codex`.
+
+When invoked with a PRD.md or ISSUE-N.md, the session is on the main branch because `/prd` merges back before handing off. Before planning, establish the workspace.
+
+#### ⛔ CHECKPOINT 1 — Slug confirmation (MANDATORY, do not skip)
+
+The slug was extracted from the filename. Propose it to the user and **wait for explicit confirmation before continuing**. The user may correct it if the filename doesn't reflect the right slug. Do NOT proceed until the user approves or corrects it.
+
+#### ⛔ CHECKPOINT 2 — Branch strategy (MANDATORY, do not skip)
+
+Present exactly these three options and ask the user to choose one — do not reduce to two:
+- **1. main** — plan directly on the current branch
+- **2. branch** — create and switch to `feature/<idea-slug>` (or `feature/<idea-slug>-<N>` for an ISSUE input)
+- **3. worktree** — create a git worktree at `../<idea-slug>` on branch `feature/<idea-slug>` (isolated workspace, recommended for larger plans)
+
+After the user picks, invoke `superpowers:using-git-worktrees` if option 3 was chosen. Set up the chosen environment before proceeding.
+
+### Step 3 — Enter plan-mode
 
 Call `EnterPlanMode` immediately. All work happens in plan-mode to prevent accidental execution.
 
-### Step 3 — Run writing-plans
+### Step 4 — Run writing-plans
 
 Use the `Skill` tool to invoke `superpowers:writing-plans` with these overrides:
 
@@ -63,16 +84,16 @@ Use the `Skill` tool to invoke `superpowers:writing-plans` with these overrides:
 
 Follow every other writing-plans step as written.
 
-### Step 4 — Commit
+### Step 5 — Commit
 
 After `writing-plans` returns (user has approved the plan):
 
 1. `git add docs/<idea-slug>-PLAN.md` (or `PLAN-N.md`)
 2. `git commit -m "docs: add implementation plan for <idea-slug>"`
 
-Do NOT push. Do NOT skip this step. Do NOT wait for additional user input — approval in Step 3 is sufficient.
+Do NOT push. Do NOT skip this step. Do NOT wait for additional user input — approval in Step 4 is sufficient.
 
-### Step 5 — Confirm stop
+### Step 6 — Confirm stop
 
 After committing, say:
 
@@ -80,7 +101,7 @@ After committing, say:
 
 ## Output
 
-- `docs/<idea-slug>-PLAN.md` — TDD implementation plan derived from a DESIGN.md
+- `docs/<idea-slug>-PLAN.md` — TDD implementation plan derived from a DESIGN.md or PRD.md
 - `docs/<idea-slug>-PLAN-N.md` — TDD implementation plan for a single vertical slice, derived from an ISSUE-N.md
 
 ## Hard Rules
@@ -89,4 +110,5 @@ After committing, say:
 - Do NOT write code.
 - Do NOT start executing — that is the user's decision in a new session.
 - Always read the input file before invoking writing-plans.
-- Always commit after user approves — do NOT skip Step 4. Do NOT push.
+- Always run Step 2 (branch setup) for PRD and ISSUE inputs — do NOT skip it even if you think the branch already exists.
+- Always commit after user approves — do NOT skip Step 5. Do NOT push.
