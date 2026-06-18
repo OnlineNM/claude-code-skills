@@ -1,6 +1,6 @@
 {
   "name": "dbg",
-  "version": "1.0.1",
+  "version": "1.2.0",
   "description": "Debugging and architecture tools: disciplined diagnosis loop, codebase architecture improvement, conversation handoff, and quick zoom-out for navigating unfamiliar code.",
   "author": {
     "name": "Laurentiu Irimia"
