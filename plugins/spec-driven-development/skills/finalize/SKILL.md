@@ -1,9 +1,9 @@
 ---
-name: finish
-description: Finishes a development branch by committing all pending changes and then guiding the merge/PR flow. Use when the user says "finish", "done with implementation", "merge this", "sdd:finish", or wants to wrap up and integrate their work into main/master.
+name: finalize
+description: Finalizes a development branch by committing all pending changes and then guiding the merge/PR flow. Use when the user says "finalize", "finish", "done with implementation", "merge this", "sdd:finalize", or wants to wrap up and integrate their work into main/master.
 ---
 
-# SDD Finish — Commit and Complete Development Branch
+# SDD Finalize — Commit and Complete Development Branch
 
 Commits all pending changes on the current branch (or worktree), then hands off to `superpowers:finishing-a-development-branch` for merge/PR options.
 
