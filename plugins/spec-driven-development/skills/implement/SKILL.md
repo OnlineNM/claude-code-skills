@@ -59,6 +59,7 @@ Instructions:
 - Each task must follow `superpowers:test-driven-development`.
 - Do NOT skip any step.
 - Do NOT modify tests to make them pass — fix the implementation instead.
+- For framework-specific patterns (React hooks, routing, auth, database ORM, etc.), verify against official documentation before implementing.
 - After all tasks are complete, run the full test suite and confirm all tests pass.
 - Report back: which tasks were completed, which tests passed, and any issues encountered.
 ```
@@ -67,7 +68,15 @@ Replace `<PLAN_CONTENT>` with the full content of the plan file read in Step 1.
 
 Wait for the implementation subagent to complete before proceeding.
 
-### Step 3 — Dispatch testing subagent
+### Step 3 — Spec divergence check
+
+After the implementation subagent completes, read `docs/<idea-slug>-DESIGN.md` and run `git diff` to compare the current working tree against the spec.
+
+For each divergence (architectural decision changed, scope adjusted, data model differs from what the spec describes), propose a concrete edit to `docs/<idea-slug>-DESIGN.md`. Present each proposed edit to the user individually and wait for approval or rejection before continuing.
+
+Only after the user has reviewed all proposed spec edits (or confirmed there are none), proceed to the testing subagent.
+
+### Step 4 — Dispatch testing subagent
 
 After the implementation subagent completes, dispatch a **separate** testing subagent — never run tests inline. A separate subagent ensures the test run happens with a clean context, independent of implementation decisions.
 
@@ -94,7 +103,7 @@ If the testing subagent reports any failures:
 2. Re-dispatch the testing subagent.
 3. Repeat until all tests pass.
 
-### Step 4 — Confirm
+### Step 5 — Confirm
 
 When the testing subagent reports all tests pass, say:
 
