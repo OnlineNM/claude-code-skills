@@ -56,14 +56,30 @@ continuing. Mark each field as you collect it.
 |---|-------|-----------------|
 | 1 | **Agent name** | Short identifier used in Paperclip (e.g. `Coder`, `MarketingLead`, `DataAnalyst`) |
 | 2 | **Job title** | Full human-readable title (e.g. `Software Engineer`, `QA Lead`, `Product Designer`) |
-| 3 | **Adapter type** | Runtime adapter name (e.g. `claude_local`, `codex_local`, `cursor`, `openclaw`) |
-| 4 | **Primary model** | The main LLM model provided by this adapter (e.g. `claude-sonnet-4-6`, `o4`) |
-| 5 | **Cheap model** | The lightweight/cheap LLM model from the same adapter (e.g. `claude-haiku-4-5`, `o4-mini`) |
+| 3 | **Adapter type** | Runtime adapter name. Confirmed supported: `claude_local`, `codex_local`, `opencode_local`, `gemini_local`, `cursor`, `openclaw_gateway`, `http`, `process` |
+| 4 | **Primary model** | The main LLM model for this adapter. Format depends on adapter — see model format table below. |
+| 5 | **Cheap model** | The lightweight/cheap LLM model from the same adapter. Same format rules as primary model. |
 | 6 | **Role slug** | Functional role identifier (e.g. `engineer`, `qa`, `designer`, `ceo`, `manager`, `analyst`) |
 | 7 | **Company name** | The Paperclip company this agent belongs to |
 | 8 | **Reporting line** | Who this agent reports to (title or agent name, e.g. `the CTO`, `the CEO`) |
 | 9 | **Capabilities** | One sentence: what this agent does end-to-end |
 | 10 | **Role charter** | What this agent owns, what problem it solves, and what is explicitly out of scope |
+
+### Model format by adapter
+
+| Adapter | Model format | Example |
+|---------|-------------|---------|
+| `claude_local` | plain model ID | `claude-sonnet-4-6`, `claude-haiku-4-5` |
+| `codex_local` | plain model ID | `gpt-5.5`, `o4`, `o4-mini` |
+| `opencode_local` | `provider/model` | `opencode/deepseek-v4-flash-free`, `anthropic/claude-sonnet-4-5` |
+| `gemini_local` | plain model ID | `gemini-2.5-pro`, `gemini-2.5-flash` |
+| `cursor` | plain model ID | `auto`, `gpt-5.3-codex` |
+| `openclaw_gateway` | N/A | no `model` field — uses WebSocket URL config instead |
+| `http` / `process` | N/A | no `model` field |
+
+When the user names a model without a provider prefix and the adapter is `opencode_local`, ask which
+provider serves it (e.g. `opencode`, `anthropic`, `openai`) or look it up from a peer agent in the
+same company that uses the same adapter.
 
 Suggested batching:
 - **Batch A**: fields 1, 2 (agent name + job title — always collected first, never skipped)
