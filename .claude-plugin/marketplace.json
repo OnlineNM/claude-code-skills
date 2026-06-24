@@ -27,6 +27,10 @@
     {
       "name": "skill-check",
       "source": "./plugins/skill-check"
+    },
+    {
+      "name": "ppmt",
+      "source": "./plugins/prompt"
     }
   ]
 }
