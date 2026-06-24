@@ -23,6 +23,10 @@
     {
       "name": "ppc",
       "source": "./plugins/paperclip"
+    },
+    {
+      "name": "skill-check",
+      "source": "./plugins/skill-check"
     }
   ]
 }

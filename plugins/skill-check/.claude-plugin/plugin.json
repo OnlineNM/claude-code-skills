@@ -1,0 +1,8 @@
+{
+  "name": "skill-check",
+  "version": "1.0.0",
+  "description": "Tools for checking and converting Claude Code skills to portable SKILL.md format: detect Claude-specific dependencies, remove them, convert to standard format, and validate the result.",
+  "author": {
+    "name": "Laurentiu Irimia"
+  }
+}
