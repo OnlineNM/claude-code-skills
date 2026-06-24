@@ -1,4 +1,4 @@
-# ppmt — Prompt Engineering Tools
+# pmpt — Prompt Engineering Tools
 
 A Claude Code plugin for transforming raw user requests into structured, effective prompts before sending them to an LLM.
 
@@ -8,13 +8,13 @@ The core idea: vague prompts produce vague responses. These skills restructure w
 
 | Skill | Trigger | Best for |
 |---|---|---|
-| `ppmt:gcao` | "apply GCAO", "improve this prompt" | Any prompt — quick 4-part structure |
-| `ppmt:universal` | "universal prompt", complex task description | Complex projects, reports, strategies |
-| `ppmt:short` | "short prompt", "quick prompt" | Emails, summaries, recurring daily tasks |
+| `pmpt:gcao` | "apply GCAO", "improve this prompt" | Any prompt — quick 4-part structure |
+| `pmpt:universal` | "universal prompt", complex task description | Complex projects, reports, strategies |
+| `pmpt:short` | "short prompt", "quick prompt" | Emails, summaries, recurring daily tasks |
 
 ---
 
-### `ppmt:gcao` — GCAO Framework
+### `pmpt:gcao` — GCAO Framework
 
 Restructures a prompt using 4 components:
 
@@ -27,7 +27,7 @@ Outputs a fenced code block ready to copy, with placeholders (`[...]`) for anyth
 
 ---
 
-### `ppmt:universal` — Universal Prompt (7 components)
+### `pmpt:universal` — Universal Prompt (7 components)
 
 Full structured prompt for complex tasks requiring total control. Components:
 
@@ -47,7 +47,7 @@ Includes a **confirmation pause**: the AI proposes a structure and flags missing
 
 ---
 
-### `ppmt:short` — Short Prompt (8 fields)
+### `pmpt:short` — Short Prompt (8 fields)
 
 Same logic as universal, compressed for daily use. Fits in ~15 seconds of setup:
 

@@ -1,6 +1,6 @@
 {
-  "name": "ppmt",
-  "version": "1.0.0",
+  "name": "pmpt",
+  "version": "1.0.1",
   "description": "Prompt engineering tools: transform raw prompts into structured formats like GCAO for better LLM responses.",
   "author": {
     "name": "Laurentiu Irimia"

@@ -29,7 +29,7 @@
       "source": "./plugins/skill-check"
     },
     {
-      "name": "ppmt",
+      "name": "pmpt",
       "source": "./plugins/prompt"
     }
   ]
