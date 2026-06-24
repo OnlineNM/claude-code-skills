@@ -81,9 +81,40 @@ If the file already exists, read it and resume — skip decisions already settle
 3. Set up the chosen environment before proceeding.
 
 ### Step 4 — Run brainstorming
-Invoke `superpowers:brainstorming` and follow it exactly, with **two overrides**:
+
+**Before brainstorming**, check `docs/` for upstream artifacts from this slug:
+1. If `docs/<slug>-IDEATE.md` exists: announce *"Found `docs/<slug>-IDEATE.md` — using it as the starting point for brainstorming."* Start brainstorming from its content instead of the raw user description.
+2. Else if `docs/<slug>-INTENT.md` exists: announce *"Found `docs/<slug>-INTENT.md` — using it as the starting point for brainstorming."* Start brainstorming from its content instead of the raw user description.
+3. If neither exists: start brainstorming from the user's raw description (current behavior).
+
+**Before invoking brainstorming**, surface all implicit assumptions the user has not stated:
+
+```
+ASSUMPTIONS I'M MAKING:
+1. [assumption about stack / tech]
+2. [assumption about audience]
+3. [assumption about constraints or scope]
+→ Correct me now or I'll proceed with these.
+```
+
+Do not begin brainstorming until the user explicitly confirms or corrects the list.
+
+Invoke `superpowers:brainstorming` and follow it exactly, with **three overrides**:
 
 > **OVERRIDE — terminal state:** The final step of brainstorming normally transitions to `writing-plans`. Do NOT do this. The terminal state for spec-me is the user approving the written spec document. Stop there.
+
+> **OVERRIDE — success criteria:** Whenever the user describes a vague objective (e.g. "make it faster", "improve UX"), reframe it as concrete, measurable success criteria before writing a spec section:
+>
+> ```
+> REQUIREMENT: "Make it faster"
+>
+> REFRAMED SUCCESS CRITERIA:
+> - [specific measurable condition, e.g. "LCP < 2.5s on 4G"]
+> - [specific measurable condition]
+> → Are these the right targets?
+> ```
+>
+> Do not write a spec section for an objective that cannot be directly verified.
 
 > **OVERRIDE — spec writing:** When the spec is ready to be written:
 > 1. Write it directly to `docs/<idea-slug>-DESIGN.md` without displaying its full content in the console. Just confirm the path.
