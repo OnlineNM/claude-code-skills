@@ -65,7 +65,12 @@ Started: <YYYY-MM-DD>
 
 Check whether `feature/<idea-slug>` already exists:
 - If yes: announce *"Branch `feature/<idea-slug>` detected — reusing it."* Switch to it.
-- If no: run **CHECKPOINT 3** — present the same three options as `sdd:discover` (main / branch / worktree) and set up the chosen environment.
+- If no: run **CHECKPOINT 3** — present exactly these three options and ask the user to choose one:
+  - **1. main** — work directly on the current branch
+  - **2. branch** — create and switch to `feature/<idea-slug>`
+  - **3. worktree** — create a git worktree at `../<idea-slug>` on branch `feature/<idea-slug>` (isolated workspace)
+
+  After the user picks, invoke `superpowers:using-git-worktrees` if option 3 was chosen.
 
 ### Step 2 — Read upstream artifact (if available)
 
