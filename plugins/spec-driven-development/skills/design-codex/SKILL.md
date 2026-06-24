@@ -85,6 +85,37 @@ If the file already exists, read it and resume — skip decisions already settle
 3. Set up the chosen environment before proceeding.
 
 ### Step 4 — Run brainstorming
+
+**Before brainstorming**, check `docs/` for upstream artifacts from this slug:
+1. If `docs/<slug>-IDEATE.md` exists: announce *"Found `docs/<slug>-IDEATE.md` — using it as the starting point for brainstorming."* Start brainstorming from its content instead of the raw user description.
+2. Else if `docs/<slug>-INTENT.md` exists: announce *"Found `docs/<slug>-INTENT.md` — using it as the starting point for brainstorming."* Start brainstorming from its content instead of the raw user description.
+3. If neither exists: start brainstorming from the user's raw description (current behavior).
+
+**Before invoking brainstorming**, surface all implicit assumptions the user has not stated:
+
+```
+ASSUMPTIONS I'M MAKING:
+1. [assumption about stack / tech]
+2. [assumption about audience]
+3. [assumption about constraints or scope]
+→ Correct me now or I'll proceed with these.
+```
+
+Do not begin brainstorming until the user explicitly confirms or corrects the list.
+
+**Success criteria override:** Whenever the user describes a vague objective (e.g. "make it faster", "improve UX"), reframe it as concrete, measurable success criteria before writing a spec section:
+
+```
+REQUIREMENT: "Make it faster"
+
+REFRAMED SUCCESS CRITERIA:
+- [specific measurable condition, e.g. "LCP < 2.5s on 4G"]
+- [specific measurable condition]
+→ Are these the right targets?
+```
+
+Do not write a spec section for an objective that cannot be directly verified.
+
 Invoke `superpowers:brainstorming` with **two overrides**: do NOT invoke `writing-plans` at the end. And do NOT display the spec content in the console or commit automatically — see Step 5.
 
 ### Step 5 — Write DESIGN.md
