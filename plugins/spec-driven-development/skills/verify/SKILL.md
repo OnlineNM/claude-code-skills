@@ -51,7 +51,29 @@ Run `/codex:review --wait` to get an independent technical check from Codex on t
 
 This pass catches defects that Claude may have missed — it has no plan context and reviews purely for technical correctness.
 
-### Step 4 — Consolidate and report
+### Step 4 — Definition of Done
+
+Before consolidating results, apply this checklist to the working tree. Each unchecked item is a blocking defect — add it to the REVISE list.
+
+**Correctness**
+- [ ] Behavior verified at runtime, not just compiled or typechecked
+- [ ] New behavior is covered by tests that fail without the change
+- [ ] Existing tests still pass — no regressions
+
+**Quality**
+- [ ] No dead code, debug output, or commented-out blocks
+- [ ] Changes are scoped to the task — no unrelated code touched
+- [ ] Linting and formatting pass
+
+**Integration**
+- [ ] Change works with the rest of the system, not just in isolation
+- [ ] Backward compatibility considered for any public interface change
+
+**Ship-readiness**
+- [ ] Security implications reviewed for any untrusted input or auth handling
+- [ ] Rollback path exists for anything risky
+
+### Step 5 — Consolidate and report
 
 Present a single consolidated summary:
 
@@ -64,15 +86,18 @@ Present a single consolidated summary:
 ### Technical defects (Codex)
 <issues from Step 3, or "No issues found">
 
+### Definition of Done
+<checklist status — list any unchecked items, or "All items checked">
+
 ### Verdict
-PASS — implementation matches the plan and no technical defects found.
+PASS — implementation matches the plan, no technical defects, and all DoD items are checked.
   or
 REVISE — list of items to fix before the implementation can be considered complete.
 ```
 
 If the verdict is REVISE, list exactly what needs to be fixed. Do NOT fix anything — that is the user's decision.
 
-### Step 5 — Offer merge and cleanup (PASS only)
+### Step 6 — Offer merge and cleanup (PASS only)
 
 Only when the verdict is PASS, ask the user:
 
@@ -88,3 +113,4 @@ Do NOT proceed with merge or cleanup without explicit user confirmation.
 - Do NOT invoke `executing-plans` or any implementation skill.
 - Always read the plan file before running any review.
 - `/codex:review` is standard review — do NOT use `/codex:adversarial-review` (design decisions are already settled at this stage).
+- After a REVISE verdict, check whether `docs/<idea-slug>-DESIGN.md` needs updating to reflect decisions made during implementation before re-running verify.
