@@ -106,6 +106,15 @@ After committing, say:
 - `docs/<idea-slug>-PLAN.md` — TDD implementation plan derived from a DESIGN.md or PRD.md
 - `docs/<idea-slug>-PLAN-N.md` — TDD implementation plan for a single vertical slice, derived from an ISSUE-N.md
 
+## Common Rationalizations
+
+| Rationalization | Reality |
+|---|---|
+| "I'll figure it out as I go" | That's how you get a tangled mess and rework. 10 minutes of planning saves hours. |
+| "The tasks are obvious, no need to write them" | Writing tasks surfaces hidden dependencies and forgotten edge cases. |
+| "Planning is overhead" | Planning is the task. Implementation without a plan is just typing. |
+| "I can hold it all in my head" | Context windows are finite. Written plans survive session boundaries and compaction. |
+
 ## Hard Rules
 
 - Do NOT invoke `executing-plans` or any implementation skill.

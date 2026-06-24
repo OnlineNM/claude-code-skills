@@ -149,6 +149,15 @@ Then say: *"When you're ready to move to implementation planning, run `/sdd:plan
 - `docs/<idea-slug>-SESSION.md` — sesiune persistentă
 - `docs/<idea-slug>-DESIGN.md` — spec-ul final, committed în git
 
+## Common Rationalizations
+
+| Rationalization | Reality |
+|---|---|
+| "This is simple, I don't need a spec" | Simple tasks don't need long specs, but they still need acceptance criteria. A two-line spec is fine. |
+| "I'll write the spec after I code it" | That's documentation, not specification. The spec's value is forcing clarity before code. |
+| "Requirements will change anyway" | That's why the spec is a living document. An outdated spec is still better than no spec. |
+| "The user knows what they want" | Even clear requests have implicit assumptions. The spec surfaces those assumptions. |
+
 ## Hard Rules
 
 - Do NOT invoke `writing-plans`, `executing-plans`, or any implementation skill.
