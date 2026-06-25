@@ -1,7 +1,7 @@
 {
   "name": "ppc",
-  "version": "1.0.6",
-  "description": "Paperclip agent workflow tools: define, deploy, pull, update, and push AGENTS.md instructions and hire request configuration.",
+  "version": "1.2.0",
+  "description": "Paperclip agent workflow tools: define, deploy, pull, update, push AGENTS.md instructions, and generate hire request configuration.",
   "author": {
     "name": "Laurentiu Irimia"
   }
