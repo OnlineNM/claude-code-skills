@@ -139,14 +139,35 @@ Match the agent by `name` — apply the same matching strategy as in 3.1 (exact 
 
 Store the matching `agentId`.
 
-### 3.3 Fetch Agent Configuration
+### 3.3 Fetch Instructions Bundle Metadata
+
+```sh
+curl -sS "$PAPERCLIP_API_URL/api/agents/$AGENT_ID/instructions-bundle" \
+  -H "Authorization: Bearer $PAPERCLIP_API_KEY"
+```
+
+This returns bundle metadata including `entryFile` and a `files` array with path and size per file.
+The `files` array contains metadata only — not file content.
+
+If this returns 404, fall back to the configuration endpoint:
 
 ```sh
 curl -sS "$PAPERCLIP_API_URL/api/agents/$AGENT_ID/configuration" \
   -H "Authorization: Bearer $PAPERCLIP_API_KEY"
 ```
 
-This returns the full agent configuration including any `instructionsBundle`.
+Store `entryFile` (default `"AGENTS.md"` if absent) and the list of file paths from `files[].path`.
+
+### 3.4 Fetch File Content
+
+For each file to pull (at minimum the entryFile), fetch its content:
+
+```sh
+curl -sS "$PAPERCLIP_API_URL/api/agents/$AGENT_ID/instructions-bundle/file?path=AGENTS.md" \
+  -H "Authorization: Bearer $PAPERCLIP_API_KEY"
+```
+
+The response is a JSON object with a `content` field containing the file's text.
 
 ---
 
@@ -154,34 +175,32 @@ This returns the full agent configuration including any `instructionsBundle`.
 
 ### 4.1 Determine what instructions are stored
 
-Inspect the configuration response:
+Inspect the bundle metadata response:
 
-**Case A — instructionsBundle is present with file content:**
-```json
-"instructionsBundle": {
-  "entryFile": "AGENTS.md",
-  "files": {
-    "AGENTS.md": "You are agent ..."
-  }
-}
-```
-→ Extract `files[entryFile]` (or `files["AGENTS.md"]` if `entryFile` is absent).
-→ If the bundle has additional files beyond the entryFile, note them to the user.
+**Case A — bundle metadata returned with files array:**
+→ Use the `entryFile` field (default `"AGENTS.md"`) to identify the main file.
+→ Fetch its content via `/api/agents/$AGENT_ID/instructions-bundle/file?path=<entryFile>` and extract the `content` field.
+→ If the bundle contains additional files beyond the entryFile, note them to the user.
 
-**Case B — configuration has `adapterConfig.instructionsFilePath` (file-path reference):**
-→ The agent's instructions are a pointer to a local file, not content stored in Paperclip.
-→ Stop and report:
+**Case B — bundle metadata not available (404), configuration endpoint used instead:**
 
-> **Note: File path reference**
-> Agent `<Agent Name>` uses a local file reference instead of an embedded AGENTS.md.
-> Instructions file path: `<instructionsFilePath>`
+Check the configuration response:
+- If `instructionsBundle.files` is present with string values → extract content directly from `files[entryFile]`.
+- If only `adapterConfig.instructionsFilePath` is set → try fetching via the bundle file endpoint anyway:
+  ```
+  GET /api/agents/$AGENT_ID/instructions-bundle/file?path=AGENTS.md
+  ```
+  If that succeeds, extract `content`. If it also fails (404), stop and report:
+
+> **Note: Instructions not accessible via API**
+> Agent `<Agent Name>` stores its instructions at:
+> `<instructionsFilePath>`
 >
-> The content is not stored in Paperclip — it lives at that path on the agent's machine.
-> To get a copy, either:
-> - Read the file directly from `<instructionsFilePath>`, or
+> The content could not be retrieved via the API. To get a copy:
+> - Read the file directly from that path on the server, or
 > - Run `/ppc:define` to create a new AGENTS.md and re-deploy with an embedded bundle.
 
-**Case C — no instructions found:**
+**Case C — no instructions found anywhere:**
 
 > **Error: No AGENTS.md found**
 > Agent `<Agent Name>` has no instructions bundle stored in Paperclip.

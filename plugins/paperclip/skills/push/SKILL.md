@@ -196,10 +196,24 @@ identical and the name doesn't need updating, say so and stop:
 
 > The local file is identical to what's already on the server. Nothing to push.
 
-**Case B — Agent uses a file path reference (`adapterConfig.instructionsFilePath`):**
-The agent's instructions live on the server's disk. Pushing will switch the agent to
-an embedded bundle and clear the file-path configuration — the bundle becomes the
-permanent source of truth, surviving restarts. Warn the user about this format change:
+**Case B1 — Agent uses a managed bundle (`adapterConfig.instructionsBundleMode: "managed"`):**
+The agent's instructions are stored as a file on the server's disk, managed by Paperclip.
+Pushing will update that file directly via the bundle file API — no format change occurs.
+The agent stays in managed mode.
+
+> **Push summary**
+> Agent: `<Agent Name>` (`<title>`) in `<Company Name>`
+> Local file: `<absolute path>` (`<N>` lines)
+> Mode: managed bundle — will update physical file on server
+>
+> *(If name differs)* **Name sync:** `<current name>` → `<name from AGENTS.md>`
+>
+> Push? (yes / no)
+
+**Case B2 — Agent uses a static file path reference (`adapterConfig.instructionsFilePath`, no managed mode):**
+The agent's instructions live on the server's disk as a static pointer. Pushing will switch
+the agent to an embedded bundle and clear the file-path configuration — the bundle becomes
+the permanent source of truth, surviving restarts. Warn the user about this format change:
 
 > **Note: Format change**
 > Agent `<Agent Name>` currently reads instructions from a file on the server's disk:
@@ -232,7 +246,22 @@ After the user confirms, push the AGENTS.md bundle, then sync the agent name if 
 
 ### Step 6.1 — Push the bundle
 
-**If the agent uses a file path reference (Case B)** — include null values to clear the
+**If the agent uses a managed bundle (Case B1)** — update the physical file on the server directly:
+
+```sh
+curl -sS -X PUT "$PAPERCLIP_API_URL/api/agents/$AGENT_ID/instructions-bundle/file" \
+  -H "Authorization: Bearer $PAPERCLIP_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "path": "AGENTS.md",
+    "content": "<escaped content of local AGENTS.md>"
+  }'
+```
+
+This writes to the physical file on disk that Paperclip reads. The agent stays in managed mode —
+no format change, no PATCH to the agent record needed.
+
+**If the agent uses a static file path reference (Case B2)** — include null values to clear the
 file-path configuration and switch the agent to bundle mode permanently:
 
 ```sh
@@ -255,7 +284,7 @@ curl -sS -X PATCH "$PAPERCLIP_API_URL/api/agents/$AGENT_ID" \
   }'
 ```
 
-**If the agent already uses a bundle (Case A or C)** — only update the bundle:
+**If the agent already uses an embedded bundle (Case A or C)** — only update the bundle:
 
 ```sh
 curl -sS -X PATCH "$PAPERCLIP_API_URL/api/agents/$AGENT_ID" \
@@ -335,7 +364,8 @@ says the agent is called. Keeping them in sync prevents confusion when the board
 | Company not found | Error with available companies |
 | Agent not found | Error with available agents |
 | Files identical, name in sync | "Nothing to push" |
-| File path reference (Case B) | Format-change warning + PATCH clears file-path fields to switch agent to bundle mode |
+| Managed bundle (Case B1) | Use `PUT /api/agents/:id/instructions-bundle/file` with `{ path, content }` — no format change |
+| Static file path reference (Case B2) | Format-change warning + PATCH clears file-path fields to switch agent to bundle mode |
 | Name mismatch | Auto-sync name after bundle push, report in success message |
 | Push rejected (400) | Server error message, no change made |
 
