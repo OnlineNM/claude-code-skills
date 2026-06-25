@@ -12,8 +12,8 @@ A collection of Claude Code skills (slash commands) for hardening plans and desi
 
 | Skill | Purpose |
 |-------|---------|
-| `design` | Collaborative spec creation via brainstorming — produces an approved `DESIGN.md` |
-| `design-codex` | `design` + Codex adversarial review of the spec (Act 1 + Act 2) |
+| `design-brainstorm` | Collaborative spec creation via brainstorming — produces an approved `DESIGN.md` |
+| `design-adversarial` | `design-brainstorm` + Codex adversarial review of the spec (Act 1 + Act 2) |
 | `design-review` | Act 2 only — Codex stress-tests an existing spec |
 | `prd` | Transforms `DESIGN.md` into a PRD + `ISSUE-N.md` files |
 | `plan` | Transforms `DESIGN.md` or `ISSUE-N.md` into a TDD implementation plan |

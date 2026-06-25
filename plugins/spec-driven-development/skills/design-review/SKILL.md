@@ -27,7 +27,7 @@ Pass the spec file path as an argument (ex: `docs/<idea-slug>-DESIGN.md`), or pl
 
 ## Process
 
-Resolve `SPEC_FILE` from args, or locate `*-DESIGN.md` in `docs/`. Derive `<idea-slug>` from the filename (e.g. `docs/user-auth-flow-DESIGN.md` → `user-auth-flow`). Branch/worktree setup was handled by the preceding `/sdd:design` call — do not repeat it.
+Resolve `SPEC_FILE` from args, or locate `*-DESIGN.md` in `docs/`. Derive `<idea-slug>` from the filename (e.g. `docs/user-auth-flow-DESIGN.md` → `user-auth-flow`). Branch/worktree setup was handled by the preceding `/sdd:design-brainstorm` call — do not repeat it.
 
 ### Step 1 — Initialize and review
 

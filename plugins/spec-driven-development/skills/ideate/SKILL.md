@@ -1,6 +1,6 @@
 ---
 name: ideate
-description: Divergent/convergent exploration of the solution space before writing a spec. Use when intent is known but direction is unclear. Reads INTENT.md if available. Produces docs/<slug>-IDEATE.md. Handoff goes to sdd:design.
+description: Divergent/convergent exploration of the solution space before writing a spec. Use when intent is known but direction is unclear. Reads INTENT.md if available. Produces docs/<slug>-IDEATE.md. Handoff goes to sdd:design-brainstorm.
 ---
 
 # Ideate — Solution Space Exploration
@@ -148,7 +148,7 @@ git commit -m "docs: <idea-slug> ideation complete"
 
 ### Step 7 — Handoff
 
-Say: *"Ideation complete. Run `/sdd:design docs/<idea-slug>-IDEATE.md` to begin the spec."*
+Say: *"Ideation complete. Run `/sdd:design-brainstorm docs/<idea-slug>-IDEATE.md` to begin the spec."*
 
 ## Output
 

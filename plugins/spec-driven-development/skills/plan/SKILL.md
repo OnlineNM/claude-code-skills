@@ -39,7 +39,7 @@ Determine the **input type** and extract `<idea-slug>` and the output path:
 
 ### Step 2 — Branch setup (PRD and ISSUE inputs only)
 
-**Skip this step entirely if the input is a DESIGN.md** — the branch or worktree was already established by `/design` or `/design-codex`.
+**Skip this step entirely if the input is a DESIGN.md** — the branch or worktree was already established by `/design-brainstorm` or `/design-adversarial`.
 
 When invoked with a PRD.md or ISSUE-N.md, the session is on the main branch because `/prd` merges back before handing off. Before planning, establish the workspace.
 

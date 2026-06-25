@@ -1,6 +1,6 @@
 ---
 name: discover
-description: Extracts confirmed user intent before design. Use when the ask is underspecified ("build me X" without "for whom" or "why now"), when success criteria are missing, or when there is temptation to fill in unspoken assumptions. Produces docs/<slug>-INTENT.md. Handoff goes to sdd:ideate or sdd:design.
+description: Extracts confirmed user intent before design. Use when the ask is underspecified ("build me X" without "for whom" or "why now"), when success criteria are missing, or when there is temptation to fill in unspoken assumptions. Produces docs/<slug>-INTENT.md. Handoff goes to sdd:ideate or sdd:design-brainstorm.
 ---
 
 # Discover — Intent Extraction Before Design
@@ -147,7 +147,7 @@ git commit -m "docs: <idea-slug> intent confirmed"
 
 ### Step 8 — Handoff
 
-Say: *"Intent confirmed and saved to `docs/<idea-slug>-INTENT.md`. Run `/sdd:ideate docs/<idea-slug>-INTENT.md` to explore solutions, or `/sdd:design docs/<idea-slug>-INTENT.md` to go straight to spec."*
+Say: *"Intent confirmed and saved to `docs/<idea-slug>-INTENT.md`. Run `/sdd:ideate docs/<idea-slug>-INTENT.md` to explore solutions, or `/sdd:design-brainstorm docs/<idea-slug>-INTENT.md` to go straight to spec."*
 
 ## Output
 
