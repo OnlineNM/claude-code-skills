@@ -1,5 +1,5 @@
 ---
-name: ppc:define
+name: define
 description: >
   Define a new Paperclip AI agent by interviewing the user and generating a complete AGENTS.md system
   prompt file plus a hire request JSON config. Use when the user calls /ppc:define, wants to create

@@ -1,5 +1,5 @@
 ---
-name: ppc:update
+name: update
 description: >
   Update an existing Paperclip agent's AGENTS.md system prompt and/or hire config.
   Use when the user calls /ppc:update, wants to modify, revise, improve, extend, or change

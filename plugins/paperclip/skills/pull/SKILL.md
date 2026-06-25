@@ -1,5 +1,5 @@
 ---
-name: ppc:pull
+name: pull
 description: >
   Pull an agent's AGENTS.md system prompt from a live Paperclip instance and save it locally.
   Use when the user calls /ppc:pull, wants to fetch, download, or retrieve an agent's instructions

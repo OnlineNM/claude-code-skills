@@ -1,5 +1,5 @@
 ---
-name: ppc:push
+name: push
 description: >
   Push a local AGENTS.md file to a live Paperclip agent, updating its system prompt on the server.
   Use when the user calls /ppc:push, wants to deploy, upload, sync, or publish a local AGENTS.md

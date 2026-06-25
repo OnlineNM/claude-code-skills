@@ -1,5 +1,5 @@
 ---
-name: ppc:deploy
+name: deploy
 description: >
   Deploy a new Paperclip agent to a live Paperclip instance by submitting a hire request to the API.
   Use when the user calls /ppc:deploy, wants to register a new agent with a running Paperclip server,
