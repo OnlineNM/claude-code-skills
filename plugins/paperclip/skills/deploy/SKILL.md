@@ -22,7 +22,17 @@ Detect the language of the user's `/ppc:deploy` prompt:
 
 ## Prerequisites — Check Before Anything Else
 
-Verify both environment variables are set:
+Resolve credentials in this order of priority:
+
+**PAPERCLIP_API_URL** — use the first value found:
+1. A URL (http:// or https://) explicitly mentioned in the user's prompt
+2. The `PAPERCLIP_API_URL` environment variable
+
+**PAPERCLIP_API_KEY** — use the first value found:
+1. An API key explicitly mentioned in the user's prompt (matches pattern `pcp_board_...` or similar)
+2. The `PAPERCLIP_API_KEY` environment variable
+
+Check environment variables with:
 
 ```sh
 echo "API URL: ${PAPERCLIP_API_URL:-NOT SET}"
@@ -30,14 +40,14 @@ echo "API KEY: ${PAPERCLIP_API_KEY:+SET (redacted)}"
 echo "API KEY: ${PAPERCLIP_API_KEY:-NOT SET}"
 ```
 
-If either is missing, stop immediately with this error (translated to the interview language if needed):
+If a value is still missing after checking both sources, stop immediately with this error (translated to the interview language if needed):
 
 > **Error: Missing credentials**
-> Set the following environment variables before running `/ppc:deploy`:
+> Could not resolve the following required values from the prompt or environment:
 > - `PAPERCLIP_API_URL` — base URL of the Paperclip instance (e.g. `https://app.paperclip.ai`)
 > - `PAPERCLIP_API_KEY` — your board-user API key
 
-Do not proceed until both are set.
+Do not proceed until both are resolved.
 
 ---
 
@@ -62,6 +72,13 @@ ls hire_config.json AGENTS.md 2>/dev/null
   the user: *"Found hire_config.json in the current directory — using it to pre-fill agent config."*
 - If `AGENTS.md` is found and no path was given by the user, use it as the default AGENTS.md path.
 
+**Auto-extract deployment target fields** from the files discovered above — do this before asking anything in Phase 2:
+
+- **Company Name**: look inside `hire_config.json`'s `instructionsBundle.files["AGENTS.md"]` content (or the standalone AGENTS.md file) for patterns like `at <Company Name>`, `company: <Company Name>`, or `at <Company Name>.` (sentence-ending). Use the first match found.
+- **Manager name/title**: look in the same content for patterns like `You report to the <X>`, `reports to <X>`, `reportsTo: <X>`, or `report directly to the <X>`. Use the first match found.
+
+Only ask for Company Name or Manager in Phase 2 if they could NOT be extracted from the files.
+
 ---
 
 ## Phase 2 — Mandatory Field Interview
@@ -84,10 +101,12 @@ Validate that the AGENTS.md file exists and is readable before continuing. If it
 
 ### Batch B — Deployment target
 
+Only ask for fields that were NOT already extracted in Phase 1.
+
 | Field | Required | What to ask |
 |-------|----------|-------------|
-| **Company Name** | Yes | The name of the Paperclip company to deploy this agent to |
-| **Manager name** | Yes | The name or title of the agent this new agent will report to |
+| **Company Name** | Yes — if not extracted from files | The name of the Paperclip company to deploy this agent to |
+| **Manager name** | Yes — if not extracted from files | The name or title of the agent this new agent will report to |
 
 ### Batch C — Agent config (skip if hire_config.json was provided)
 

@@ -276,7 +276,9 @@ what "not done" looks like, what never ships.>
 
 ### C. Write the Files
 
-Before writing, check whether either file already exists in the target directory:
+Save both files to the **current working directory** — no directory exploration, no path selection.
+
+Before writing, check only whether either file already exists:
 
 ```sh
 ls AGENTS.md hire_config.json 2>/dev/null
@@ -285,16 +287,15 @@ ls AGENTS.md hire_config.json 2>/dev/null
 If one or both files already exist, **stop and warn the user** (in the interview language):
 
 > **Warning: file(s) already exist**
-> The following files already exist in `<directory>`:
+> The following files already exist in the current directory:
 > - `AGENTS.md` _(if present)_
 > - `hire_config.json` _(if present)_
 >
-> Overwrite? Or provide a different directory to save to instead?
+> Overwrite?
 
-Wait for the user's answer before proceeding. If they choose a different directory, use that path
-for both files.
+Wait for the user's confirmation before writing. Do not ask for a different directory.
 
-Once confirmed, write two files to the target directory:
+Once confirmed (or if neither file exists), write directly:
 
 1. **`AGENTS.md`** — the system prompt content generated above
 2. **`hire_config.json`** — the full hire request JSON generated above, including `instructionsBundle`
