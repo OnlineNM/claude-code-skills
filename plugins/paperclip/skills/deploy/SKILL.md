@@ -52,6 +52,16 @@ Scan the user's prompt for these items and note what is already present:
 - Working directory (`cwd`) for local adapters
 - Any other hire request fields explicitly mentioned
 
+Then **auto-discover config files** in the current directory before asking anything:
+
+```sh
+ls hire_config.json AGENTS.md 2>/dev/null
+```
+
+- If `hire_config.json` is found and no path was given by the user, use it automatically and tell
+  the user: *"Found hire_config.json in the current directory — using it to pre-fill agent config."*
+- If `AGENTS.md` is found and no path was given by the user, use it as the default AGENTS.md path.
+
 ---
 
 ## Phase 2 — Mandatory Field Interview
@@ -59,6 +69,8 @@ Scan the user's prompt for these items and note what is already present:
 Ask in batches of 2–3 questions. Wait for answers before continuing.
 
 ### Batch A — Input files (always ask first)
+
+Only ask about files that were NOT auto-discovered in Phase 1.
 
 | Field | Required | What to ask |
 |-------|----------|-------------|

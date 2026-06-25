@@ -274,10 +274,33 @@ The agent should cite lenses by name in task comments.>
 what "not done" looks like, what never ships.>
 ```
 
-### C. Write the File
+### C. Write the Files
 
-After displaying both artifacts, write `AGENTS.md` to the current working directory and tell the user
-the full path. If they specified a different path in the prompt, use that instead.
+Before writing, check whether either file already exists in the target directory:
+
+```sh
+ls AGENTS.md hire_config.json 2>/dev/null
+```
+
+If one or both files already exist, **stop and warn the user** (in the interview language):
+
+> **Warning: file(s) already exist**
+> The following files already exist in `<directory>`:
+> - `AGENTS.md` _(if present)_
+> - `hire_config.json` _(if present)_
+>
+> Overwrite? Or provide a different directory to save to instead?
+
+Wait for the user's answer before proceeding. If they choose a different directory, use that path
+for both files.
+
+Once confirmed, write two files to the target directory:
+
+1. **`AGENTS.md`** — the system prompt content generated above
+2. **`hire_config.json`** — the full hire request JSON generated above, including `instructionsBundle`
+
+Tell the user both full paths. Explain that `hire_config.json` will be auto-loaded by `/ppc:deploy`
+so they will not need to re-enter any agent config fields, even after `/clear` or a new session.
 
 Also tell the user:
 - Which optional fields used defaults (and what those defaults were)
