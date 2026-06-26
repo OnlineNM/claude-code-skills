@@ -24,10 +24,11 @@ Pass the spec file path as an argument (ex: `docs/<idea-slug>-DESIGN.md`), or pl
 | `MAX_ROUNDS` | `5` | Hard cap on review rounds |
 | `SPEC_FILE` | `docs/<idea-slug>-DESIGN.md` | Path to the spec to review |
 | `LOG_FILE` | `docs/<idea-slug>-DESIGN-REVIEW-LOG.md` | Append-only argument transcript |
+| `VERDICT_FILE` | `/tmp/codex-verdict-<idea-slug>.txt` | Temp file for Codex output (unique per slug to avoid collisions) |
 
 ## Process
 
-Resolve `SPEC_FILE` from args, or locate `*-DESIGN.md` in `docs/`. Derive `<idea-slug>` from the filename (e.g. `docs/user-auth-flow-DESIGN.md` → `user-auth-flow`). Branch/worktree setup was handled by the preceding `/sdd:design-brainstorm` call — do not repeat it.
+Resolve `SPEC_FILE` from args, or locate `*-DESIGN.md` in `docs/`. Derive `<idea-slug>` from the filename (e.g. `docs/user-auth-flow-DESIGN.md` → `user-auth-flow`). Set `VERDICT_FILE` to `/tmp/codex-verdict-<idea-slug>.txt`. Branch/worktree setup was handled by the preceding `/sdd:design-brainstorm` call — do not repeat it.
 
 ### Step 1 — Initialize and review
 
@@ -52,16 +53,16 @@ ${SPEC_CONTENT}
 
 Identify concrete flaws: missing requirements, ambiguous behavior, security implications, wrong assumptions, scope creep risks, simpler alternatives. For each flaw, give a one-line fix. Do NOT modify any files. End your reply with EXACTLY one line: \`VERDICT: APPROVED\` if the spec is sound enough to proceed to implementation planning, or \`VERDICT: REVISE\` if it still has material problems."
 
-codex exec --json -o /tmp/codex-verdict.txt "$REVIEW_PROMPT" \
+codex exec --json -o "$VERDICT_FILE" "$REVIEW_PROMPT" \
   2>/dev/null | grep '"type":"thread.started"'
 ```
-Parse `thread_id` from `{"type":"thread.started","thread_id":"..."}`. Critique is in `/tmp/codex-verdict.txt`.
+Parse `thread_id` from `{"type":"thread.started","thread_id":"..."}`. Critique is in `$VERDICT_FILE`.
 
 ### Rounds 2..MAX — resume same session
 ```bash
 SPEC_CONTENT=$(cat "$SPEC_FILE")
 codex exec resume "$THREAD_ID" --json \
-  -o /tmp/codex-verdict.txt \
+  -o "$VERDICT_FILE" \
   "I revised the spec. Here is the updated version:
 
 ---
@@ -74,18 +75,18 @@ Re-review — check whether your prior findings are addressed and flag anything 
 
 ### Each round
 1. Append Codex output to log:
-```bash
-echo "## Round <n> — Codex" >> "$LOG_FILE"
-cat /tmp/codex-verdict.txt >> "$LOG_FILE"
-```
-2. Check last line of `/tmp/codex-verdict.txt` for verdict:
+   ```bash
+   echo "## Round <n> — Codex" >> "$LOG_FILE"
+   cat "$VERDICT_FILE" >> "$LOG_FILE"
+   ```
+2. Check last line of `$VERDICT_FILE` for verdict:
    - `VERDICT: APPROVED` → Resolution.
    - `VERDICT: REVISE` → Claude decides what's worth acting on (Claude is final arbiter). Revise `SPEC_FILE` (file edit only — no git commit). Then append Claude's response to log:
-```bash
-echo "### Claude's response" >> "$LOG_FILE"
-echo "<what changed, what was rejected, why>" >> "$LOG_FILE"
-```
-   Increment round.
+     ```bash
+     echo "### Claude's response" >> "$LOG_FILE"
+     echo "<what changed, what was rejected, why>" >> "$LOG_FILE"
+     ```
+     Increment round.
 3. If round > `MAX_ROUNDS` → Resolution (deadlock).
 
 **No git commits during the review loop** — only the final spec (after user approval) is committed.
@@ -100,6 +101,31 @@ echo "<what changed, what was rejected, why>" >> "$LOG_FILE"
   On confirmation, commit with message `docs: <idea-slug> spec approved after Codex review`. Do NOT push. Do NOT invoke `writing-plans` automatically.
 
 - **MAX_ROUNDS deadlock:** List each unresolved point + Claude's counter-position. Hand to user to break the tie. After the user resolves, follow the same approval → commit flow as above.
+
+## Examples
+
+**Typical REVISE → APPROVED flow (2 rounds):**
+
+Round 1 — Codex returns:
+```
+1. Auth section doesn't specify token expiry — fix: add "tokens expire after 24h, refreshable once".
+2. No rollback strategy for the migration step — fix: add "migration is reversible via down script".
+VERDICT: REVISE
+```
+
+Claude revises `SPEC_FILE`, adding both fixes. Appended to log:
+```
+### Claude's response
+Added token expiry (24h + refresh). Added rollback note to migration section. Rejected nothing.
+```
+
+Round 2 — Codex returns:
+```
+Both prior findings addressed. Spec is coherent and implementable.
+VERDICT: APPROVED
+```
+
+Claude tells the user: *"Spec survived 2 rounds of Codex. Please review `SPEC_FILE` and let me know if you approve."*
 
 ## Hard Rules
 - Pass spec content **inline** every round — do NOT use `-s read-only` or `-c sandbox_mode="read-only"`, and do NOT ask Codex to read from the filesystem path (bwrap blocks filesystem reads, Codex will fail silently and hallucinate).
