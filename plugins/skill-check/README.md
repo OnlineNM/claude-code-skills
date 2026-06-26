@@ -6,7 +6,7 @@ A plugin for checking whether a Claude Code skill is portable to other AI agent 
 
 | Skill | Command | Description |
 |-------|---------|-------------|
-| detect-claude | `/skill-check:detect-claude` | Detects Claude Code–specific dependencies inside a SKILL.md file and reports whether the skill is portable or needs cleanup first. |
+| evaluate | `/skill-check:evaluate` | Detects Claude Code–specific dependencies inside a SKILL.md file and reports whether the skill is portable or needs cleanup first. |
 | declaudeify | `/skill-check:declaudeify` | Removes Claude Code–specific instructions from a skill and replaces them with runtime-neutral equivalents. |
 | convert | `/skill-check:convert` | Converts a skill into a standard portable SKILL.md format usable by other AI agents. |
 | lint | `/skill-check:lint` | Validates that a SKILL.md file conforms to the standard portable format. |
@@ -17,7 +17,7 @@ A plugin for checking whether a Claude Code skill is portable to other AI agent 
 ### initial check
 
 ```
-/skill-check:detect-claude path/to/SKILL.md
+/skill-check:evaluate path/to/SKILL.md
   → tells if the skill contains claude-specific instructions
 
 /skill-check:lint path/to/SKILL.md

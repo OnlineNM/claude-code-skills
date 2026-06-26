@@ -1,9 +1,9 @@
 ---
-name: detect-claude
+name: evaluate
 description: Analyzes a SKILL.md file or any skill document and reports whether it contains Claude Code–specific dependencies that would prevent it from being used in other AI agent runtimes. Use whenever a user wants to check skill portability, asks "is this skill Claude-specific?", "can I use this skill in other agents?", "check for Claude dependencies", "is this skill portable?", "detect runtime coupling", "scan this skill for Claude-specific stuff", or wants to know whether to run /skill-check:declaudeify before converting or sharing a skill. Always invoke this before /skill-check:convert.
 ---
 
-# detect-claude — Claude Dependency Detector
+# evaluate — Claude Dependency Detector
 
 Your only job is to detect whether a skill document is tightly coupled to the Claude Code environment. Do not rewrite, fix, or evaluate the skill's quality or structure — only scan and report.
 
