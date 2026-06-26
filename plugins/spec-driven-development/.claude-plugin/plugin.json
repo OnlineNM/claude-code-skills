@@ -1,20 +1,8 @@
 {
   "name": "sdd",
-  "version": "1.4.3",
+  "version": "1.5.0",
   "description": "Skills for spec driven development: discover → ideate → design → prd → plan → implement → verify.",
   "author": {
     "name": "Laurentiu Irimia"
-  },
-  "skills": [
-    {
-      "name": "discover",
-      "path": "skills/discover/SKILL.md",
-      "description": "Extracts confirmed user intent before design. Use when the ask is underspecified, when 'who' or 'why now' is missing, or when there is temptation to fill in unspoken assumptions. Produces docs/<slug>-INTENT.md."
-    },
-    {
-      "name": "ideate",
-      "path": "skills/ideate/SKILL.md",
-      "description": "Divergent/convergent exploration of solution space before writing a spec. Use when intent is known but direction is unclear. Reads INTENT.md if available. Produces docs/<slug>-IDEATE.md."
-    }
-  ]
+  }
 }
