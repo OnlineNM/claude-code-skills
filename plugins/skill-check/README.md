@@ -10,6 +10,7 @@ A plugin for checking whether a Claude Code skill is portable to other AI agent 
 | declaudeify | `/skill-check:declaudeify` | Removes Claude Code–specific instructions from a skill and replaces them with runtime-neutral equivalents. |
 | convert | `/skill-check:convert` | Converts a skill into a standard portable SKILL.md format usable by other AI agents. |
 | lint | `/skill-check:lint` | Validates that a SKILL.md file conforms to the standard portable format. |
+| compare | `/skill-check:compare` | Compares an original Claude Code–specific skill with its generic counterpart and classifies the pair as EQUIVALENT or DIVERGENT — helping you decide whether to keep both versions or retire the original. |
 
 ## Typical workflow
 
@@ -33,4 +34,7 @@ A plugin for checking whether a Claude Code skill is portable to other AI agent 
 
 /skill-check:lint path/to/SKILL.md
   → validation report
+
+/skill-check:compare path/to/original.md path/to/generic.md
+  → EQUIVALENT (safe to retire original) | DIVERGENT (keep both)
 ```
