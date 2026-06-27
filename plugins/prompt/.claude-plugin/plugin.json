@@ -1,25 +1,8 @@
 {
   "name": "pmpt",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Prompt engineering tools: transform raw prompts into structured formats like GCAO for better LLM responses.",
   "author": {
     "name": "Laurentiu Irimia"
-  },
-  "skills": [
-    {
-      "name": "gcao",
-      "path": "skills/gcao/SKILL.md",
-      "description": "Transforms a user's raw prompt into a structured GCAO prompt (Goal, Context, Actions, Output) for better LLM responses."
-    },
-    {
-      "name": "universal",
-      "path": "skills/universal/SKILL.md",
-      "description": "Builds a full 7-component universal prompt (Role, Task, Audience, Context, Rules, Format, Success criteria) with confirmation pause. For complex tasks requiring total control."
-    },
-    {
-      "name": "short",
-      "path": "skills/short/SKILL.md",
-      "description": "Builds a compact 8-field prompt (Role, Desired output, Topic, Audience, Essential context, Rules, Format, Success criteria) for daily use. Quick setup, ~15 seconds."
-    }
-  ]
+  }
 }
