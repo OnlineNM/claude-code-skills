@@ -782,11 +782,10 @@ The solution to the problem, from the user's perspective.
 
 ## Implementation Decisions
 
-- Modules that will be built/modified
 - Interface changes
 - Architectural decisions
 - Schema changes
-- API contracts
+- API contracts (only where externally relevant — see Scope Boundary below)
 - Specific interactions
 
 Do NOT include file paths or code snippets unless a prototype snippet encodes a decision
@@ -816,7 +815,7 @@ In the Problem Statement, Solution, and User Stories sections: no code snippets,
 
 Example — disallowed: "calls `validateSession()` in `auth/middleware.ts` using JWT." Example — allowed: "the user stays signed in across page reloads."
 
-The Implementation Decisions section may name modules, schemas, and API contracts per the existing template, but only for contracts that are externally relevant (e.g. a public API shape another team integrates with) — not internal file/module references. Before writing the PRD, scan the draft against this rule and strip violations.
+**Why "Modules that will be built/modified" was removed from the template above:** that bullet asked for internal module names unconditionally, which conflicts with this Scope Boundary the moment a feature touches only internal modules (the common case) — one or the other always loses. The Implementation Decisions section may name modules, schemas, and API contracts, but only for contracts that are externally relevant (e.g. a public API shape another team integrates with) — never internal file/module references, regardless of what the bullets ask for. The Testing Decisions section ("Which modules will be tested") is NOT subject to this boundary — naming internal modules there is fine, since it describes test scope rather than product-facing solution content. Before writing the PRD, scan the Implementation Decisions section against this rule and strip violations.
 
 **Stop condition:** User explicitly approves the PRD content (after the Scope Boundary scan).
 
@@ -1019,25 +1018,35 @@ grep -q "implementation tasks" plugins/spec-driven-development/skills/plan/SKILL
 
 Run it now — expected both FAIL lines.
 
-- [ ] **Step 2: Insert OVERRIDE 7 after OVERRIDE 6**
+- [ ] **Step 2: Insert a granularity prompt before Step 4, and a slimmer OVERRIDE 7 inside it**
 
-In `plugins/spec-driven-development/skills/plan/SKILL.md`, locate `### Step 4 — Run writing-plans`. After the `OVERRIDE 6 — agentic worker instruction` block (currently ends right before `> **OVERRIDE 5 — plan writing & review:**` — note OVERRIDE 5 appears after OVERRIDE 6 in current file order, lines 75-83) and before the `Follow every other writing-plans step as written.` line (line 85), insert:
+**Why this changed from the original plan:** the override block handed to `superpowers:writing-plans` is composed once, at the moment `### Step 4 — Run writing-plans` invokes the `Skill` tool. An instruction telling the *invoked* skill to "present exactly these three options... before drafting steps" can never collect a choice early enough to be interpolated verbatim into that same override text — the override text is already fixed by the time the question would be asked. The fix is to ask the question in `sdd:plan`'s own flow, *before* the `Skill` tool call, then build OVERRIDE 7's literal text from the answer.
+
+In `plugins/spec-driven-development/skills/plan/SKILL.md`, locate `### Step 4 — Run writing-plans`. Immediately **before** the `Use the \`Skill\` tool to invoke...` line, insert a new subsection:
+
+```markdown
+#### Granularity choice (before invoking writing-plans)
+
+Present exactly these three options in chat and wait for the user's choice:
+- **1. Fewer, larger steps** — faster execution, less intermediate validation
+- **2. Balanced** (default — recommend this unless the input suggests otherwise) — one step per logical unit of work
+- **3. More, smaller steps** — maximum checkpoints, more context-switch overhead
+
+Wording must differ by input type: when the input is `ISSUE-N.md` (already a single vertical slice from `prd`), the three options size **implementation tasks within that slice**, not features — replace "steps" wording with "implementation tasks" in the ISSUE-N.md case to avoid re-litigating PRD-level decomposition.
+
+Hold the user's literal choice (e.g. `"Balanced — one step per logical unit of work"`) — it is interpolated into OVERRIDE 7 below when invoking `writing-plans`.
+```
+
+Then, after the `OVERRIDE 6 — agentic worker instruction` block (currently ends right before `> **OVERRIDE 5 — plan writing & review:**` — note OVERRIDE 5 appears after OVERRIDE 6 in current file order, lines 75-83) and before the `Follow every other writing-plans step as written.` line (line 85), insert the now-slimmer OVERRIDE 7:
 
 ```markdown
 
-> **OVERRIDE 7 — granularity:** Before writing-plans drafts steps, present exactly these three options in chat and wait for the user's choice:
-> - **1. Fewer, larger steps** — faster execution, less intermediate validation
-> - **2. Balanced** (default — recommend this unless the input suggests otherwise) — one step per logical unit of work
-> - **3. More, smaller steps** — maximum checkpoints, more context-switch overhead
->
-> Include the user's choice **verbatim** in the override text handed to `superpowers:writing-plans` (e.g. "OVERRIDE 7 — granularity: the user chose 'Balanced — one step per logical unit of work'; size all plan steps accordingly"), since writing-plans is an invoked skill, not a typed API — the constraint only takes effect if it is literally present in the prompt.
->
-> Wording must differ by input type: when the input is `ISSUE-N.md` (already a single vertical slice from `prd`), the three options size **implementation tasks within that slice**, not features — replace "steps" wording with "implementation tasks" in the ISSUE-N.md case to avoid re-litigating PRD-level decomposition.
+> **OVERRIDE 7 — granularity:** The user already chose a granularity above this invocation. Include that choice **verbatim** here (e.g. "OVERRIDE 7 — granularity: the user chose 'Balanced — one step per logical unit of work'; size all plan steps accordingly"), since writing-plans is an invoked skill, not a typed API — the constraint only takes effect if it is literally present in this prompt.
 ```
 
 - [ ] **Step 3: Run verification check**
 
-Run the Step 1 grep commands again — expected no FAIL output.
+Run the Step 1 grep commands again — expected no FAIL output. Also confirm the granularity prompt now appears *before* the `Use the \`Skill\` tool to invoke \`superpowers:writing-plans\`` line, not inside the override text passed to it: `grep -n "Granularity choice (before invoking writing-plans)\|Use the \`Skill\` tool to invoke" plugins/spec-driven-development/skills/plan/SKILL.md` — the granularity heading's line number must be smaller.
 
 - [ ] **Step 4: Commit**
 

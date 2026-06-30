@@ -62,6 +62,17 @@ Call `EnterPlanMode` immediately. All work happens in plan-mode to prevent accid
 
 ### Step 4 — Run writing-plans
 
+#### Granularity choice (before invoking writing-plans)
+
+Present exactly these three options in chat and wait for the user's choice:
+- **1. Fewer, larger steps** — faster execution, less intermediate validation
+- **2. Balanced** (default — recommend this unless the input suggests otherwise) — one step per logical unit of work
+- **3. More, smaller steps** — maximum checkpoints, more context-switch overhead
+
+Wording must differ by input type: when the input is `ISSUE-N.md` (already a single vertical slice from `prd`), the three options size **implementation tasks within that slice**, not features — replace "steps" wording with "implementation tasks" in the ISSUE-N.md case to avoid re-litigating PRD-level decomposition.
+
+Hold the user's literal choice (e.g. `"Balanced — one step per logical unit of work"`) — it is interpolated into OVERRIDE 7 below when invoking `writing-plans`.
+
 Use the `Skill` tool to invoke `superpowers:writing-plans` with these overrides:
 
 > **OVERRIDE 1 — input:** The feature description comes from the file read in Step 1, not from conversation context.
@@ -82,14 +93,7 @@ Use the `Skill` tool to invoke `superpowers:writing-plans` with these overrides:
 > 3. If the user provides feedback, update the file accordingly and ask again.
 > 4. When the user explicitly approves (e.g. "looks good", "approve", "done", "ok"), return control — do NOT commit here.
 
-> **OVERRIDE 7 — granularity:** Before writing-plans drafts steps, present exactly these three options in chat and wait for the user's choice:
-> - **1. Fewer, larger steps** — faster execution, less intermediate validation
-> - **2. Balanced** (default — recommend this unless the input suggests otherwise) — one step per logical unit of work
-> - **3. More, smaller steps** — maximum checkpoints, more context-switch overhead
->
-> Include the user's choice **verbatim** in the override text handed to `superpowers:writing-plans` (e.g. "OVERRIDE 7 — granularity: the user chose 'Balanced — one step per logical unit of work'; size all plan steps accordingly"), since writing-plans is an invoked skill, not a typed API — the constraint only takes effect if it is literally present in the prompt.
->
-> Wording must differ by input type: when the input is `ISSUE-N.md` (already a single vertical slice from `prd`), the three options size **implementation tasks within that slice**, not features — replace "steps" wording with "implementation tasks" in the ISSUE-N.md case to avoid re-litigating PRD-level decomposition.
+> **OVERRIDE 7 — granularity:** The user already chose a granularity above this invocation. Include that choice **verbatim** here (e.g. "OVERRIDE 7 — granularity: the user chose 'Balanced — one step per logical unit of work'; size all plan steps accordingly"), since writing-plans is an invoked skill, not a typed API — the constraint only takes effect if it is literally present in this prompt.
 
 Follow every other writing-plans step as written.
 

@@ -25,11 +25,10 @@ The solution to the problem, from the user's perspective.
 
 ## Implementation Decisions
 
-- Modules that will be built/modified
 - Interface changes
 - Architectural decisions
 - Schema changes
-- API contracts
+- API contracts (only where externally relevant — see Scope Boundary below)
 - Specific interactions
 
 Do NOT include file paths or code snippets unless a prototype snippet encodes a decision
@@ -59,7 +58,7 @@ In the Problem Statement, Solution, and User Stories sections: no code snippets,
 
 Example — disallowed: "calls `validateSession()` in `auth/middleware.ts` using JWT." Example — allowed: "the user stays signed in across page reloads."
 
-The Implementation Decisions section may name modules, schemas, and API contracts per the existing template, but only for contracts that are externally relevant (e.g. a public API shape another team integrates with) — not internal file/module references. Before writing the PRD, scan the draft against this rule and strip violations.
+The Implementation Decisions section may name modules, schemas, and API contracts per the existing template, but only for contracts that are externally relevant (e.g. a public API shape another team integrates with) — not internal file/module references. The Testing Decisions section ("Which modules will be tested") is NOT subject to this boundary — naming internal modules there is fine, since it describes test scope rather than product-facing solution content. Before writing the PRD, scan the Implementation Decisions section against this rule and strip violations.
 
 **Stop condition:** User explicitly approves the PRD content (after the Scope Boundary scan).
 
