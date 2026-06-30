@@ -23,6 +23,10 @@ Maintain `docs/<idea-slug>-SESSION.md` throughout the session. Creation is handl
 
 **When the spec concludes:** append `## Final Spec Path: docs/<idea-slug>-DESIGN.md` to the session file.
 
+## Interaction Style
+
+Where a reasonable default can be inferred from context already gathered, propose it and ask for confirmation or correction, instead of asking an open question. State the default plainly, e.g.: "Default: <X>. Confirm or tell me what to change." Reserve fully open questions for inputs with no inferable default (e.g. the raw idea description, the problem statement, or the first question of an interview before any context exists). This does not relax any existing explicit-confirmation requirement: a default still requires a clear yes or an explicit alternative choice from the user — passive agreement ("sounds good", "whatever you think") is still rejected, and the same standard applies wherever this style is used.
+
 ## Before Starting
 
 Tell the user: *"Please run `/clear` first to start with a clean context, then re-invoke this skill."*
@@ -121,6 +125,8 @@ Invoke `superpowers:brainstorming` and follow it exactly, with **three overrides
 > 2. Tell the user: *"Spec written to `docs/<idea-slug>-DESIGN.md`. Please review it and let me know if you have any changes or if you approve."*
 > 3. If the user provides feedback, update the file accordingly and ask again.
 > 4. When the user explicitly approves, proceed to Step 5.
+
+> **OVERRIDE — default selection:** When presenting 2-3 approaches, mark one as "(Recommended)" with a one-line reason, consistent with this project's `AskUserQuestion`-style default-first convention.
 
 Follow every other brainstorming step as written: explore project context, offer visual companion if applicable, ask clarifying questions one at a time, propose 2-3 approaches, present design sections, run the spec self-review.
 
