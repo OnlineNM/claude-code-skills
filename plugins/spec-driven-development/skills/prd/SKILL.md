@@ -21,119 +21,14 @@ If no path is provided, stop and ask: *"Please specify the DESIGN.md file path, 
 
 ## Process
 
-### Step 1 — Read the spec
+Read and follow each file in `steps/` **in numeric order**. Each step file is mandatory context, not optional background — do not skip a step file or rely on the index summary alone.
 
-Read the file at the provided path. Extract `<idea-slug>` from the filename:
-- `docs/auth-forms-DESIGN.md` → `auth-slug` = `auth-forms`
-- `docs/youtube-funnel-DESIGN.md` → `idea-slug` = `youtube-funnel`
-
-If the file does not exist, stop and tell the user.
-
-### Step 2 — Explore the codebase
-
-Explore the repo to understand current state. Use the project's domain glossary vocabulary throughout. Respect any ADRs in the area being touched.
-
-### Step 3 — Identify seams
-
-Sketch out the testing seams for this feature. Prefer existing seams over new ones. Use the highest seam possible.
-
-Check with the user that these seams match their expectations before proceeding.
-
-### Step 4 — Write the PRD
-
-Write directly to `docs/<idea-slug>-PRD.md` without displaying its full content in the console. Just confirm the path. Then tell the user: *"PRD written to `docs/<idea-slug>-PRD.md`. Please review it and let me know if you have any changes before we move on to the issues breakdown."* If the user provides feedback, update the file and ask again. Proceed to Step 5 only after the user approves the PRD.
-
-The PRD structure to use:
-
-```markdown
-# <Feature Name> — PRD
-
-## Problem Statement
-
-The problem that the user is facing, from the user's perspective.
-
-## Solution
-
-The solution to the problem, from the user's perspective.
-
-## User Stories
-
-1. As a <actor>, I want <feature>, so that <benefit>
-
-## Implementation Decisions
-
-- Modules that will be built/modified
-- Interface changes
-- Architectural decisions
-- Schema changes
-- API contracts
-- Specific interactions
-
-Do NOT include file paths or code snippets unless a prototype snippet encodes a decision
-more precisely than prose (state machine, schema, type shape) — inline it and note it came
-from a prototype.
-
-## Testing Decisions
-
-- What makes a good test for this feature
-- Which modules will be tested
-- Prior art for the tests in the codebase
-
-## Out of Scope
-
-Explicit list of what this PRD does not cover.
-
-## Further Notes
-
-Any additional context.
-```
-
-### Step 5 — Draft the issues
-
-Break the PRD into vertical slices (tracer bullets). Each slice cuts through ALL integration layers end-to-end.
-
-Present the proposed breakdown to the user as a numbered list showing: title, type (AFK/HITL), blocked by. Ask:
-- Does the granularity feel right?
-- Are the dependency relationships correct?
-- Should any slices be merged or split?
-
-Iterate until the user approves.
-
-**Slice rules:**
-- Each slice delivers a narrow but complete path through every layer (schema, API, UI, tests)
-- A completed slice is demoable or verifiable on its own
-- AFK = implementable by an agent without human interaction
-- HITL = requires a human decision or design review
-- Prefer many thin slices over few thick ones
-
-### Step 6 — Write one file per issue
-
-Write issues in dependency order (blockers first). For each approved issue, write directly to `docs/<idea-slug>-ISSUE-N.md` without displaying its full content in the console. After all files are written, tell the user: *"N issue files written to `docs/<idea-slug>-ISSUE-1.md` … `docs/<idea-slug>-ISSUE-N.md`. Please review them and let me know if you have any changes or if you approve."* If the user provides feedback, update the relevant files and ask again. Only commit all docs (PRD + issues) to git when the user **explicitly approves** (e.g. "looks good", "approve", "done", "ok"). Do NOT commit automatically.
-
-Issue structure:
-
-```markdown
-# <Feature Name> — Issue N: <Title>
-
-**Type:** AFK / HITL
-**Blocked by:** None / `<idea-slug>-ISSUE-N.md`
-
-## What to build
-
-Concise description of this vertical slice — end-to-end behavior, not layer-by-layer.
-Avoid file paths or code snippets unless a prototype snippet encodes a decision more
-precisely than prose — inline it and note it came from a prototype.
-
-## Acceptance criteria
-
-- [ ] Criterion 1
-- [ ] Criterion 2
-```
-
-### Step 7 — Confirm
-
-After the commit, tell the user:
-> *"PRD and issues committed. To implement, pass each issue file to `/plan-me`."*
+1. `steps/00-read-and-explore.md` — read DESIGN.md, explore codebase
+2. `steps/01-seams.md` — identify and confirm testing seams
+3. `steps/02-write-prd.md` — write PRD.md (Scope Boundary: What, Not How)
+4. `steps/03-issue-breakdown.md` — upfront granularity choice, draft issue breakdown
+5. `steps/04-write-issues.md` — write issue files, commit
+6. `steps/05-handoff.md` — confirm
 
 ## Output
 
