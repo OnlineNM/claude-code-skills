@@ -37,6 +37,15 @@ Determine the **input type** and extract `<idea-slug>` and the output path:
 - `docs/auth-forms-PRD.md` → type = PRD, slug = `auth-forms`, output = `docs/auth-forms-PLAN.md`
 - `docs/auth-forms-ISSUE-1.md` → type = ISSUE, slug = `auth-forms`, issue = `1`, output = `docs/auth-forms-PLAN-1.md`
 
+#### Predecessor log check (ISSUE inputs only)
+
+If the input type is ISSUE and `N > 1`:
+1. Check whether `docs/<idea-slug>-ISSUE-(N-1)-LOG.md` exists.
+2. If it does not exist (the prior issue not yet implemented or not yet logged), no-op — current behavior unchanged.
+3. If it exists, read only that one file (not a glob of all prior issues) and hold it as **supplemental** context for Step 4 — it never overrides the current issue's spec, the PRD, or what the actual code shows.
+   - If the log's `## Verification` reads "Not yet verified," treat its claims as lower-confidence and say so in the generated plan.
+   - If the log's content contradicts the codebase, follow the codebase and add a short "Prior log discrepancy" note in the generated plan describing what differed.
+
 ### Step 2 — Branch setup (PRD and ISSUE inputs only)
 
 **Skip this step entirely if the input is a DESIGN.md** — the branch or worktree was already established by `/design-brainstorm` or `/design-adversarial`.
@@ -75,7 +84,7 @@ Hold the user's literal choice (e.g. `"Balanced — one step per logical unit of
 
 Use the `Skill` tool to invoke `superpowers:writing-plans` with these overrides:
 
-> **OVERRIDE 1 — input:** The feature description comes from the file read in Step 1, not from conversation context.
+> **OVERRIDE 1 — input:** The feature description comes from the file read in Step 1, not from conversation context. If a predecessor log was found per the Predecessor log check above, include it as supplemental context (with any lower-confidence or discrepancy notes) alongside the primary input.
 >
 > **OVERRIDE 2 — output:** Save the final plan to `docs/<idea-slug>-PLAN.md` (or `docs/<idea-slug>-PLAN-N.md` for an issue input). Do NOT use the default plan file location.
 >

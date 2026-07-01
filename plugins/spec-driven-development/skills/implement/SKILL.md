@@ -109,6 +109,34 @@ When the testing subagent reports all tests pass, say:
 
 > *"Implementation complete. All tests defined in `docs/<idea-slug>-PLAN.md` pass."*
 
+### Step 6 — Write issue log
+
+Only if the plan file is `docs/<idea-slug>-PLAN-N.md` (an issue-derived plan, not a plain `docs/<idea-slug>-PLAN.md`):
+
+Write `docs/<idea-slug>-ISSUE-N-LOG.md` (overwrite if it already exists — regenerate the whole file, do not merge with a prior version):
+
+```markdown
+# Issue N Log: <issue title>
+
+## What's new in the app
+<bulleted, non-technical, user-facing capabilities added — scannable by a
+non-technical reviewer. If this issue has no user-facing change (infra,
+tests, refactor), write "No user-facing change.">
+
+## What was built
+<files created/modified, models/schema changes, routes/endpoints added,
+public contracts, migrations, and any other decision a future issue may
+depend on. Keep concise — target well under ~100 lines unless the issue
+genuinely requires more detail.>
+
+## Verification
+Not yet verified
+```
+
+Base `<issue title>` and the content on the actual final code/worktree state produced by Steps 2–4 — not the plan's intended work — in case implementation diverged from the plan (this is what Step 3's divergence check already surfaces).
+
+If the plan is a plain `docs/<idea-slug>-PLAN.md` (DESIGN- or PRD-derived, no issue number), skip Step 6 entirely — no log file is written.
+
 ## Hard Rules
 
 - Do NOT start without user confirmation of Bypass Permissions.

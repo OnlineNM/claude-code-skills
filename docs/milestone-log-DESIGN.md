@@ -73,7 +73,7 @@ lifecycle below.>
   - If the predecessor log's `Verification` still reads "Not yet verified,"
     `sdd:plan` treats its claims as lower-confidence and says so in the
     generated plan.
-  - If it doesn't exist (issue 1, or prior issue not yet implemented/logged):
+  - If it doesn't exist (prior issue not yet implemented or not yet logged):
     no-op, current behavior unchanged.
 - No change to `sdd:prd` — no new folder structure, no new options.
 

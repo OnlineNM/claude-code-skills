@@ -97,7 +97,20 @@ REVISE — list of items to fix before the implementation can be considered comp
 
 If the verdict is REVISE, list exactly what needs to be fixed. Do NOT fix anything — that is the user's decision.
 
-### Step 6 — Offer merge and cleanup (PASS only)
+### Step 6 — Update issue log
+
+Only if the plan file is `docs/<idea-slug>-PLAN-N.md` (an issue-derived plan):
+
+1. Check whether `docs/<idea-slug>-ISSUE-N-LOG.md` exists.
+2. If it does not exist, do not create one — just include a note in the consolidated report (Step 5's output, as presented to the user) that the expected log was missing (log creation is `sdd:implement`'s job, not this skill's).
+3. If it exists, replace only the `## Verification` section's content (leave `## What's new in the app` and `## What was built` untouched). The first line must be exactly one of:
+   - `Not yet verified` — should not normally be written here; this step always sets one of the other three.
+   - `Verified` — plan compliance confirmed, no technical defects, all DoD items checked (verdict was PASS with nothing to note).
+   - `Verified after fixes` — this run's verdict is PASS, but only after issues found during Steps 2–4 were fixed (whether within this same review session or a prior invocation of this skill on the same plan) before the verdict became PASS — this skill itself never fixes anything, per Hard Rules; add bullets describing the fixes clearly enough that "What was built" (left untouched) isn't misleading on its own.
+   - `Discrepancies remain` — verdict is REVISE; add at least one bullet naming the discrepancy and the affected file/behavior.
+4. Optional bullets after the status line may summarize what was confirmed, what was fixed, or the discrepancies found in Steps 2–4.
+
+### Step 7 — Offer merge and cleanup (PASS only)
 
 Only when the verdict is PASS, ask the user:
 
