@@ -2,9 +2,9 @@
 _Locked via brainstorming — by Claude + user_
 
 ## Goal
-Give `sdd:plan` (and `sdd:implement`) visibility into what was actually built
-in the immediately preceding issue of the same PRD, so planning/implementing
-issue N doesn't rely solely on the PRD text plus manual code reading. Inspired
+Give `sdd:plan` visibility into what was actually built in the immediately
+preceding issue of the same PRD, so planning issue N doesn't rely solely on
+the PRD text plus manual code reading. Inspired
 by the bm-skills milestone-log pattern, adapted to this repo's flat
 `docs/<slug>-ISSUE-N.md` / `PLAN-N.md` file convention (see
 `docs/milestone-log-INTENT.md`).
@@ -14,37 +14,65 @@ by the bm-skills milestone-log pattern, adapted to this repo's flat
 **Artifact:** `docs/<slug>-ISSUE-N-LOG.md`, one per issue, flat in `docs/`
 (same convention as `ISSUE-N.md` / `PLAN-N.md`).
 
+**Filename parsing:** reuse the same slug/issue-number extraction `sdd:plan`
+already does for `docs/<slug>-ISSUE-N.md` → `docs/<slug>-PLAN-N.md` (rightmost
+`-ISSUE-<N>.md` suffix). The log for that issue is
+`docs/<slug>-ISSUE-N-LOG.md`; the predecessor log `sdd:plan` looks for is the
+same slug with `N-1`.
+
 **Format:**
 ```markdown
 # Issue N Log: <issue title>
 
 ## What's new in the app
 <bulleted, non-technical, user-facing capabilities added — scannable by a
-non-technical reviewer>
+non-technical reviewer. If this issue has no user-facing change (infra,
+tests, refactor), write "No user-facing change.">
 
 ## What was built
 <files created/modified, models/schema changes, routes/endpoints added,
-key decisions that affect future issues>
+public contracts, migrations, and any other decision a future issue may
+depend on. Keep concise — target well under ~100 lines unless the issue
+genuinely requires more detail.>
 
 ## Verification
-<filled/updated by sdd:verify after it confirms plan compliance; empty or
-"Not yet verified" if sdd:verify hasn't run>
+<first line: one of "Not yet verified" | "Verified" | "Verified after fixes"
+| "Discrepancies remain". Followed by optional bullets giving detail — e.g.
+what was confirmed, what was fixed, or (required when the status is
+"Discrepancies remain") at least one bullet naming the discrepancy and the
+affected file/behavior. When status is "Verified after fixes," the bullets
+must describe the fixes clearly enough that `What was built` (left untouched
+by sdd:verify) is not misleading on its own. Set by sdd:verify; see
+lifecycle below.>
 ```
 
 **Writer / lifecycle:**
 1. `sdd:implement`, Step 6 (new, after existing Step 5 "Implementation
    complete" confirmation): write `docs/<slug>-ISSUE-N-LOG.md` with the
-   `What's new` and `What was built` sections filled in. `Verification`
-   section starts as "Not yet verified."
-2. `sdd:verify` (existing skill, run after implement): after it confirms plan
-   compliance, it updates the `Verification` section of the same log file
-   with what it confirmed (or discrepancies found/fixed).
+   `What's new` and `What was built` sections filled in, describing the
+   actual final code/worktree state — not the plan's intended work — in
+   case implementation diverged from the plan. `Verification`
+   section starts as "Not yet verified." If `sdd:implement` is rerun for the
+   same issue, it regenerates the whole file (overwrite, not merge) and
+   resets `Verification` to "Not yet verified."
+2. `sdd:verify` (existing skill, run after implement): after checking plan
+   compliance, it replaces only the `## Verification` section's content
+   (leaving `What's new` / `What was built` untouched) with the status line
+   and detail bullets described above. If the log file doesn't exist when
+   `sdd:verify` runs, it doesn't create one, but notes in its own output that
+   the expected log was missing (log creation stays `sdd:implement`'s job).
 
 **Discovery (in `sdd:plan`):**
 - Always-on, no new flag. When `sdd:plan` is invoked on `docs/<slug>-ISSUE-N.md`:
   - If `N > 1` and `docs/<slug>-ISSUE-(N-1)-LOG.md` exists: read only that one
-    file (not a glob of all prior issues) and use it as additional context
-    alongside the PRD, to avoid unnecessary context load.
+    file (not a glob of all prior issues) and use it as **supplemental**
+    context alongside the PRD — it never overrides the current issue's spec,
+    the PRD, or what the actual code shows. If the log's content contradicts
+    the codebase, `sdd:plan` follows the codebase and adds a short "Prior log
+    discrepancy" note in the generated plan describing what differed.
+  - If the predecessor log's `Verification` still reads "Not yet verified,"
+    `sdd:plan` treats its claims as lower-confidence and says so in the
+    generated plan.
   - If it doesn't exist (issue 1, or prior issue not yet implemented/logged):
     no-op, current behavior unchanged.
 - No change to `sdd:prd` — no new folder structure, no new options.
@@ -65,6 +93,9 @@ key decisions that affect future issues>
   making it default.
 - **`sdd:verify` updates rather than replaces.** Keeps a single log file per
   issue as the source of truth instead of splitting into log + verify report.
+- **Concision over exhaustiveness.** A soft ~100-line target keeps the
+  always-on N-1 read cheap; this is guidance for the writing agent, not a
+  hard limit.
 
 ## Risks / open questions
 - If `sdd:verify` is skipped entirely for an issue, its log's `Verification`
@@ -85,5 +116,9 @@ key decisions that affect future issues>
   (write `ISSUE-N-LOG.md`) after existing Step 5.
 - `plugins/spec-driven-development/skills/plan/SKILL.md` — add a check at
   Step 1 (slug/issue-number extraction) for `docs/<slug>-ISSUE-(N-1)-LOG.md`.
+  Verify during implementation that `sdd:plan`'s current extraction already
+  uses the rightmost `-ISSUE-<N>.md` suffix; if not, fix it consistently for
+  both the existing issue→plan path and the new issue→log path.
 - `plugins/spec-driven-development/skills/verify/SKILL.md` — add a final
-  step to append/update the `Verification` section of the issue's log file.
+  step that replaces only the `## Verification` section's content in the
+  issue's log file (no-op with a note if the log file is missing).
