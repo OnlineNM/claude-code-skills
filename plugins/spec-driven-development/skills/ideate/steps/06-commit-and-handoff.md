@@ -9,7 +9,7 @@ git add docs/<idea-slug>-IDEATE.md docs/<idea-slug>-SESSION.md
 git commit -m "docs: <idea-slug> ideation complete"
 ```
 
-Say: *"Ideation complete. Run `/sdd:design-brainstorm docs/<idea-slug>-IDEATE.md` to begin the spec."*
+Say: *"Ideation complete. Run `/sdd:design-adversarial docs/<idea-slug>-IDEATE.md` to begin the spec."*
 
 **Stop condition:** Committed.
 

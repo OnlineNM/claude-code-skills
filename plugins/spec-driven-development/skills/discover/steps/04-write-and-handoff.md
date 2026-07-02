@@ -40,7 +40,7 @@ git commit -m "docs: <idea-slug> intent confirmed"
 
 ### Handoff
 
-Say: *"Intent confirmed and saved to `docs/<idea-slug>-INTENT.md`. Run `/sdd:ideate docs/<idea-slug>-INTENT.md` to explore solutions, or `/sdd:design-brainstorm docs/<idea-slug>-INTENT.md` to go straight to spec."*
+Say: *"Intent confirmed and saved to `docs/<idea-slug>-INTENT.md`. Run `/sdd:ideate docs/<idea-slug>-INTENT.md` to explore solutions, or `/sdd:design-adversarial docs/<idea-slug>-INTENT.md` to go straight to spec."*
 
 **Stop condition:** INTENT.md written and committed.
 
