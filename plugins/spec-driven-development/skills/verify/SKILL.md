@@ -115,7 +115,7 @@ Only if the plan file is `docs/<idea-slug>-PLAN-N.md` (an issue-derived plan):
 Only when the verdict is PASS, ask the user:
 
 > *"The implementation is validated. Would you like to merge and clean up?"*
-> - **Yes** — invoke `superpowers:finishing-a-development-branch` to handle merge into main and branch/worktree cleanup.
+> - **Yes** — invoke `sdd:finalize` to commit any pending changes and handle merge into main and branch/worktree cleanup.
 > - **No** — stop here. Leave the branch/worktree as-is.
 
 Do NOT proceed with merge or cleanup without explicit user confirmation.
