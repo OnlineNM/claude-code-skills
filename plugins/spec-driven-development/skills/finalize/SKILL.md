@@ -32,14 +32,28 @@ The `commit-message` skill will:
 
 Wait for the commit to complete before proceeding.
 
-### Step 3 — Finish the branch
+### Step 3 — Ask about re-running tests
+
+Tests were already run during `sdd:implement` and `sdd:verify`. Ask the user:
+
+> *"Should the finishing step re-run the full test suite? It was already run during implement/verify."*
+> - **Yes** — re-run tests before presenting merge/PR options.
+> - **No** (suggested) — skip re-running tests; treat them as already verified.
+
+### Step 4 — Finish the branch
 
 Invoke `superpowers:finishing-a-development-branch` to handle the remainder:
 
 > Using `superpowers:finishing-a-development-branch` to complete the branch.
 
-This skill will:
-1. Verify tests pass
+If the user answered **No** in Step 3, include this override with the invocation:
+
+> **OVERRIDE:** Tests were already verified during `sdd:implement`/`sdd:verify` in this same session — skip Step 1 (test verification) and proceed directly to Step 2 (Detect Environment).
+
+If the user answered **Yes**, invoke normally with no override — the skill runs its own test verification in Step 1.
+
+This skill will then:
+1. Verify tests pass (unless skipped per the override above)
 2. Detect environment (normal repo vs worktree)
 3. Present options: merge locally, create PR, keep as-is, or discard
 4. Execute the chosen option and clean up if applicable
