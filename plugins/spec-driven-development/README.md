@@ -5,8 +5,10 @@ A plugin of Claude Code skills for hardening plans and designs before writing co
 ## Workflow
 
 ```
-discover → ideate → design-brainstorm → prd → plan → implement → verify
+discover → ideate → design-brainstorm → prd → plan → implement → verify ⇄ revise → finalize
 ```
+
+`verify` and `revise` loop: a REVISE verdict from `verify` hands off to `revise`, which fixes confirmed issues and recommends re-running `verify`.
 
 ## Skill Catalog
 
@@ -21,6 +23,7 @@ discover → ideate → design-brainstorm → prd → plan → implement → ver
 | `plan` | Transforms `DESIGN.md` or `ISSUE-N.md` into a TDD implementation plan saved as `docs/<slug>-PLAN.md` |
 | `implement` | Executes a plan file step by step, verifies all tests pass |
 | `verify` | Reviews implementation against its plan — produces `PASS` or `REVISE` verdict |
+| `revise` | Confirms and fixes issues from a `REVISE` verdict — updates plan/log, adds tests, fixes code, re-runs the suite |
 | `finalize` | Commits pending changes and guides the merge/PR flow |
 
 ## Codex Review Loop (Act 2) — Prerequisites

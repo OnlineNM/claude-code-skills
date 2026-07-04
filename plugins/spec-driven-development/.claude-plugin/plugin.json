@@ -1,6 +1,6 @@
 {
   "name": "sdd",
-  "version": "1.6.2",
+  "version": "1.7.0",
   "description": "Skills for spec driven development: discover → ideate → design → prd → plan → implement → verify.",
   "author": {
     "name": "Laurentiu Irimia"
