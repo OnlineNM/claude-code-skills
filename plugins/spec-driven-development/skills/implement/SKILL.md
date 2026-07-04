@@ -1,6 +1,6 @@
 ---
 name: implement
-description: Implements a TDD plan from a PLAN.md or PLAN-N.md file. Requires /clear and Bypass Permissions mode before starting. Invokes executing-plans and verifies all tests pass. Use when user says "implement me", "implement this plan", or wants to execute a plan file produced by /plan-me.
+description: Implements a TDD plan from a PLAN.md or PLAN-N.md file. Requires Bypass Permissions mode before starting. Invokes executing-plans and verifies all tests pass. Use when user says "implement me", "implement this plan", or wants to execute a plan file produced by /plan-me.
 ---
 
 # Implement-Me — Plan to Working Code
