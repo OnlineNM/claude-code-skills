@@ -39,11 +39,11 @@ Hold the plan content in context — it is the reference for the review.
 
 ### Step 2 — Plan compliance review (Claude)
 
-Use the `Skill` tool to invoke `feature-dev:code-reviewer` with this override:
+Use the `Agent` tool with `subagent_type: "feature-dev:code-reviewer"` to run a plan-compliance review with this override:
 
 > **OVERRIDE — focus:** Review the git diff (unstaged changes) against the plan read in Step 1. For each issue found, explicitly state which part of the plan it violates or misses. Ignore issues unrelated to the plan scope.
 
-Report only issues with confidence ≥ 80, as per the skill's standard threshold.
+Report only issues with confidence ≥ 80, as per the agent's standard threshold.
 
 ### Step 3 — Technical review (Codex)
 
