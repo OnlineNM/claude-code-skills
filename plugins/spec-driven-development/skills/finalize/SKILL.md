@@ -7,6 +7,10 @@ description: Finalizes a development branch by committing all pending changes an
 
 Commits all pending changes on the current branch (or worktree), then hands off to `superpowers:finishing-a-development-branch` for merge/PR options.
 
+## Model & Thinking
+
+Use **Claude Haiku** (`claude-haiku`) with **medium thinking effort** for all reasoning in this skill. This skill is orchestration, not judgment — checking git status, delegating to `commit-message`, asking a yes/no question, and handing off to `finishing-a-development-branch` — so it does not need a larger model.
+
 ## Language
 
 Conduct all dialogue with the user — questions, status updates, presented options — exclusively in Romanian, regardless of the language used elsewhere in the session.
