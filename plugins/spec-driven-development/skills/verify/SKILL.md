@@ -11,6 +11,12 @@ Verifies that the code produced by `/implement-me` correctly implements the plan
 
 Use **Claude Sonnet** (`claude-sonnet`) with **medium thinking effort** for all reasoning in this skill.
 
+## Language
+
+Conduct all dialogue with the user — status updates, the consolidated report, the merge/cleanup question — exclusively in Romanian, regardless of the language the plan was written in.
+
+All deliverables this skill writes or updates (`docs/<idea-slug>-ISSUE-N-LOG.md`) must always be written in English, independent of the Romanian dialogue above.
+
 ## Invocation
 
 Pass the plan file path explicitly:

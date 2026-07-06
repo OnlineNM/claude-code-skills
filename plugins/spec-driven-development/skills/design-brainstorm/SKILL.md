@@ -13,7 +13,9 @@ Use **Claude Sonnet** (`claude-sonnet`) with **high thinking effort** (`ultrathi
 
 ## Language
 
-Ask all questions in the same language the project/feature description was written in (Romanian or English). Every question and proposed approach must match that language. Internal reasoning and the spec document may stay in English regardless.
+Conduct all dialogue with the user — questions, proposed approaches, confirmations, status updates — exclusively in Romanian, regardless of the language the project/feature description was written in.
+
+All deliverables this skill writes (`docs/<idea-slug>-SESSION.md`, `docs/<idea-slug>-DESIGN.md`) must always be written in English, independent of the Romanian dialogue above. Internal reasoning also stays in English. When a decision reached in Romanian dialogue is captured in a deliverable, translate it into English rather than copying the Romanian wording verbatim.
 
 ## Persistence
 
@@ -152,8 +154,8 @@ Then say: *"When you're ready to move to implementation planning, run `/sdd:plan
 
 ## Output
 
-- `docs/<idea-slug>-SESSION.md` — sesiune persistentă
-- `docs/<idea-slug>-DESIGN.md` — spec-ul final, committed în git
+- `docs/<idea-slug>-SESSION.md` — persistent session context
+- `docs/<idea-slug>-DESIGN.md` — final spec, committed to git
 
 ## Common Rationalizations
 

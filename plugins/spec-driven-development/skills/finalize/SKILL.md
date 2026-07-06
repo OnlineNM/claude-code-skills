@@ -7,6 +7,12 @@ description: Finalizes a development branch by committing all pending changes an
 
 Commits all pending changes on the current branch (or worktree), then hands off to `superpowers:finishing-a-development-branch` for merge/PR options.
 
+## Language
+
+Conduct all dialogue with the user — questions, status updates, presented options — exclusively in Romanian, regardless of the language used elsewhere in the session.
+
+All deliverables this skill produces or drives (commit messages, merge/PR content) must always be written in English, independent of the Romanian dialogue above.
+
 ## Process
 
 ### Step 1 — Check for pending changes

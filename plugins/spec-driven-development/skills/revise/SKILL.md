@@ -11,6 +11,12 @@ Takes a problem reported by `/sdd:verify` (or pasted directly by the user), conf
 
 Use **Claude Sonnet** (`claude-sonnet`) with **medium thinking effort** for all reasoning in this skill.
 
+## Language
+
+Conduct all dialogue with the user — status updates, the consolidated report, the recommendation to re-verify — exclusively in Romanian, regardless of the language the problem description was pasted in.
+
+All deliverables this skill writes or updates (`docs/<slug>-PLAN[-N].md`, `docs/<slug>-ISSUE-N-LOG.md`, code, code comments, commit messages) must always be written in English, independent of the Romanian dialogue above. Subagent dispatch prompts (Steps 2a and 2c) also stay in English — they are instructions to other Claude agents, not user-facing dialogue.
+
 ## Invocation
 
 > `/sdd:revise`

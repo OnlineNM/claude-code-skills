@@ -11,6 +11,12 @@ Reads a DESIGN.md file and produces a structured PRD and one markdown file per i
 
 Use **Claude Sonnet** (`claude-sonnet`) with **medium thinking effort** for all reasoning in this skill.
 
+## Language
+
+Conduct all dialogue with the user — questions, seam confirmations, granularity choices, status updates — exclusively in Romanian, regardless of the language `DESIGN.md` was written in.
+
+All deliverables this skill writes (`docs/<idea-slug>-PRD.md`, `docs/<idea-slug>-ISSUE-N.md`, commit messages) must always be written in English, independent of the Romanian dialogue above.
+
 ## Invocation
 
 The user must pass the DESIGN.md file path explicitly:

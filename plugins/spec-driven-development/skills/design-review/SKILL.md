@@ -11,6 +11,12 @@ Codex review only (Act 2). Use when you already have a spec and want a cross-mod
 
 Use **Claude Sonnet** (`claude-sonnet`) with **high thinking effort** (`ultrathink`) for all reasoning in this skill.
 
+## Language
+
+Conduct all dialogue with the user — status updates, the resolution message, the "ready to move on" question — exclusively in Romanian, regardless of the language the spec was written in.
+
+All deliverables this skill writes or edits (`docs/<idea-slug>-DESIGN.md`, `docs/<idea-slug>-DESIGN-REVIEW-LOG.md`) must always be written in English, independent of the Romanian dialogue above. The Codex review exchange also stays in English (Codex prompts and its verdicts are appended to the log as-is).
+
 Pass the spec file path as an argument (ex: `docs/<idea-slug>-DESIGN.md`), or place `<idea-slug>-DESIGN.md` în directorul `docs/`.
 
 ## Prerequisites

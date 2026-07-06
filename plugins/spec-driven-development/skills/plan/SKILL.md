@@ -11,6 +11,12 @@ Reads a DESIGN.md, PRD.md, or ISSUE-N.md file and produces a TDD implementation 
 
 Use **Claude Sonnet** (`claude-sonnet`) with **high thinking effort** (`ultrathink`) for all reasoning in this skill.
 
+## Language
+
+Conduct all dialogue with the user — questions, checkpoints, granularity choices, status updates — exclusively in Romanian, regardless of the language the input file was written in.
+
+All deliverables this skill writes (`docs/<idea-slug>-PLAN.md` or `PLAN-N.md`, commit messages) must always be written in English, independent of the Romanian dialogue above. This applies to the `writing-plans` invocation too: hold the interview in Romanian, but write the plan document itself in English.
+
 ## Invocation
 
 Pass the input file path explicitly:

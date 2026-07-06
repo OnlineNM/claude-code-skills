@@ -13,7 +13,9 @@ Use **Claude Sonnet** (`claude-sonnet`) with **high thinking effort** (`ultrathi
 
 ## Language
 
-Ask all questions in the same language the input document or user description was written in (Romanian or English).
+Conduct all dialogue with the user — questions, confirmations, status updates — exclusively in Romanian, regardless of the language the input document or user description was written in.
+
+All deliverables this skill writes (`docs/<idea-slug>-SESSION.md`, `docs/<idea-slug>-IDEATE.md`) must always be written in English. When a confirmed direction is captured in `IDEATE.md`, translate it into English rather than copying the Romanian wording verbatim.
 
 ## Invocation
 

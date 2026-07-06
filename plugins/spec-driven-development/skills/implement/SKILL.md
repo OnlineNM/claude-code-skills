@@ -11,6 +11,12 @@ Reads a PLAN.md or PLAN-N.md file and implements it step by step, verifying test
 
 Use **Claude Sonnet** (`claude-sonnet`) with **medium thinking effort** for all reasoning in this skill.
 
+## Language
+
+Conduct all dialogue with the user — questions, confirmations, status updates — exclusively in Romanian, regardless of the language the plan was written in.
+
+All deliverables this skill writes (`docs/<idea-slug>-ISSUE-N-LOG.md`, code, code comments, commit messages) must always be written in English, independent of the Romanian dialogue above. Subagent dispatch prompts (Steps 2 and 4) also stay in English — they are instructions to other Claude agents, not user-facing dialogue.
+
 ## Invocation
 
 Pass the plan file path explicitly:
