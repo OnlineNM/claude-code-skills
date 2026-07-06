@@ -1,27 +1,29 @@
 #!/usr/bin/env bash
 # Hook script: sends a Telegram notification when Claude Code finishes a task.
 # Extracts the last assistant message from the transcript and sends it via Telegram.
-# Triggered by the Stop hook event.
+# Triggered by the Stop hook event. No dedup lock here — see DESIGN.md "Key decisions"
+# (the confirmed double-send bug is strictly between Notification/PermissionRequest).
 
 set -euo pipefail
 
-# Load environment from current process or fallback file.
 # shellcheck source=scripts/load-env.sh
 . "${CLAUDE_PLUGIN_ROOT}/scripts/load-env.sh"
+# shellcheck source=scripts/telegram-utils.sh
+. "${CLAUDE_PLUGIN_ROOT}/scripts/telegram-utils.sh"
 
-# If notifications are disabled via flag file, exit silently.
+check_dependencies || exit 0
+
 [ -f "$HOME/.claude/.notifications-disabled" ] && exit 0
 
-# If credentials are still missing, skip notification without failing the hook.
 if [ -z "${TELEGRAM_BOT_TOKEN:-}" ] || [ -z "${TELEGRAM_CHAT_ID:-}" ]; then
-  echo "Telegram credentials not set; skipping notification."
+  echo "Telegram credentials not set; skipping notification." >&2
   exit 0
 fi
 
-# Read the hook JSON payload from stdin
+validate_config "$TELEGRAM_BOT_TOKEN" "$TELEGRAM_CHAT_ID" || exit 0
+
 HOOK_DATA=$(cat)
 
-# Extract and truncate the last assistant message from the transcript file on disk
 LAST_MSG=$(echo "$HOOK_DATA" | python3 -c "
 import sys, json, pathlib
 
@@ -67,12 +69,10 @@ if session_id:
 print('Task completed.')
 " 2>/dev/null || echo "Task completed.")
 
-# Send the Telegram notification
-curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
-  --data-urlencode "chat_id=${TELEGRAM_CHAT_ID}" \
-  --data-urlencode "text=Job done!
+MSG=$(sanitize_message "Job done!
 
-${LAST_MSG}" \
-  -o /dev/null || true
+${LAST_MSG}")
+
+send_telegram_message "$TELEGRAM_BOT_TOKEN" "$TELEGRAM_CHAT_ID" "$MSG" || true
 
 exit 0
