@@ -71,3 +71,85 @@ mark_claim() {
   cleanup_stale_locks || { : > "$(lock_path_for "$1")" 2>/dev/null; return 1; }
   : > "$(lock_path_for "$1")" 2>/dev/null
 }
+
+# Verifies every external command telegram-utils.sh/notify-waiting.sh/job-done.sh
+# actually use, plus that $HOME is set. Called after sourcing, before validate_config.
+check_dependencies() {
+  local missing=() cmd
+  for cmd in curl python3 tr stat date mktemp chmod mkdir rm; do
+    command -v "$cmd" >/dev/null 2>&1 || missing+=("$cmd")
+  done
+  if ! command -v shasum >/dev/null 2>&1 && ! command -v sha256sum >/dev/null 2>&1; then
+    missing+=("shasum-or-sha256sum")
+  fi
+  if [ -z "${HOME:-}" ]; then
+    missing+=('$HOME (not set)')
+  fi
+  if [ "${#missing[@]}" -gt 0 ]; then
+    echo "Telegram: missing required dependencies: ${missing[*]}" >&2
+    return 1
+  fi
+  return 0
+}
+
+validate_config() {
+  local token="$1" chat_id="$2"
+  if ! [[ "$token" =~ ^[0-9]+:[a-zA-Z0-9_-]+$ ]]; then
+    echo "Telegram: TELEGRAM_BOT_TOKEN has invalid format" >&2
+    return 1
+  fi
+  if ! [[ "$chat_id" =~ ^-?[0-9]+$ ]] && ! [[ "$chat_id" =~ ^@[^[:space:]]+$ ]]; then
+    echo "Telegram: TELEGRAM_CHAT_ID has invalid format" >&2
+    return 1
+  fi
+  return 0
+}
+
+sanitize_message() {
+  local msg="$1" clean
+  clean=$(printf '%s' "$msg" | tr -d '\000-\010\013\014\016-\037')
+  if [ "${#clean}" -gt "$MAX_MESSAGE_LENGTH" ]; then
+    clean="${clean:0:$((MAX_MESSAGE_LENGTH - 3))}..."
+  fi
+  printf '%s' "$clean"
+}
+
+send_telegram_message() {
+  local token="$1" chat_id="$2" message="$3"
+  local attempt=1 tmp_body http_code curl_exit
+
+  tmp_body=$(mktemp) || { echo "Telegram: mktemp failed" >&2; return 1; }
+
+  while [ "$attempt" -le "$MAX_RETRIES" ]; do
+    if http_code=$(curl -s -o "$tmp_body" -w '%{http_code}' -X POST \
+        --connect-timeout "$CURL_CONNECT_TIMEOUT" --max-time "$CURL_MAX_TIME" \
+        --data-urlencode "chat_id=${chat_id}" --data-urlencode "text=${message}" \
+        "https://api.telegram.org/bot${token}/sendMessage"); then
+      curl_exit=0
+    else
+      curl_exit=$?
+      http_code="${http_code:-000}"
+    fi
+
+    if [ "$curl_exit" -eq 0 ] && [ "$http_code" = "200" ] && python3 -c "
+import json, sys
+try:
+    with open(sys.argv[1]) as f:
+        data = json.load(f)
+    sys.exit(0 if data.get('ok') is True else 1)
+except Exception:
+    sys.exit(1)
+" "$tmp_body"; then
+      rm -f "$tmp_body"
+      return 0
+    fi
+
+    echo "Telegram: send attempt $attempt/$MAX_RETRIES failed (http=$http_code, curl_exit=$curl_exit)" >&2
+    attempt=$((attempt + 1))
+    [ "$attempt" -le "$MAX_RETRIES" ] && sleep 2
+  done
+
+  rm -f "$tmp_body"
+  echo "Telegram: send_telegram_message exhausted $MAX_RETRIES retries" >&2
+  return 1
+}
