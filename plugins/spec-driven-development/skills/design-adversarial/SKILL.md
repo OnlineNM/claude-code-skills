@@ -264,7 +264,15 @@ Rounds:    N
 
   On user approval, commit with message `docs: finalize <idea-slug> spec (brainstorming + Codex review)`. Do NOT push.
 
-  Then ask: *"Ready to move to implementation planning?"* Do NOT invoke `writing-plans` automatically — wait for the user. Append the question and the user's answer to `docs/<idea-slug>-DIALOG.md`.
+  Then recommend a next step instead of asking a generic "ready to move on?" — assess whether the finished `docs/<idea-slug>-DESIGN.md` describes one cohesive unit of work or would benefit from being broken into independently shippable slices first:
+  - **Recommend `/sdd:plan`** (the common case) when the spec describes a single vertical slice — even a multi-step feature — that one TDD plan can carry end-to-end and ship as one PR.
+  - **Recommend `/sdd:prd`** instead when the spec itself describes 2+ independently shippable, user-visible behaviors — distinct user journeys, phases the spec already calls out separately, or subsystems that don't share a single code path. `/sdd:prd` breaks it into vertical-slice issues, each of which then gets its own `/sdd:plan` pass.
+
+  State the recommendation as a default with a one-line reason, and let the user pick the other path if they disagree (per the Language section above, deliver this message in Romanian):
+
+  > *"<brief reason, e.g. 'This spec describes a single flow — one implementation plan can cover it end-to-end.'> I recommend `/sdd:plan` as the next step. Do you want to continue with that, or would you rather go through `/sdd:prd` first to break it into separate issues?"*
+
+  Do NOT invoke either skill automatically — wait for the user's choice. Append the recommendation and the user's choice to `docs/<idea-slug>-DIALOG.md`.
 - **MAX_ROUNDS deadlock:** List each unresolved point + Claude's counter-position. Hand to user to break the tie. Append each unresolved point and the user's tie-breaking decision to `docs/<idea-slug>-DIALOG.md`. After the user resolves, propose the same commit as above.
 
 ---

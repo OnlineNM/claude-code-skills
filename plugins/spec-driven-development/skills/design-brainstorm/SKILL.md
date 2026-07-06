@@ -177,7 +177,18 @@ Worktree:  <worktree_path>      (omit unless Worktree)
 Spec file: docs/<idea-slug>-DESIGN.md
 ```
 
-Then say: *"When you're ready to move to implementation planning, run `/sdd:plan` in a new session (after `/clear`)."*
+#### Next step recommendation
+
+Before pointing the user to implementation planning, assess whether the finished `docs/<idea-slug>-DESIGN.md` describes one cohesive unit of work or would benefit from being broken into independently shippable slices first:
+
+- **Recommend `/sdd:plan`** (the common case) when the spec describes a single vertical slice — even a multi-step feature — that one TDD plan can carry end-to-end and ship as one PR.
+- **Recommend `/sdd:prd`** instead when the spec itself describes 2+ independently shippable, user-visible behaviors — distinct user journeys, phases the spec already calls out separately, or subsystems that don't share a single code path. `/sdd:prd` breaks it into vertical-slice issues, each of which then gets its own `/sdd:plan` pass.
+
+State the recommendation as a default with a one-line reason, and let the user pick the other path if they disagree (per the Language section above, deliver this message in Romanian):
+
+> *"<brief reason, e.g. 'This spec describes a single flow — one implementation plan can cover it end-to-end.'> I recommend `/sdd:plan` as the next step, in a new session (after `/clear`). Do you want to continue with that, or would you rather go through `/sdd:prd` first to break it into separate issues?"*
+
+Do NOT invoke either skill automatically — wait for the user's choice. Append the recommendation and the user's choice to `docs/<idea-slug>-DIALOG.md`.
 
 ## Output
 
