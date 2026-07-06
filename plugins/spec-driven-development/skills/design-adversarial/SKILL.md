@@ -19,6 +19,28 @@ Conduct all dialogue with the user — questions, proposed approaches, confirmat
 
 All deliverables this skill writes (`docs/<idea-slug>-SESSION.md`, `docs/<idea-slug>-DESIGN.md`, `docs/<idea-slug>-DESIGN-REVIEW-LOG.md`) must always be written in English, independent of the Romanian dialogue above. Internal reasoning and the Codex review exchange also stay in English. When a decision reached in Romanian dialogue is captured in a deliverable, translate it into English rather than copying the Romanian wording verbatim.
 
+## Dialog Log
+
+Maintain `docs/<idea-slug>-DIALOG.md` throughout the session — a verbatim, human-readable record of every question asked, the user's answer, the approaches proposed, and the decisions reached (including Act 2's deadlock resolutions, if any). This file is an explicit exception to the English-deliverables rule above: it exists to document the actual Romanian dialogue, so its content stays in Romanian, matching what was really said.
+
+Creation is handled by ⛔ CHECKPOINT 2, alongside `SESSION.md`. Use this format — one heading per topic, one paragraph per question/answer pair:
+
+```markdown
+# Dialog: <Idea Name>
+Început: <YYYY-MM-DD>
+
+## <Subiect — ex. "Ipoteze", "Abordarea aleasă", "Rezolvare impas Act 2">
+
+**Întrebare:** <întrebarea pusă>
+**Răspuns:** <răspunsul utilizatorului>
+
+**Decizie:** <ce s-a stabilit, dacă e cazul>
+
+---
+```
+
+Because Step 4 delegates the actual interview to `superpowers:brainstorming`, pass it an additional override (below) instructing it to append to this file as it goes — it cannot know about `DIALOG.md` otherwise.
+
 ## Persistence
 
 Maintain `docs/<idea-slug>-SESSION.md` throughout the session. Creation is handled by ⛔ CHECKPOINT 2 — this section describes upkeep only.
@@ -76,6 +98,8 @@ Started: <YYYY-MM-DD>
 
 If the file already exists, read it and resume — skip decisions already settled.
 
+Also create `docs/<idea-slug>-DIALOG.md` at this point (see "Dialog Log" section above for format). If it already exists, resume appending to it instead of overwriting.
+
 #### ⛔ CHECKPOINT 3 — Branch strategy (MANDATORY, do not skip)
 
 2. Present exactly these three options and ask the user to choose one — do not reduce to two:
@@ -103,7 +127,7 @@ ASSUMPTIONS I'M MAKING:
 → Correct me now or I'll proceed with these.
 ```
 
-Do not begin brainstorming until the user explicitly confirms or corrects the list.
+Do not begin brainstorming until the user explicitly confirms or corrects the list. Append this exchange (the assumptions list and the user's confirmation/corrections) to `docs/<idea-slug>-DIALOG.md`.
 
 **Success criteria override:** Whenever the user describes a vague objective (e.g. "make it faster", "improve UX"), reframe it as concrete, measurable success criteria before writing a spec section:
 
@@ -118,7 +142,7 @@ REFRAMED SUCCESS CRITERIA:
 
 Do not write a spec section for an objective that cannot be directly verified.
 
-Invoke `superpowers:brainstorming` with **two overrides**: do NOT invoke `writing-plans` at the end. And do NOT display the spec content in the console or commit automatically — see Step 5.
+Invoke `superpowers:brainstorming` with **three overrides**: do NOT invoke `writing-plans` at the end; do NOT display the spec content in the console or commit automatically — see Step 5; and after each clarifying question is answered, after each approach/direction the user picks, and after each design section is approved, append an entry to `docs/<idea-slug>-DIALOG.md` (format defined above) recording the question/option presented and the user's answer/choice, incrementally as it happens.
 
 ### Step 5 — Write DESIGN.md
 After the brainstorming is complete, write a structured summary directly to `docs/<idea-slug>-DESIGN.md` without displaying its full content in the console:
@@ -236,11 +260,12 @@ Rounds:    N
   - `docs/<idea-slug>-DESIGN.md`
   - `docs/<idea-slug>-DESIGN-REVIEW-LOG.md`
   - `docs/<idea-slug>-SESSION.md` (if it exists)
+  - `docs/<idea-slug>-DIALOG.md` (if it exists)
 
   On user approval, commit with message `docs: finalize <idea-slug> spec (brainstorming + Codex review)`. Do NOT push.
 
-  Then ask: *"Ready to move to implementation planning?"* Do NOT invoke `writing-plans` automatically — wait for the user.
-- **MAX_ROUNDS deadlock:** List each unresolved point + Claude's counter-position. Hand to user to break the tie. After the user resolves, propose the same commit as above.
+  Then ask: *"Ready to move to implementation planning?"* Do NOT invoke `writing-plans` automatically — wait for the user. Append the question and the user's answer to `docs/<idea-slug>-DIALOG.md`.
+- **MAX_ROUNDS deadlock:** List each unresolved point + Claude's counter-position. Hand to user to break the tie. Append each unresolved point and the user's tie-breaking decision to `docs/<idea-slug>-DIALOG.md`. After the user resolves, propose the same commit as above.
 
 ---
 

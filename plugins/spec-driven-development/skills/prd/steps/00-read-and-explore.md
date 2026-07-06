@@ -12,6 +12,8 @@ Read the file at the provided path. Extract `<idea-slug>` from the filename:
 
 If the file does not exist, stop and tell the user.
 
+Create `docs/<idea-slug>-DIALOG.md` now if it doesn't already exist (see SKILL.md's "Dialog Log" section for format); if it exists, resume appending to it.
+
 ### Explore the codebase
 
 Explore the repo to understand current state. Use the project's domain glossary vocabulary throughout. Respect any ADRs in the area being touched.

@@ -32,3 +32,7 @@ This interview loop keeps "one question per message" as a hard rule. The default
 **Stop condition:** You can confidently predict the user's reaction to the next three questions you would ask.
 
 **Hands off:** A set of confirmed answers (recorded in `docs/<idea-slug>-SESSION.md` under Decisions Reached) to `03-confirm.md`.
+
+## Dialog Log
+
+After each question is answered, append an entry to `docs/<idea-slug>-DIALOG.md` (format in SKILL.md's "Dialog Log" section) recording the question and the user's answer. Do this incrementally, one entry per question — do not batch the whole interview into a single write at the end.

@@ -38,3 +38,7 @@ If the user provides feedback, update the file and ask again. When they explicit
 **Stop condition:** User explicitly approves the IDEATE.md content.
 
 **Hands off:** Approved `docs/<idea-slug>-IDEATE.md` to `06-commit-and-handoff.md`.
+
+## Dialog Log
+
+Append a closing entry to `docs/<idea-slug>-DIALOG.md` recording any feedback rounds on the IDEATE.md draft and the user's final approval as the decision.

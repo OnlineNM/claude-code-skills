@@ -17,6 +17,24 @@ Conduct all dialogue with the user — status updates, the resolution message, t
 
 All deliverables this skill writes or edits (`docs/<idea-slug>-DESIGN.md`, `docs/<idea-slug>-DESIGN-REVIEW-LOG.md`) must always be written in English, independent of the Romanian dialogue above. The Codex review exchange also stays in English (Codex prompts and its verdicts are appended to the log as-is).
 
+## Dialog Log
+
+Maintain `docs/<idea-slug>-DIALOG.md` — a verbatim, human-readable record of the resolution message, the user's approval or final changes, and any deadlock tie-breaking decision. This is an explicit exception to the English-deliverables rule above: it exists to document the actual Romanian dialogue, so its content stays in Romanian, matching what was really said. Create it in Step 1 if it doesn't already exist (resume/append if it does). Use this format:
+
+```markdown
+# Dialog: <feature>
+Început: <YYYY-MM-DD>
+
+## <Subiect — ex. "Rezoluție", "Rezolvare impas">
+
+**Întrebare:** <întrebarea/mesajul prezentat>
+**Răspuns:** <răspunsul utilizatorului>
+
+**Decizie:** <ce s-a stabilit, dacă e cazul>
+
+---
+```
+
 Pass the spec file path as an argument (ex: `docs/<idea-slug>-DESIGN.md`), or place `<idea-slug>-DESIGN.md` în directorul `docs/`.
 
 ## Prerequisites
@@ -43,6 +61,8 @@ Initialize `LOG_FILE`:
 # Spec Review Log: <feature>
 spec-me-review started. MAX_ROUNDS=<n>. Reviewing: <SPEC_FILE>.
 ```
+
+Create `docs/<idea-slug>-DIALOG.md` if it doesn't already exist (see "Dialog Log" section above for format); if it exists, resume appending to it.
 
 ### Review prompt strategy
 
@@ -98,15 +118,16 @@ Re-review — check whether your prior findings are addressed and flag anything 
 **No git commits during the review loop** — only the final spec (after user approval) is committed.
 
 ### Resolution
-- **APPROVED:** Tell the user the spec path and round count. Ask: *"Spec survived N rounds of Codex. Please review `SPEC_FILE` and let me know if you approve or have any final changes."*
+- **APPROVED:** Tell the user the spec path and round count. Ask: *"Spec survived N rounds of Codex. Please review `SPEC_FILE` and let me know if you approve or have any final changes."* Append this question and the user's answer to `docs/<idea-slug>-DIALOG.md`.
 
   On user approval, propose a git commit — list the files to be staged and ask for confirmation:
   - `$SPEC_FILE`
   - `$LOG_FILE`
+  - `docs/<idea-slug>-DIALOG.md` (if it exists)
 
   On confirmation, commit with message `docs: <idea-slug> spec approved after Codex review`. Do NOT push. Do NOT invoke `writing-plans` automatically.
 
-- **MAX_ROUNDS deadlock:** List each unresolved point + Claude's counter-position. Hand to user to break the tie. After the user resolves, follow the same approval → commit flow as above.
+- **MAX_ROUNDS deadlock:** List each unresolved point + Claude's counter-position. Hand to user to break the tie. Append each unresolved point and the user's tie-breaking decision to `docs/<idea-slug>-DIALOG.md`. After the user resolves, follow the same approval → commit flow as above.
 
 ## Examples
 

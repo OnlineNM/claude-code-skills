@@ -24,3 +24,7 @@ Present each direction as "Direction A (default: best fit per stress-test)" rath
 **Stop condition:** User confirms which direction to pursue.
 
 **Hands off:** The confirmed direction to `05-sharpen.md`.
+
+## Dialog Log
+
+Append an entry to `docs/<idea-slug>-DIALOG.md` recording the 2-3 directions presented (with their stress-test findings) and the user's chosen direction as the decision.

@@ -63,3 +63,7 @@ The Implementation Decisions section may name modules, schemas, and API contract
 **Stop condition:** User explicitly approves the PRD content (after the Scope Boundary scan).
 
 **Hands off:** Approved `docs/<idea-slug>-PRD.md` to `03-issue-breakdown.md`.
+
+## Dialog Log
+
+Append an entry to `docs/<idea-slug>-DIALOG.md` for each feedback round on the PRD draft, and a closing entry recording the user's final approval.

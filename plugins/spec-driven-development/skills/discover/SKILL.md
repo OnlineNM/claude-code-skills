@@ -17,6 +17,26 @@ Conduct all dialogue with the user — questions, confirmations, status updates 
 
 All deliverables this skill writes (`docs/<idea-slug>-SESSION.md`, `docs/<idea-slug>-INTENT.md`) must always be written in English. When the confirmed restat is captured in `INTENT.md`, translate it into English rather than copying the Romanian wording verbatim.
 
+## Dialog Log
+
+Maintain `docs/<idea-slug>-DIALOG.md` throughout the session — a verbatim, human-readable record of the interview: every question asked and the user's answer, plus the decisions reached. This file is an explicit exception to the English-deliverables rule above: it exists to document the actual Romanian dialogue, so its content stays in Romanian, matching what was really said.
+
+Creation is handled by `steps/01-slug-and-branch.md`'s CHECKPOINT 2, alongside `SESSION.md`. Append a new entry after each confirmed question/answer in `steps/02-interview.md`, and after the final restat confirmation in `steps/03-confirm.md`. Use this format — one heading per topic, one paragraph per question/answer pair:
+
+```markdown
+# Dialog: <Idea Name>
+Început: <YYYY-MM-DD>
+
+## <Subiect — ex. "Ipoteza inițială", "Întrebarea N">
+
+**Întrebare:** <întrebarea pusă>
+**Răspuns:** <răspunsul utilizatorului>
+
+**Decizie:** <ce s-a stabilit, dacă e cazul>
+
+---
+```
+
 ## Before Starting
 
 Tell the user: *"Please run `/clear` first to start with a clean context, then re-invoke this skill."*
@@ -35,6 +55,7 @@ Read and follow each file in `steps/` **in numeric order**. Each step file is ma
 ## Output
 
 - `docs/<idea-slug>-SESSION.md` — persistent session context
+- `docs/<idea-slug>-DIALOG.md` — verbatim record of questions asked and decisions made (Romanian)
 - `docs/<idea-slug>-INTENT.md` — confirmed intent structure
 
 ## Hard Rules
