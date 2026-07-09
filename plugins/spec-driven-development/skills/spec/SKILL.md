@@ -21,7 +21,7 @@ All deliverables this skill writes (`docs/<idea-slug>-SESSION.md`, `docs/<idea-s
 
 ## Persistence
 
-Maintain `docs/<idea-slug>-SESSION.md` throughout the session. Creation is handled by ⛔ CHECKPOINT 2 — this section describes upkeep only.
+Maintain `docs/<idea-slug>-SESSION.md` throughout the session. Creation is handled by ⛔ CHECKPOINT 2 — this section describes upkeep only. This is a scratch file that only exists to survive a context compaction mid-session — it is deleted, never committed, once the deliverables are finalized (see Resolution below).
 
 **During the session:** update `Decisions Reached` and `Open Questions` after each major brainstorming checkpoint (approach chosen, design section approved, etc.).
 
@@ -232,10 +232,14 @@ Spec file: docs/<idea-slug>-SPEC.md
 Log file:  docs/<idea-slug>-SPEC-REVIEW.md
 Rounds:    N
 ```
+  `docs/<idea-slug>-SESSION.md` exists only to survive a context compaction mid-session — once SPEC.md and SPEC-REVIEW.md are finalized and about to be committed, its job is done. Delete it rather than committing it, so it never pollutes git history as a scratch file:
+  ```bash
+  rm -f docs/<idea-slug>-SESSION.md
+  ```
+
   Then propose a git commit — list the files to be staged and ask for confirmation:
   - `docs/<idea-slug>-SPEC.md`
   - `docs/<idea-slug>-SPEC-REVIEW.md`
-  - `docs/<idea-slug>-SESSION.md` (if it exists)
 
   On user approval, commit with message `docs: finalize <idea-slug> spec (brainstorming + Codex review)`. Do NOT push.
 

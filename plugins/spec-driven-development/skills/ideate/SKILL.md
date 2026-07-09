@@ -43,8 +43,8 @@ Read and follow each file in `steps/` **in numeric order**. Each step file is ma
 
 ## Output
 
-- `docs/<idea-slug>-SESSION.md` — persistent session context
 - `docs/<idea-slug>-IDEATE.md` — structured direction document
+- `docs/<idea-slug>-SESSION.md` — scratch file used only to survive context compaction mid-session; deleted (not committed) once IDEATE.md is written
 
 ## Hard Rules
 

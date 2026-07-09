@@ -34,8 +34,8 @@ Read and follow each file in `steps/` **in numeric order**. Each step file is ma
 
 ## Output
 
-- `docs/<idea-slug>-SESSION.md` — persistent session context
 - `docs/<idea-slug>-DESIGN.md` — confirmed intent structure
+- `docs/<idea-slug>-SESSION.md` — scratch file used only to survive context compaction mid-session; deleted (not committed) once DESIGN.md is written
 
 ## Hard Rules
 

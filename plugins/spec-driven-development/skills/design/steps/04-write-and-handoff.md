@@ -33,8 +33,11 @@ Confirmed: <YYYY-MM-DD>
 
 ### Commit
 
+`docs/<idea-slug>-SESSION.md` exists only to survive a context compaction mid-session — once DESIGN.md is written and about to be committed, its job is done. Delete it rather than committing it, so it never pollutes git history as a scratch file:
+
 ```bash
-git add docs/<idea-slug>-DESIGN.md docs/<idea-slug>-SESSION.md
+rm -f docs/<idea-slug>-SESSION.md
+git add docs/<idea-slug>-DESIGN.md
 git commit -m "docs: <idea-slug> intent confirmed"
 ```
 
