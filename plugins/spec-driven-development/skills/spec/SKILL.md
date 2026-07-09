@@ -32,6 +32,17 @@ Maintain `docs/<idea-slug>-SESSION.md` throughout the session. Creation is handl
 Tell the user: *"Please run `/clear` first to start with a clean context, then re-invoke this skill."*
 If the user has already cleared, proceed.
 
+## Output and Context Rules
+
+These rules govern everything this skill prints to the main conversation. They do not apply to `SESSION.md`, `SPEC.md`, or `SPEC-REVIEW.md` on disk, which are the full-detail record of the session.
+
+- **Never paste full file contents into the chat.** `SPEC.md` is written directly to disk (already the rule in Step 5) and referenced by path, not quoted — keep the same discipline for `SESSION.md` and the upstream `IDEATE.md`/`DESIGN.md` artifacts checked in Step 4.
+- **Never dump Codex's raw JSON or full verdict text into the chat.** In Act 2, `SPEC-REVIEW.md` keeps the full transcript on disk (per "Each round" step 1); when relaying a round to the user, summarize in 3-5 bullets (the most material flaws) plus the verdict line — do not read or paste the entire contents of `/tmp/codex-verdict.txt` into the conversation.
+- **Assumptions and success-criteria checkpoints (Step 4) stay short lists** — as templated, not padded with restated context.
+- **At MAX_ROUNDS deadlock**, list unresolved points compactly (one line per point + one line for Claude's counter-position), not the full round-by-round history already stored in `SPEC-REVIEW.md`.
+- **Status updates are one line each** ("Round 2: REVISE, 2 new findings addressed") — no recap of prior rounds.
+- **Default to the minimal useful output.** If unsure how much detail to show, show less and point to the log file for the full record.
+
 ---
 
 ## ACT 1 — SPEC (you ↔ Claude)

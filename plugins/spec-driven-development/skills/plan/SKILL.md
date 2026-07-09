@@ -32,6 +32,16 @@ If no path is provided, stop and ask: *"Please specify the input file path, e.g.
 Tell the user: *"Please run `/clear` first to start with a clean context, then re-invoke this skill."*
 If the user has already cleared, proceed.
 
+## Output and Context Rules
+
+These rules govern everything this skill prints to the main conversation — the `writing-plans` invocation and the generated plan document itself are unaffected.
+
+- **Never paste full file contents into the chat.** Do not quote the SPEC/PRD/ISSUE input, the predecessor log, or the generated plan verbatim in the conversation — refer to them by path. OVERRIDE 5 already keeps the plan itself out of the console; extend the same discipline to every file this skill reads.
+- **Checkpoints and choices stay short.** Present the fixed option lists (branch strategy, granularity) exactly as specified, with no extra restating of file contents or prior context around them.
+- **Status updates are one line each** ("Step 1: input read, slug=`auth-forms`", "Step 5: plan committed") — no recap of steps already completed.
+- **If the predecessor log or `git diff` reveals a discrepancy, summarize it in 1-3 lines** in the generated plan (as already specified in Step 1), not as a full quoted diff in the chat.
+- **Default to the minimal useful output.** If unsure how much detail to show in dialogue, show less and offer to expand on request.
+
 ## Process
 
 ### Step 1 — Read the input file

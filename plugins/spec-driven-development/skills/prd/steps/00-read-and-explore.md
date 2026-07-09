@@ -14,7 +14,7 @@ If the file does not exist, stop and tell the user.
 
 ### Explore the codebase
 
-Explore the repo to understand current state. Use the project's domain glossary vocabulary throughout. Respect any ADRs in the area being touched.
+Explore the repo to understand current state. Search/grep for the relevant seams first, then read only the files or sections that inform the PRD — do not read whole directories or unrelated files end to end. Use the project's domain glossary vocabulary throughout. Respect any ADRs in the area being touched.
 
 **Stop condition:** SPEC.md read, codebase explored.
 

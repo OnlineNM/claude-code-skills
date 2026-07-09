@@ -17,6 +17,17 @@ Conduct all dialogue with the user — questions, status updates, presented opti
 
 All deliverables this skill produces or drives (commit messages, merge/PR content) must always be written in English, independent of the Romanian dialogue above.
 
+## Output and Context Rules
+
+This skill orchestrates git operations and other skills — the risk here is echoing raw command output or another skill's full output instead of a short conclusion. Apply these rules throughout:
+
+- Never paste raw `git status --short` (or any git command) output into the conversation. Summarize it in one line (e.g., "3 fișiere modificate, niciun fișier nou" or "niciun fișier modificat — sar la Step 3").
+- After `commit-message` completes, report only the commit message subject line and the fact that it succeeded — do not reproduce the full diff or the full body of the commit message unless the user asks.
+- When invoking `finishing-a-development-branch`, relay only the decision points and final outcome to the user (options presented, choice made, result) — do not reproduce that skill's internal logs, git command output, or intermediate reasoning in the conversation.
+- Keep the Step 3 test-rerun question to the two lines already specified — do not expand it with justification or history unless the user asks why.
+- If any step's underlying command fails or produces an error, report the one-line cause, not the full stack trace or raw error dump — offer to show more only if the user asks.
+- Default to the shortest accurate status update between steps (e.g., "Commit creat." / "Testele au fost deja verificate — sar peste re-rulare.").
+
 ## Process
 
 ### Step 1 — Check for pending changes
@@ -27,7 +38,7 @@ git status --short
 
 If there are **no staged or unstaged changes** and no untracked files relevant to the work, skip to Step 3.
 
-If there are pending changes, proceed to Step 2.
+If there are pending changes, proceed to Step 2. Do not print the raw command output — summarize per the Output and Context Rules above.
 
 ### Step 2 — Commit all changes
 
@@ -40,7 +51,7 @@ The `commit-message` skill will:
 - Generate a descriptive commit message
 - Create the commit
 
-Wait for the commit to complete before proceeding.
+Wait for the commit to complete before proceeding. Report only the commit subject line back to the user.
 
 ### Step 3 — Ask about re-running tests
 
@@ -68,4 +79,4 @@ This skill will then:
 3. Present options: merge locally, create PR, keep as-is, or discard
 4. Execute the chosen option and clean up if applicable
 
-Follow that skill's instructions exactly from this point forward.
+Follow that skill's instructions exactly from this point forward, but relay only decision points and outcomes to the user, per the Output and Context Rules above.

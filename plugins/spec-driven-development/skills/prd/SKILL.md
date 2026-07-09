@@ -25,9 +25,19 @@ The user must pass the SPEC.md file path explicitly:
 
 If no path is provided, stop and ask: *"Please specify the SPEC.md file path, e.g. `docs/auth-forms-SPEC.md`."*
 
+## Output and Context Rules
+
+These rules govern everything this skill prints to the main conversation, across all steps in `steps/`.
+
+- **Never paste full file contents into the chat.** SPEC.md, PRD.md, and ISSUE-N.md are written directly to disk and referenced by path (already the rule in `02-write-prd.md` and `04-write-issues.md`) — extend the same discipline to codebase exploration in `00-read-and-explore.md`: summarize what you found, don't quote whole files.
+- **Explore the codebase with targeted reads, not exhaustive ones.** Grep/search for the relevant seams first; read only the files or sections that inform the PRD, not entire directories.
+- **Issue and breakdown lists stay compact.** The numbered breakdown in `03-issue-breakdown.md` shows title/type/blocked-by only — no restating of PRD content per issue.
+- **Status updates are one line each** ("PRD written to `docs/<idea-slug>-PRD.md`", "3 issue files written") — no recap of prior steps.
+- **Default to the minimal useful output.** If unsure how much detail to show in dialogue, show less and offer to expand on request.
+
 ## Process
 
-Read and follow each file in `steps/` **in numeric order**. Each step file is mandatory context, not optional background — do not skip a step file or rely on the index summary alone.
+Read and follow each file in `steps/` **one at a time, in numeric order, immediately before executing it** — not all six upfront. Each step file is mandatory context for its own step, not optional background — do not skip a step file or rely on the index summary alone as a substitute for reading it.
 
 1. `steps/00-read-and-explore.md` — read SPEC.md, explore codebase
 2. `steps/01-seams.md` — identify and confirm testing seams

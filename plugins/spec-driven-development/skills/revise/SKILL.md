@@ -28,6 +28,16 @@ No plan file path is required as an argument — the plan is deduced from contex
 
 Unlike other `sdd:*` skills, do **not** ask the user to run `/clear` first. This skill is meant to run in the same session, immediately after `/sdd:verify`, because Step 1 depends on reading the REVISE verdict directly from the conversation. Asking to clear would destroy the only reliable source for the problem list.
 
+## Output and Context Rules
+
+These rules govern everything this skill prints to the main conversation — subagent dispatch prompts (Steps 2a, 2c, 3) go to a clean subagent context and are unaffected.
+
+- **Subagent reports must come back as short summaries**, not raw investigation transcripts: a REAL/NOT REAL verdict plus 1-3 lines of the strongest evidence (file/line), not the full reasoning trail.
+- **Never paste raw test failure output into the main conversation.** For failures in Step 3, relay only the failing test names and a 1-3 line error excerpt each — full stack traces stay in the subagent's own report, surfaced only if the user asks.
+- **Never quote the full plan, issue log, or problem description verbatim** in status updates — refer to them by path or a short paraphrase.
+- **Status updates are one line each per problem** ("Problem 1: REAL, fixed", "Problem 2: NOT REAL, skipped") — the full detail belongs only in the Step 4 consolidated report, not repeated earlier too.
+- **Default to the minimal useful output.** If unsure how much detail to show, show less and offer to expand on request.
+
 ## Process
 
 ### Step 1 — Gather the problem(s) to fix
@@ -54,7 +64,7 @@ Use the `Agent` tool to dispatch a read-only investigation subagent:
 >
 > `<problem description>`
 >
-> Do NOT modify any files. Report back REAL or NOT REAL, with your reasoning and the specific file/line evidence you found.
+> Do NOT modify any files. Report back concisely: a REAL or NOT REAL verdict, plus 1-3 lines of the strongest file/line evidence — not a full investigation transcript.
 
 #### 2b — If NOT REAL
 
@@ -71,12 +81,12 @@ Report this to the user, clearly stating why the subagent concluded the problem 
 
 ### Step 3 — Run the full test suite
 
-After all problems have been processed, use the `Agent` tool to dispatch a separate testing subagent to run the **full** test suite, including any regression tests added in Step 2c.
+After all problems have been processed, use the `Agent` tool to dispatch a separate testing subagent to run the **full** test suite, including any regression tests added in Step 2c. Instruct it to report concisely: pass/fail counts and, for each failure, only the test name plus a 1-3 line error excerpt (not the full stack trace).
 
 If the testing subagent reports failures:
-1. Dispatch a new fix subagent with the failure output.
+1. Dispatch a new fix subagent with the failure output, instructed to report back with a 1-2 line summary of the fix, not a diff dump.
 2. Re-dispatch the testing subagent.
-3. Repeat until all tests pass.
+3. Repeat until all tests pass, showing the user only the current round's pass/fail counts between iterations — not a cumulative log of every prior round.
 
 ### Step 4 — Report and recommend next step
 

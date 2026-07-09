@@ -31,6 +31,17 @@ If no path is provided, stop and ask: *"Please specify the plan file path, e.g. 
 Tell the user: *"Please run `/clear` first to start with a clean context, then re-invoke this skill."*
 If the user has already cleared, proceed.
 
+## Output and Context Rules
+
+These rules govern everything this skill prints to the main conversation.
+
+- **Never paste full file contents into the chat.** The plan (Step 1) is read for reference, not quoted back to the user — refer to it by path.
+- **Relay subagent and Codex findings as short summaries**, not raw tool output: each issue as a 1-2 line statement (what's wrong + which plan section/file it affects), not the reviewer's full transcript or raw diff.
+- **Cap the number of issues shown per section to the most material ones** (aim for the top 5-8 if there are many); if a review surfaces more, state the total count and offer to list the rest on request rather than printing all of them.
+- **The Definition of Done checklist (Step 4) stays compact** — only unchecked items get a line in the report; do not restate passed items individually.
+- **Status updates are one line each** ("Step 2: plan compliance review done, 1 issue found", "Step 3: Codex review done, PASS") — no recap of prior steps.
+- **Default to the minimal useful output.** If unsure how much detail to show, show less and offer to expand on request.
+
 ## Process
 
 ### Step 1 — Read the plan file
@@ -55,7 +66,7 @@ Report only issues with confidence ≥ 80, as per the agent's standard threshold
 
 Run `/codex:review --wait` to get an independent technical check from Codex on the same working tree.
 
-This pass catches defects that Claude may have missed — it has no plan context and reviews purely for technical correctness.
+This pass catches defects that Claude may have missed — it has no plan context and reviews purely for technical correctness. When relaying its findings in Step 5, summarize each as a 1-2 line issue statement — do not paste Codex's raw output or full diff commentary into the chat.
 
 ### Step 4 — Definition of Done
 

@@ -37,6 +37,17 @@ Tell the user:
 
 If the user confirms, proceed. If not, wait.
 
+## Output and Context Rules
+
+These rules govern everything this skill prints to the main conversation — subagent dispatch prompts (which go to a clean subagent context) are unaffected.
+
+- **Never paste full file contents into the main conversation.** Plan/spec file content is passed to subagents inside their dispatch prompt only; in the main thread, refer to files by path (`docs/<idea-slug>-PLAN.md`), not by quoting them.
+- **Subagent reports must come back as short summaries**, not raw logs: task count done/total, pass/fail test counts, and a one-line verdict. Do not relay a subagent's full internal transcript.
+- **On test failures, show only the essentials**: failing test names and a 1–3 line error excerpt each (assertion message, not full stack trace). Full stack traces or raw command output are shown only if the user explicitly asks for them.
+- **Batch divergences instead of dumping them.** If Step 3 finds more than ~5 divergences, first give a one-line count + the 3–5 most significant ones, then ask whether to walk through the rest one by one — don't flood the chat with every proposed edit at once.
+- **Status updates are one line each** ("Step 2: implementation subagent dispatched", "Step 4: 12/12 tests passing") — no restating of plan content or prior steps.
+- **Default to the minimal useful output.** If unsure how much detail to show, show less and offer to expand on request.
+
 ## Process
 
 ### Step 1 — Read the plan file
@@ -67,18 +78,18 @@ Instructions:
 - Do NOT modify tests to make them pass — fix the implementation instead.
 - For framework-specific patterns (React hooks, routing, auth, database ORM, etc.), verify against official documentation before implementing.
 - After all tasks are complete, run the full test suite and confirm all tests pass.
-- Report back: which tasks were completed, which tests passed, and any issues encountered.
+- Report back concisely: task count completed/total, overall test pass/fail counts, and any issues encountered in 1-2 lines each. Do not paste full test output or file contents in your report.
 ```
 
 Replace `<PLAN_CONTENT>` with the full content of the plan file read in Step 1.
 
-Wait for the implementation subagent to complete before proceeding.
+Wait for the implementation subagent to complete before proceeding. Relay its report to the user as the short summary described in **Output and Context Rules**, not the raw subagent transcript.
 
 ### Step 3 — Spec divergence check
 
-After the implementation subagent completes, read `docs/<idea-slug>-SPEC.md` and run `git diff` to compare the current working tree against the spec.
+After the implementation subagent completes, read `docs/<idea-slug>-SPEC.md` and run `git diff` to compare the current working tree against the spec. Read only what's needed to spot divergences — skim `git diff` for changed sections rather than re-reading the entire spec and full diff verbatim into your response.
 
-For each divergence (architectural decision changed, scope adjusted, data model differs from what the spec describes), propose a concrete edit to `docs/<idea-slug>-SPEC.md`. Present each proposed edit to the user individually and wait for approval or rejection before continuing.
+For each divergence (architectural decision changed, scope adjusted, data model differs from what the spec describes), propose a concrete edit to `docs/<idea-slug>-SPEC.md`. Present proposed edits per the batching rule in **Output and Context Rules**, and wait for approval or rejection before continuing.
 
 Only after the user has reviewed all proposed spec edits (or confirmed there are none), proceed to the testing subagent.
 
@@ -98,16 +109,18 @@ You are verifying an implementation against a TDD plan. Do NOT modify any code.
 Instructions:
 - Read the test commands and verification steps defined in the plan above.
 - Run every test and verification command.
-- Report: which tests passed, which failed (with error output), and an overall PASS / FAIL verdict.
+- Report concisely: pass/fail counts, an overall PASS / FAIL verdict, and for each failing test only its name plus a 1-3 line error excerpt (not the full stack trace or raw command output).
 - Do NOT fix anything — only report what you find.
 ```
 
 Replace `<PLAN_CONTENT>` with the full content of the plan file.
 
 If the testing subagent reports any failures:
-1. Spawn a new **fix subagent** using the Agent tool, giving it the failing test output and the plan content. Instruct it to fix only the failing implementation (minimal change, do not alter tests).
+1. Spawn a new **fix subagent** using the Agent tool, giving it the failing test output and the plan content. Instruct it to fix only the failing implementation (minimal change, do not alter tests), and to report back with a 1-2 line summary of the fix, not a diff dump.
 2. Re-dispatch the testing subagent.
 3. Repeat until all tests pass.
+
+Show the user only the current round's pass/fail counts between iterations, not a running log of every prior round.
 
 ### Step 5 — Confirm
 
