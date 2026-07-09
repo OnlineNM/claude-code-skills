@@ -76,9 +76,9 @@ Wait for the implementation subagent to complete before proceeding.
 
 ### Step 3 — Spec divergence check
 
-After the implementation subagent completes, read `docs/<idea-slug>-DESIGN.md` and run `git diff` to compare the current working tree against the spec.
+After the implementation subagent completes, read `docs/<idea-slug>-SPEC.md` and run `git diff` to compare the current working tree against the spec.
 
-For each divergence (architectural decision changed, scope adjusted, data model differs from what the spec describes), propose a concrete edit to `docs/<idea-slug>-DESIGN.md`. Present each proposed edit to the user individually and wait for approval or rejection before continuing.
+For each divergence (architectural decision changed, scope adjusted, data model differs from what the spec describes), propose a concrete edit to `docs/<idea-slug>-SPEC.md`. Present each proposed edit to the user individually and wait for approval or rejection before continuing.
 
 Only after the user has reviewed all proposed spec edits (or confirmed there are none), proceed to the testing subagent.
 
@@ -141,7 +141,7 @@ Not yet verified
 
 Base `<issue title>` and the content on the actual final code/worktree state produced by Steps 2–4 — not the plan's intended work — in case implementation diverged from the plan (this is what Step 3's divergence check already surfaces).
 
-If the plan is a plain `docs/<idea-slug>-PLAN.md` (DESIGN- or PRD-derived, no issue number), skip Step 6 entirely — no log file is written.
+If the plan is a plain `docs/<idea-slug>-PLAN.md` (SPEC- or PRD-derived, no issue number), skip Step 6 entirely — no log file is written.
 
 ## Hard Rules
 

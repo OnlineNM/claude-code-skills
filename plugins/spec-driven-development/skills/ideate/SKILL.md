@@ -1,6 +1,6 @@
 ---
 name: ideate
-description: Divergent/convergent exploration of the solution space before writing a spec. Use when intent is known but direction is unclear. Reads INTENT.md if available. Produces docs/<slug>-IDEATE.md. Handoff goes to sdd:design-adversarial.
+description: Divergent/convergent exploration of the solution space before writing a spec. Use when intent is known but direction is unclear. Reads INTENT.md if available. Produces docs/<slug>-IDEATE.md. Handoff goes to sdd:spec.
 ---
 
 # Ideate — Solution Space Exploration

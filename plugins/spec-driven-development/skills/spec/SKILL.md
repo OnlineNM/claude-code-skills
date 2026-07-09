@@ -1,5 +1,5 @@
 ---
-name: design-adversarial
+name: spec
 description: Two-act spec hardening. ACT 1 (you ↔ Claude) — collaborative brainstorming produces an approved spec (2-3 approaches, visual companion, one question at a time). ACT 2 (Claude ↔ Codex) — OpenAI Codex adversarially reviews the spec (content passed inline — no filesystem sandbox) until APPROVED or MAX_ROUNDS cap. Use when user says "spec me codex", "spec and stress-test", or is defining a high-stakes feature (auth, schema, payments, concurrency) and wants collaborative exploration AND a cross-model sanity check before implementation planning.
 ---
 
@@ -17,7 +17,7 @@ Use **Claude Sonnet** (`claude-sonnet`) with **high thinking effort** (`ultrathi
 
 Conduct all dialogue with the user — questions, proposed approaches, confirmations, status updates — exclusively in Romanian, regardless of the language the project/feature description was written in.
 
-All deliverables this skill writes (`docs/<idea-slug>-SESSION.md`, `docs/<idea-slug>-DESIGN.md`, `docs/<idea-slug>-DESIGN-REVIEW-LOG.md`) must always be written in English, independent of the Romanian dialogue above. Internal reasoning and the Codex review exchange also stay in English. When a decision reached in Romanian dialogue is captured in a deliverable, translate it into English rather than copying the Romanian wording verbatim.
+All deliverables this skill writes (`docs/<idea-slug>-SESSION.md`, `docs/<idea-slug>-SPEC.md`, `docs/<idea-slug>-SPEC-REVIEW.md`) must always be written in English, independent of the Romanian dialogue above. Internal reasoning and the Codex review exchange also stay in English. When a decision reached in Romanian dialogue is captured in a deliverable, translate it into English rather than copying the Romanian wording verbatim.
 
 ## Persistence
 
@@ -25,7 +25,7 @@ Maintain `docs/<idea-slug>-SESSION.md` throughout the session. Creation is handl
 
 **During the session:** update `Decisions Reached` and `Open Questions` after each major brainstorming checkpoint (approach chosen, design section approved, etc.).
 
-**When Act 1 concludes:** append `## Final Spec Path: docs/<idea-slug>-DESIGN.md` to the session file.
+**When Act 1 concludes:** append `## Final Spec Path: docs/<idea-slug>-SPEC.md` to the session file.
 
 ## Before Starting
 
@@ -120,8 +120,8 @@ Do not write a spec section for an objective that cannot be directly verified.
 
 Invoke `superpowers:brainstorming` with **two overrides**: do NOT invoke `writing-plans` at the end; and do NOT display the spec content in the console or commit automatically — see Step 5.
 
-### Step 5 — Write DESIGN.md
-After the brainstorming is complete, write a structured summary directly to `docs/<idea-slug>-DESIGN.md` without displaying its full content in the console:
+### Step 5 — Write SPEC.md
+After the brainstorming is complete, write a structured summary directly to `docs/<idea-slug>-SPEC.md` without displaying its full content in the console:
 
 ```markdown
 # Spec: <feature>
@@ -143,15 +143,15 @@ _Locked via brainstorming — by Claude + <user>_
 <explicit bounds established during brainstorming>
 ```
 
-Initialize `docs/<idea-slug>-DESIGN-REVIEW-LOG.md`:
+Initialize `docs/<idea-slug>-SPEC-REVIEW.md`:
 ```
 # Spec Review Log: <feature>
 Act 1 (brainstorming) complete — spec locked with user. MAX_ROUNDS=<n>.
 ```
 
 After writing both files:
-1. Tell the user: *"Spec written to `docs/<idea-slug>-DESIGN.md`. Please review it and let me know if you have any changes or if you approve."*
-2. If the user provides feedback, update `docs/<idea-slug>-DESIGN.md` accordingly and ask again.
+1. Tell the user: *"Spec written to `docs/<idea-slug>-SPEC.md`. Please review it and let me know if you have any changes or if you approve."*
+2. If the user provides feedback, update `docs/<idea-slug>-SPEC.md` accordingly and ask again.
 3. Only commit to git when the user **explicitly approves** (e.g. "looks good", "approve", "done", "ok"). Do NOT commit automatically.
 4. After the commit (or user approval without changes), proceed to Act 2.
 
@@ -168,8 +168,8 @@ After writing both files:
 | Var | Default | Meaning |
 |-----|---------|---------|
 | `MAX_ROUNDS` | `5` | Hard cap on review rounds |
-| `SPEC_FILE` | `docs/<idea-slug>-DESIGN.md` | The spec Act 1 produced |
-| `LOG_FILE` | `docs/<idea-slug>-DESIGN-REVIEW-LOG.md` | Append-only argument transcript |
+| `SPEC_FILE` | `docs/<idea-slug>-SPEC.md` | The spec Act 1 produced |
+| `LOG_FILE` | `docs/<idea-slug>-SPEC-REVIEW.md` | Append-only argument transcript |
 
 ### Review prompt strategy
 
@@ -228,18 +228,18 @@ echo "<what changed, what was rejected, why>" >> "$LOG_FILE"
 Title:     <feature title>
 Slug:      <idea-slug>
 Mode:      Branch | Worktree | Main
-Spec file: docs/<idea-slug>-DESIGN.md
-Log file:  docs/<idea-slug>-DESIGN-REVIEW-LOG.md
+Spec file: docs/<idea-slug>-SPEC.md
+Log file:  docs/<idea-slug>-SPEC-REVIEW.md
 Rounds:    N
 ```
   Then propose a git commit — list the files to be staged and ask for confirmation:
-  - `docs/<idea-slug>-DESIGN.md`
-  - `docs/<idea-slug>-DESIGN-REVIEW-LOG.md`
+  - `docs/<idea-slug>-SPEC.md`
+  - `docs/<idea-slug>-SPEC-REVIEW.md`
   - `docs/<idea-slug>-SESSION.md` (if it exists)
 
   On user approval, commit with message `docs: finalize <idea-slug> spec (brainstorming + Codex review)`. Do NOT push.
 
-  Then recommend a next step instead of asking a generic "ready to move on?" — assess whether the finished `docs/<idea-slug>-DESIGN.md` describes one cohesive unit of work or would benefit from being broken into independently shippable slices first:
+  Then recommend a next step instead of asking a generic "ready to move on?" — assess whether the finished `docs/<idea-slug>-SPEC.md` describes one cohesive unit of work or would benefit from being broken into independently shippable slices first:
   - **Recommend `/sdd:plan`** (the common case) when the spec describes a single vertical slice — even a multi-step feature — that one TDD plan can carry end-to-end and ship as one PR.
   - **Recommend `/sdd:prd`** instead when the spec itself describes 2+ independently shippable, user-visible behaviors — distinct user journeys, phases the spec already calls out separately, or subsystems that don't share a single code path. `/sdd:prd` breaks it into vertical-slice issues, each of which then gets its own `/sdd:plan` pass.
 
@@ -253,7 +253,7 @@ Rounds:    N
 ---
 
 ## Hard Rules
-- Act 1 always precedes Act 2 — no DESIGN.md until brainstorming has actually resolved with the user.
+- Act 1 always precedes Act 2 — no SPEC.md until brainstorming has actually resolved with the user.
 - Pass spec content **inline** every round — do NOT use `-s read-only` or `-c sandbox_mode="read-only"` (bwrap blocks filesystem reads, Codex will fail silently and hallucinate).
 - Loop ALWAYS terminates at `MAX_ROUNDS`.
 - Claude is final arbiter on every REVISE — don't cave to everything, don't ignore it.

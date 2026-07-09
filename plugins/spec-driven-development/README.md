@@ -5,7 +5,7 @@ A plugin of Claude Code skills for hardening plans and designs before writing co
 ## Workflow
 
 ```
-discover → ideate → design-brainstorm → prd → plan → implement → verify ⇄ revise → finalize
+discover → ideate → spec → prd → plan → implement → verify ⇄ revise → finalize
 ```
 
 `verify` and `revise` loop: a REVISE verdict from `verify` hands off to `revise`, which fixes confirmed issues and recommends re-running `verify`.
@@ -16,11 +16,9 @@ discover → ideate → design-brainstorm → prd → plan → implement → ver
 |-------|---------|
 | `sdd:discover` | Extracts confirmed user intent before design — produces `docs/<slug>-INTENT.md` |
 | `sdd:ideate` | Divergent/convergent exploration of solution space — produces `docs/<slug>-IDEATE.md` |
-| `design-brainstorm` | Collaborative spec creation via brainstorming — produces an approved `DESIGN.md` |
-| `design-adversarial` | `design-brainstorm` + Codex adversarial review of the spec (Act 1 + Act 2) |
-| `design-review` | Act 2 only — Codex stress-tests an existing spec |
-| `prd` | Transforms `DESIGN.md` into a PRD + `ISSUE-N.md` files |
-| `plan` | Transforms `DESIGN.md` or `ISSUE-N.md` into a TDD implementation plan saved as `docs/<slug>-PLAN.md` |
+| `spec` | Collaborative spec brainstorming + Codex adversarial review of the spec (Act 1 + Act 2) — produces an approved `SPEC.md` |
+| `prd` | Transforms `SPEC.md` into a PRD + `ISSUE-N.md` files |
+| `plan` | Transforms `SPEC.md` or `ISSUE-N.md` into a TDD implementation plan saved as `docs/<slug>-PLAN.md` |
 | `implement` | Executes a plan file step by step, verifies all tests pass |
 | `verify` | Reviews implementation against its plan — produces `PASS` or `REVISE` verdict |
 | `revise` | Confirms and fixes issues from a `REVISE` verdict — updates plan/log, adds tests, fixes code, re-runs the suite |

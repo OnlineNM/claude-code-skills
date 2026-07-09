@@ -1,11 +1,11 @@
 ---
 name: plan
-description: Transforms a DESIGN.md, PRD.md, or ISSUE-N.md into a concrete TDD implementation plan saved as docs/<idea-slug>-PLAN.md (or PLAN-N.md for issues). Enters plan-mode, invokes writing-plans, stops before execution. When invoked with a PRD.md or ISSUE-N.md (complex workflow after /prd), first confirms slug and sets up a branch or worktree before planning. Use when user says "plan me", "plan this", "make a plan from", or wants to turn a spec, PRD, or issue into a step-by-step implementation plan.
+description: Transforms a SPEC.md, PRD.md, or ISSUE-N.md into a concrete TDD implementation plan saved as docs/<idea-slug>-PLAN.md (or PLAN-N.md for issues). Enters plan-mode, invokes writing-plans, stops before execution. When invoked with a PRD.md or ISSUE-N.md (complex workflow after /prd), first confirms slug and sets up a branch or worktree before planning. Use when user says "plan me", "plan this", "make a plan from", or wants to turn a spec, PRD, or issue into a step-by-step implementation plan.
 ---
 
 # Plan-Me — Spec, PRD, or Issue to Implementation Plan
 
-Reads a DESIGN.md, PRD.md, or ISSUE-N.md file and produces a TDD implementation plan saved locally. Stops before execution.
+Reads a SPEC.md, PRD.md, or ISSUE-N.md file and produces a TDD implementation plan saved locally. Stops before execution.
 
 ## Model & Thinking
 
@@ -21,11 +21,11 @@ All deliverables this skill writes (`docs/<idea-slug>-PLAN.md` or `PLAN-N.md`, c
 
 Pass the input file path explicitly:
 
-> `/plan-me docs/<idea-slug>-DESIGN.md`
+> `/plan-me docs/<idea-slug>-SPEC.md`
 > `/plan-me docs/<idea-slug>-PRD.md`
 > `/plan-me docs/<idea-slug>-ISSUE-N.md`
 
-If no path is provided, stop and ask: *"Please specify the input file path, e.g. `docs/auth-forms-DESIGN.md`, `docs/auth-forms-PRD.md`, or `docs/auth-forms-ISSUE-1.md`."*
+If no path is provided, stop and ask: *"Please specify the input file path, e.g. `docs/auth-forms-SPEC.md`, `docs/auth-forms-PRD.md`, or `docs/auth-forms-ISSUE-1.md`."*
 
 ## Before Starting
 
@@ -39,7 +39,7 @@ If the user has already cleared, proceed.
 Read the file at the provided path. If it does not exist, stop and tell the user.
 
 Determine the **input type** and extract `<idea-slug>` and the output path:
-- `docs/auth-forms-DESIGN.md` → type = DESIGN, slug = `auth-forms`, output = `docs/auth-forms-PLAN.md`
+- `docs/auth-forms-SPEC.md` → type = SPEC, slug = `auth-forms`, output = `docs/auth-forms-PLAN.md`
 - `docs/auth-forms-PRD.md` → type = PRD, slug = `auth-forms`, output = `docs/auth-forms-PLAN.md`
 - `docs/auth-forms-ISSUE-1.md` → type = ISSUE, slug = `auth-forms`, issue = `1`, output = `docs/auth-forms-PLAN-1.md`
 
@@ -54,7 +54,7 @@ If the input type is ISSUE and `N > 1`:
 
 ### Step 2 — Branch setup (PRD and ISSUE inputs only)
 
-**Skip this step entirely if the input is a DESIGN.md** — the branch or worktree was already established by `/design-brainstorm` or `/design-adversarial`.
+**Skip this step entirely if the input is a SPEC.md** — the branch or worktree was already established by `/spec`.
 
 When invoked with a PRD.md or ISSUE-N.md, the session is on the main branch because `/prd` merges back before handing off. Before planning, establish the workspace.
 
@@ -131,7 +131,7 @@ After committing, say:
 
 ## Output
 
-- `docs/<idea-slug>-PLAN.md` — TDD implementation plan derived from a DESIGN.md or PRD.md
+- `docs/<idea-slug>-PLAN.md` — TDD implementation plan derived from a SPEC.md or PRD.md
 - `docs/<idea-slug>-PLAN-N.md` — TDD implementation plan for a single vertical slice, derived from an ISSUE-N.md
 
 ## Common Rationalizations

@@ -132,4 +132,4 @@ Do NOT proceed with merge or cleanup without explicit user confirmation.
 - Do NOT invoke `executing-plans` or any implementation skill.
 - Always read the plan file before running any review.
 - `/codex:review` is standard review — do NOT use `/codex:adversarial-review` (design decisions are already settled at this stage).
-- After a REVISE verdict, check whether `docs/<idea-slug>-DESIGN.md` needs updating to reflect decisions made during implementation before re-running verify.
+- After a REVISE verdict, check whether `docs/<idea-slug>-SPEC.md` needs updating to reflect decisions made during implementation before re-running verify.

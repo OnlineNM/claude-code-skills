@@ -1,6 +1,6 @@
 # Step 01 — Identify Seams
 
-**Reads:** DESIGN.md content and codebase context from `00-read-and-explore.md`.
+**Reads:** SPEC.md content and codebase context from `00-read-and-explore.md`.
 
 **Does:**
 
