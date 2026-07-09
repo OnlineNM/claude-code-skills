@@ -19,7 +19,3 @@
 **Stop condition:** 5-8 labeled variations generated, problem framing confirmed.
 
 **Hands off:** The HMW statement and variation set to `04-converge.md`.
-
-## Dialog Log
-
-Append an entry to `docs/<idea-slug>-DIALOG.md` for each sharpening question and its answer, plus a closing entry recording the confirmed HMW framing as the phase decision.

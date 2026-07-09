@@ -17,26 +17,6 @@ Conduct all dialogue with the user — questions, seam confirmations, granularit
 
 All deliverables this skill writes (`docs/<idea-slug>-PRD.md`, `docs/<idea-slug>-ISSUE-N.md`, commit messages) must always be written in English, independent of the Romanian dialogue above.
 
-## Dialog Log
-
-Maintain `docs/<idea-slug>-DIALOG.md` throughout the session — a verbatim, human-readable record of the seam confirmation, the PRD feedback rounds, and the issue-breakdown granularity choice and approval. This file is an explicit exception to the English-deliverables rule above: it exists to document the actual Romanian dialogue, so its content stays in Romanian, matching what was really said.
-
-Creation is handled by `steps/00-read-and-explore.md`, right after `<idea-slug>` is derived. Append an entry after each dialogue point in `steps/01-seams.md`, `steps/02-write-prd.md`, and `steps/03-issue-breakdown.md`. Use this format:
-
-```markdown
-# Dialog: <Idea Name>
-Început: <YYYY-MM-DD>
-
-## <Subiect — ex. "Confirmare seams", "Feedback PRD", "Granularitate issue-uri">
-
-**Întrebare:** <întrebarea/opțiunile prezentate>
-**Răspuns:** <răspunsul utilizatorului>
-
-**Decizie:** <ce s-a stabilit, dacă e cazul>
-
----
-```
-
 ## Invocation
 
 The user must pass the DESIGN.md file path explicitly:
@@ -58,7 +38,6 @@ Read and follow each file in `steps/` **in numeric order**. Each step file is ma
 
 ## Output
 
-- `docs/<idea-slug>-DIALOG.md` — verbatim record of questions asked and decisions made (Romanian)
 - `docs/<idea-slug>-PRD.md` — structured PRD
 - `docs/<idea-slug>-ISSUE-1.md` … `docs/<idea-slug>-ISSUE-N.md` — one file per vertical slice
 

@@ -27,7 +27,3 @@ Iterate until the user approves.
 **Stop condition:** User approves the breakdown (granularity option + dependency graph).
 
 **Hands off:** Approved issue list to `04-write-issues.md`.
-
-## Dialog Log
-
-Append an entry to `docs/<idea-slug>-DIALOG.md` recording the granularity options presented and the user's choice, plus a closing entry for the approved breakdown (including any merge/split iterations).

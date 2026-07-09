@@ -36,8 +36,6 @@ Started: <YYYY-MM-DD>
 
 **Checkpoint invariant:** If `docs/<idea-slug>-SESSION.md` already exists, read it and resume — skip decisions already settled. Do not re-ask Checkpoint 1 or 2 if the session file shows them already resolved.
 
-Also create `docs/<idea-slug>-DIALOG.md` at this point (see SKILL.md's "Dialog Log" section for format). If it already exists, resume appending to it instead of overwriting.
-
 #### ⛔ CHECKPOINT 3 — Branch strategy (MANDATORY, do not skip)
 
 Present exactly these three options and ask the user to choose one:

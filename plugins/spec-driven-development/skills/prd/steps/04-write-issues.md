@@ -4,9 +4,7 @@
 
 **Does:**
 
-Write issues in dependency order (blockers first). For each approved issue, write directly to `docs/<idea-slug>-ISSUE-N.md` without displaying its full content in the console. After all files are written, tell the user: *"N issue files written to `docs/<idea-slug>-ISSUE-1.md` … `docs/<idea-slug>-ISSUE-N.md`. Please review them and let me know if you have any changes or if you approve."* If the user provides feedback, update the relevant files and ask again. Only commit all docs (PRD + issues + `docs/<idea-slug>-DIALOG.md`, if it exists) to git when the user **explicitly approves** (e.g. "looks good", "approve", "done", "ok"). Do NOT commit automatically.
-
-Append the feedback rounds and the final approval to `docs/<idea-slug>-DIALOG.md`.
+Write issues in dependency order (blockers first). For each approved issue, write directly to `docs/<idea-slug>-ISSUE-N.md` without displaying its full content in the console. After all files are written, tell the user: *"N issue files written to `docs/<idea-slug>-ISSUE-1.md` … `docs/<idea-slug>-ISSUE-N.md`. Please review them and let me know if you have any changes or if you approve."* If the user provides feedback, update the relevant files and ask again. Only commit all docs (PRD + issues) to git when the user **explicitly approves** (e.g. "looks good", "approve", "done", "ok"). Do NOT commit automatically.
 
 Issue structure:
 

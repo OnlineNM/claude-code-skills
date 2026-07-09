@@ -17,26 +17,6 @@ Conduct all dialogue with the user — questions, confirmations, status updates 
 
 All deliverables this skill writes (`docs/<idea-slug>-SESSION.md`, `docs/<idea-slug>-IDEATE.md`) must always be written in English. When a confirmed direction is captured in `IDEATE.md`, translate it into English rather than copying the Romanian wording verbatim.
 
-## Dialog Log
-
-Maintain `docs/<idea-slug>-DIALOG.md` throughout the session — a verbatim, human-readable record of every question asked, the user's answer, and the decisions reached across all three phases. This file is an explicit exception to the English-deliverables rule above: it exists to document the actual Romanian dialogue, so its content stays in Romanian, matching what was really said.
-
-Creation is handled by `steps/01-slug-and-branch.md`'s CHECKPOINT 2, alongside `SESSION.md`. Append a new entry after each confirmed question/answer or phase decision in `steps/03-diverge.md`, `steps/04-converge.md`, and `steps/05-sharpen.md`. Use this format — one heading per topic, one paragraph per question/answer pair:
-
-```markdown
-# Dialog: <Idea Name>
-Început: <YYYY-MM-DD>
-
-## <Subiect — ex. "Faza 1: Divergență", "Direcția aleasă">
-
-**Întrebare:** <întrebarea pusă>
-**Răspuns:** <răspunsul utilizatorului>
-
-**Decizie:** <ce s-a stabilit, dacă e cazul>
-
----
-```
-
 ## Invocation
 
 ```
@@ -64,7 +44,6 @@ Read and follow each file in `steps/` **in numeric order**. Each step file is ma
 ## Output
 
 - `docs/<idea-slug>-SESSION.md` — persistent session context
-- `docs/<idea-slug>-DIALOG.md` — verbatim record of questions asked and decisions made (Romanian)
 - `docs/<idea-slug>-IDEATE.md` — structured direction document
 
 ## Hard Rules

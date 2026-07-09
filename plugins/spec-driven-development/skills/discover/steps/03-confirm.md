@@ -20,7 +20,3 @@ Out of scope: <one line — what this explicitly does not include>
 **Stop condition:** Explicit "yes" received on the restat.
 
 **Hands off:** The confirmed restat structure to `04-write-and-handoff.md`.
-
-## Dialog Log
-
-Once the "yes" is received, append a final entry to `docs/<idea-slug>-DIALOG.md` recording the restat presented and the user's confirmation as the closing decision.

@@ -11,7 +11,3 @@ Check with the user that these seams match their expectations before proceeding.
 **Stop condition:** User confirms the seams.
 
 **Hands off:** Confirmed seam list to `02-write-prd.md`.
-
-## Dialog Log
-
-Append an entry to `docs/<idea-slug>-DIALOG.md` recording the proposed seams and the user's confirmation or correction.

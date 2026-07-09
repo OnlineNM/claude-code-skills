@@ -17,28 +17,6 @@ Conduct all dialogue with the user — questions, checkpoints, granularity choic
 
 All deliverables this skill writes (`docs/<idea-slug>-PLAN.md` or `PLAN-N.md`, commit messages) must always be written in English, independent of the Romanian dialogue above. This applies to the `writing-plans` invocation too: hold the interview in Romanian, but write the plan document itself in English.
 
-## Dialog Log
-
-Maintain `docs/<idea-slug>-DIALOG.md` throughout the session — a verbatim, human-readable record of the checkpoints presented, the granularity choice, and the plan review feedback rounds. This file is an explicit exception to the English-deliverables rule above: it exists to document the actual Romanian dialogue, so its content stays in Romanian, matching what was really said.
-
-Create it in Step 1, right after `<idea-slug>` is determined (resume/append if it already exists). Append an entry after CHECKPOINT 1, CHECKPOINT 2, the granularity choice, and each plan feedback round in Step 4. Use this format:
-
-```markdown
-# Dialog: <Idea Name>
-Început: <YYYY-MM-DD>
-
-## <Subiect — ex. "Confirmare slug", "Strategie de branch", "Granularitate">
-
-**Întrebare:** <întrebarea/opțiunile prezentate>
-**Răspuns:** <răspunsul utilizatorului>
-
-**Decizie:** <ce s-a stabilit, dacă e cazul>
-
----
-```
-
-Because Step 4 delegates plan writing to `superpowers:writing-plans`, OVERRIDE 8 below instructs it to append to this file as it goes — it cannot know about `DIALOG.md` otherwise.
-
 ## Invocation
 
 Pass the input file path explicitly:
@@ -65,8 +43,6 @@ Determine the **input type** and extract `<idea-slug>` and the output path:
 - `docs/auth-forms-PRD.md` → type = PRD, slug = `auth-forms`, output = `docs/auth-forms-PLAN.md`
 - `docs/auth-forms-ISSUE-1.md` → type = ISSUE, slug = `auth-forms`, issue = `1`, output = `docs/auth-forms-PLAN-1.md`
 
-Create `docs/<idea-slug>-DIALOG.md` now if it doesn't already exist (see "Dialog Log" section above for format); if it exists, resume appending to it.
-
 #### Predecessor log check (ISSUE inputs only)
 
 If the input type is ISSUE and `N > 1`:
@@ -84,7 +60,7 @@ When invoked with a PRD.md or ISSUE-N.md, the session is on the main branch beca
 
 #### ⛔ CHECKPOINT 1 — Slug confirmation (MANDATORY, do not skip)
 
-The slug was extracted from the filename. Propose it to the user and **wait for explicit confirmation before continuing**. The user may correct it if the filename doesn't reflect the right slug. Do NOT proceed until the user approves or corrects it. Append this exchange to `docs/<idea-slug>-DIALOG.md`.
+The slug was extracted from the filename. Propose it to the user and **wait for explicit confirmation before continuing**. The user may correct it if the filename doesn't reflect the right slug. Do NOT proceed until the user approves or corrects it.
 
 #### ⛔ CHECKPOINT 2 — Branch strategy (MANDATORY, do not skip)
 
@@ -93,7 +69,7 @@ Present exactly these three options and ask the user to choose one — do not re
 - **2. branch** — create and switch to `feature/<idea-slug>` (or `feature/<idea-slug>-<N>` for an ISSUE input)
 - **3. worktree** — create a git worktree at `../<idea-slug>` on branch `feature/<idea-slug>` (isolated workspace, recommended for larger plans)
 
-After the user picks, invoke `superpowers:using-git-worktrees` if option 3 was chosen. Set up the chosen environment before proceeding. Append this exchange to `docs/<idea-slug>-DIALOG.md`.
+After the user picks, invoke `superpowers:using-git-worktrees` if option 3 was chosen. Set up the chosen environment before proceeding.
 
 ### Step 3 — Enter plan-mode
 
@@ -110,7 +86,7 @@ Present exactly these three options in chat and wait for the user's choice:
 
 Wording must differ by input type: when the input is `ISSUE-N.md` (already a single vertical slice from `prd`), the three options size **implementation tasks within that slice**, not features — replace "steps" wording with "implementation tasks" in the ISSUE-N.md case to avoid re-litigating PRD-level decomposition.
 
-Hold the user's literal choice (e.g. `"Balanced — one step per logical unit of work"`) — it is interpolated into OVERRIDE 7 below when invoking `writing-plans`. Append the three options presented and the user's choice to `docs/<idea-slug>-DIALOG.md`.
+Hold the user's literal choice (e.g. `"Balanced — one step per logical unit of work"`) — it is interpolated into OVERRIDE 7 below when invoking `writing-plans`.
 
 Use the `Skill` tool to invoke `superpowers:writing-plans` with these overrides:
 
@@ -134,15 +110,13 @@ Use the `Skill` tool to invoke `superpowers:writing-plans` with these overrides:
 
 > **OVERRIDE 7 — granularity:** The user already chose a granularity above this invocation. Include that choice **verbatim** here (e.g. "OVERRIDE 7 — granularity: the user chose 'Balanced — one step per logical unit of work'; size all plan steps accordingly"), since writing-plans is an invoked skill, not a typed API — the constraint only takes effect if it is literally present in this prompt.
 
-> **OVERRIDE 8 — dialog log:** After presenting the plan for review (step 2 of OVERRIDE 5) and after each feedback round, append an entry to `docs/<idea-slug>-DIALOG.md` (format defined in the invoking skill's "Dialog Log" section) recording what was presented and the user's response, incrementally as it happens.
-
 Follow every other writing-plans step as written.
 
 ### Step 5 — Commit
 
 After `writing-plans` returns (user has approved the plan):
 
-1. `git add docs/<idea-slug>-PLAN.md` (or `PLAN-N.md`) `docs/<idea-slug>-DIALOG.md` (if it exists)
+1. `git add docs/<idea-slug>-PLAN.md` (or `PLAN-N.md`)
 2. `git commit -m "docs: add implementation plan for <idea-slug>"`
 
 Do NOT push. Do NOT skip this step. Do NOT wait for additional user input — approval in Step 4 is sufficient.
@@ -157,7 +131,6 @@ After committing, say:
 
 ## Output
 
-- `docs/<idea-slug>-DIALOG.md` — verbatim record of questions asked and decisions made (Romanian)
 - `docs/<idea-slug>-PLAN.md` — TDD implementation plan derived from a DESIGN.md or PRD.md
 - `docs/<idea-slug>-PLAN-N.md` — TDD implementation plan for a single vertical slice, derived from an ISSUE-N.md
 

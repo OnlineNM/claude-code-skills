@@ -30,8 +30,6 @@ Started: <YYYY-MM-DD>
 
 **Checkpoint invariant:** If the session file already exists, read it and resume — skip decisions already settled (e.g. a phase already confirmed).
 
-Also create `docs/<idea-slug>-DIALOG.md` at this point (see SKILL.md's "Dialog Log" section for format). If it already exists, resume appending to it instead of overwriting.
-
 #### Branch detection
 
 Check whether `feature/<idea-slug>` already exists:

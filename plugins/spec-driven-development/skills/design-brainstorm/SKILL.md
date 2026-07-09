@@ -17,28 +17,6 @@ Conduct all dialogue with the user — questions, proposed approaches, confirmat
 
 All deliverables this skill writes (`docs/<idea-slug>-SESSION.md`, `docs/<idea-slug>-DESIGN.md`) must always be written in English, independent of the Romanian dialogue above. Internal reasoning also stays in English. When a decision reached in Romanian dialogue is captured in a deliverable, translate it into English rather than copying the Romanian wording verbatim.
 
-## Dialog Log
-
-Maintain `docs/<idea-slug>-DIALOG.md` throughout the session — a verbatim, human-readable record of every question asked, the user's answer, the approaches proposed, and the decisions reached. This file is an explicit exception to the English-deliverables rule above: it exists to document the actual Romanian dialogue, so its content stays in Romanian, matching what was really said.
-
-Creation is handled by ⛔ CHECKPOINT 2, alongside `SESSION.md`. Use this format — one heading per topic, one paragraph per question/answer pair:
-
-```markdown
-# Dialog: <Idea Name>
-Început: <YYYY-MM-DD>
-
-## <Subiect — ex. "Ipoteze", "Abordarea aleasă", "Secțiunea Arhitectură">
-
-**Întrebare:** <întrebarea pusă>
-**Răspuns:** <răspunsul utilizatorului>
-
-**Decizie:** <ce s-a stabilit, dacă e cazul>
-
----
-```
-
-Because Step 4 delegates the actual interview to `superpowers:brainstorming`, pass it an additional override (below) instructing it to append to this file as it goes — it cannot know about `DIALOG.md` otherwise.
-
 ## Persistence
 
 Maintain `docs/<idea-slug>-SESSION.md` throughout the session. Creation is handled by ⛔ CHECKPOINT 2 — this section describes upkeep only.
@@ -98,8 +76,6 @@ Started: <YYYY-MM-DD>
 
 If the file already exists, read it and resume — skip decisions already settled.
 
-Also create `docs/<idea-slug>-DIALOG.md` at this point (see "Dialog Log" section above for format). If it already exists, resume appending to it instead of overwriting.
-
 #### ⛔ CHECKPOINT 3 — Branch strategy (MANDATORY, do not skip)
 
 2. Present exactly these three options and ask the user to choose one — do not reduce to two:
@@ -127,11 +103,9 @@ ASSUMPTIONS I'M MAKING:
 → Correct me now or I'll proceed with these.
 ```
 
-Do not begin brainstorming until the user explicitly confirms or corrects the list. Append this exchange (the assumptions list and the user's confirmation/corrections) to `docs/<idea-slug>-DIALOG.md`.
+Do not begin brainstorming until the user explicitly confirms or corrects the list.
 
 Invoke `superpowers:brainstorming` and follow it exactly, with **four overrides**:
-
-> **OVERRIDE — dialog log:** After each clarifying question is answered, after each approach/direction the user picks, and after each design section is approved, append an entry to `docs/<idea-slug>-DIALOG.md` (format defined in the invoking skill's "Dialog Log" section) recording the question/option presented and the user's answer/choice. Do this incrementally as it happens — do not wait until the end to batch-write it.
 
 > **OVERRIDE — terminal state:** The final step of brainstorming normally transitions to `writing-plans`. Do NOT do this. The terminal state for spec-me is the user approving the written spec document. Stop there.
 
@@ -162,7 +136,6 @@ Follow every other brainstorming step as written: explore project context, offer
 After the user approves the spec, propose a git commit — list the files to be staged and ask for confirmation:
 - `docs/<idea-slug>-DESIGN.md`
 - `docs/<idea-slug>-SESSION.md` (if it exists)
-- `docs/<idea-slug>-DIALOG.md` (if it exists)
 
 On confirmation, commit with message `docs: <idea-slug> spec approved`. Do NOT push.
 
@@ -188,12 +161,11 @@ State the recommendation as a default with a one-line reason, and let the user p
 
 > *"<brief reason, e.g. 'This spec describes a single flow — one implementation plan can cover it end-to-end.'> I recommend `/sdd:plan` as the next step, in a new session (after `/clear`). Do you want to continue with that, or would you rather go through `/sdd:prd` first to break it into separate issues?"*
 
-Do NOT invoke either skill automatically — wait for the user's choice. Append the recommendation and the user's choice to `docs/<idea-slug>-DIALOG.md`.
+Do NOT invoke either skill automatically — wait for the user's choice.
 
 ## Output
 
 - `docs/<idea-slug>-SESSION.md` — persistent session context
-- `docs/<idea-slug>-DIALOG.md` — verbatim record of questions asked and decisions made (Romanian)
 - `docs/<idea-slug>-DESIGN.md` — final spec, committed to git
 
 ## Common Rationalizations
