@@ -1,6 +1,6 @@
 ---
 name: ideate
-description: Divergent/convergent exploration of the solution space before writing a spec. Use when intent is known but direction is unclear. Reads INTENT.md if available. Produces docs/<slug>-IDEATE.md. Handoff goes to sdd:spec.
+description: Divergent/convergent exploration of the solution space before writing a spec. Use when intent is known but direction is unclear. Reads DESIGN.md if available. Produces docs/<slug>-IDEATE.md. Handoff goes to sdd:spec.
 ---
 
 # Ideate — Solution Space Exploration
@@ -20,7 +20,7 @@ All deliverables this skill writes (`docs/<idea-slug>-SESSION.md`, `docs/<idea-s
 ## Invocation
 
 ```
-/sdd:ideate docs/<slug>-INTENT.md    ← recommended: starts from confirmed intent
+/sdd:ideate docs/<slug>-DESIGN.md    ← recommended: starts from confirmed intent
 /sdd:ideate                           ← no input: derive slug interactively
 ```
 
@@ -35,7 +35,7 @@ Read and follow each file in `steps/` **in numeric order**. Each step file is ma
 
 1. `steps/00-setup.md` — git dirty-state check, enter plan-mode
 2. `steps/01-slug-and-branch.md` — slug confirmation, session file, branch detection (Checkpoints 1-3)
-3. `steps/02-read-upstream.md` — read upstream INTENT.md if available
+3. `steps/02-read-upstream.md` — read upstream DESIGN.md if available
 4. `steps/03-diverge.md` — Phase 1: Diverge
 5. `steps/04-converge.md` — Phase 2: Converge
 6. `steps/05-sharpen.md` — Phase 3: Sharpen, write IDEATE.md

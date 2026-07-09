@@ -1,6 +1,6 @@
 # Step 03 — Phase 1: Diverge (Understand & Expand)
 
-**Reads:** Seed content from `02-read-upstream.md` (INTENT.md or raw description).
+**Reads:** Seed content from `02-read-upstream.md` (DESIGN.md or raw description).
 
 **Does:**
 

@@ -5,7 +5,7 @@ A plugin of Claude Code skills for hardening plans and designs before writing co
 ## Workflow
 
 ```
-discover → ideate → spec → prd → plan → implement → verify ⇄ revise → finalize
+design → ideate → spec → prd → plan → implement → verify ⇄ revise → finalize
 ```
 
 `verify` and `revise` loop: a REVISE verdict from `verify` hands off to `revise`, which fixes confirmed issues and recommends re-running `verify`.
@@ -14,7 +14,7 @@ discover → ideate → spec → prd → plan → implement → verify ⇄ revis
 
 | Skill | Purpose |
 |-------|---------|
-| `sdd:discover` | Extracts confirmed user intent before design — produces `docs/<slug>-INTENT.md` |
+| `sdd:design` | Extracts confirmed user intent before design — produces `docs/<slug>-DESIGN.md` |
 | `sdd:ideate` | Divergent/convergent exploration of solution space — produces `docs/<slug>-IDEATE.md` |
 | `spec` | Collaborative spec brainstorming + Codex adversarial review of the spec (Act 1 + Act 2) — produces an approved `SPEC.md` |
 | `prd` | Transforms `SPEC.md` into a PRD + `ISSUE-N.md` files |

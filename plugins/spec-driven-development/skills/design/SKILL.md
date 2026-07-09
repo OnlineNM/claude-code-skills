@@ -1,9 +1,9 @@
 ---
-name: discover
-description: Extracts confirmed user intent before design. Use when the ask is underspecified ("build me X" without "for whom" or "why now"), when success criteria are missing, or when there is temptation to fill in unspoken assumptions. Produces docs/<slug>-INTENT.md. Handoff goes to sdd:ideate or sdd:spec.
+name: design
+description: Extracts confirmed user intent before design. Use when the ask is underspecified ("build me X" without "for whom" or "why now"), when success criteria are missing, or when there is temptation to fill in unspoken assumptions. Produces docs/<slug>-DESIGN.md. Handoff goes to sdd:ideate or sdd:spec.
 ---
 
-# Discover — Intent Extraction Before Design
+# Design — Intent Extraction Before Design
 
 Answers "what do you actually want?" through a structured interview. Does not explore how to build it — only confirms what is being built, for whom, and why now.
 
@@ -15,7 +15,7 @@ Use **Claude Sonnet** (`claude-sonnet`) with **high thinking effort** (`ultrathi
 
 Conduct all dialogue with the user — questions, confirmations, status updates — exclusively in Romanian, regardless of the language the project/feature description was written in.
 
-All deliverables this skill writes (`docs/<idea-slug>-SESSION.md`, `docs/<idea-slug>-INTENT.md`) must always be written in English. When the confirmed restat is captured in `INTENT.md`, translate it into English rather than copying the Romanian wording verbatim.
+All deliverables this skill writes (`docs/<idea-slug>-SESSION.md`, `docs/<idea-slug>-DESIGN.md`) must always be written in English. When the confirmed restat is captured in `DESIGN.md`, translate it into English rather than copying the Romanian wording verbatim.
 
 ## Before Starting
 
@@ -30,16 +30,16 @@ Read and follow each file in `steps/` **in numeric order**. Each step file is ma
 2. `steps/01-slug-and-branch.md` — slug confirmation, session file, branch strategy (Checkpoints 1-3)
 3. `steps/02-interview.md` — structured interview loop
 4. `steps/03-confirm.md` — present and confirm the restat
-5. `steps/04-write-and-handoff.md` — write INTENT.md, commit, handoff
+5. `steps/04-write-and-handoff.md` — write DESIGN.md, commit, handoff
 
 ## Output
 
 - `docs/<idea-slug>-SESSION.md` — persistent session context
-- `docs/<idea-slug>-INTENT.md` — confirmed intent structure
+- `docs/<idea-slug>-DESIGN.md` — confirmed intent structure
 
 ## Hard Rules
 
-- Do NOT write `docs/<idea-slug>-INTENT.md` before the user gives an explicit "yes" to the restat.
+- Do NOT write `docs/<idea-slug>-DESIGN.md` before the user gives an explicit "yes" to the restat.
 - Do NOT ask more than one question per message.
 - Do NOT write code or invoke other skills.
 - Do NOT proceed past 03-confirm.md until the restat has been explicitly confirmed.

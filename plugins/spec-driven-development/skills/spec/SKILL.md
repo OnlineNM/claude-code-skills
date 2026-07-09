@@ -90,7 +90,7 @@ If the file already exists, read it and resume — skip decisions already settle
 
 **Before brainstorming**, check `docs/` for upstream artifacts from this slug:
 1. If `docs/<slug>-IDEATE.md` exists: announce *"Found `docs/<slug>-IDEATE.md` — using it as the starting point for brainstorming."* Start brainstorming from its content instead of the raw user description.
-2. Else if `docs/<slug>-INTENT.md` exists: announce *"Found `docs/<slug>-INTENT.md` — using it as the starting point for brainstorming."* Start brainstorming from its content instead of the raw user description.
+2. Else if `docs/<slug>-DESIGN.md` exists: announce *"Found `docs/<slug>-DESIGN.md` — using it as the starting point for brainstorming."* Start brainstorming from its content instead of the raw user description.
 3. If neither exists: start brainstorming from the user's raw description (current behavior).
 
 **Before invoking brainstorming**, surface all implicit assumptions the user has not stated:

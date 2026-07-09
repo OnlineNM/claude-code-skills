@@ -1,12 +1,12 @@
 # Step 01 — Slug and Branch
 
-**Reads:** Optional `docs/<slug>-INTENT.md` path passed as invocation argument.
+**Reads:** Optional `docs/<slug>-DESIGN.md` path passed as invocation argument.
 
 **Does:**
 
 #### ⛔ CHECKPOINT 1 — Slug confirmation (MANDATORY, do not skip)
 
-If an INTENT.md path was passed as argument, derive the slug from the filename (e.g. `docs/auth-forms-INTENT.md` → `auth-forms`). Propose it and wait for explicit confirmation.
+If a DESIGN.md path was passed as argument, derive the slug from the filename (e.g. `docs/auth-forms-DESIGN.md` → `auth-forms`). Propose it and wait for explicit confirmation.
 
 If no argument was passed, ask the user to describe what they want to explore, then derive the slug from their description. Propose it and wait for confirmation.
 
