@@ -21,6 +21,12 @@ If the file isn't found in either place, say so clearly — name both locations 
 
 Read the image directly once you've located it (it's a normal image file, so a plain `Read` on the path works).
 
+### Cleaning up the inbox
+
+If the image you ended up reading lives inside `0_Inbox` — whether it was given to you as an explicit path pointing there, or you found it there via the fallback above — delete that file once you've successfully produced the Markdown output. That folder is a drop point for screenshots waiting to be processed, not permanent storage, so once one has been turned into notes it's just clutter. Only delete it after the transcription actually succeeded — if you couldn't read the image or the analysis failed partway, leave the file alone so nothing is lost.
+
+Don't delete images that came from anywhere else (the current directory, or an explicit path outside `0_Inbox`) — those aren't inbox clutter, they're files the user pointed you at directly, and deleting them would be surprising and destructive.
+
 ## How to read the answer options correctly
 
 This is the part that's easy to get wrong, so pay close attention to the icon in front of each option — it's the only reliable signal for which options are actually correct, independent of what the user happened to click:
@@ -40,20 +46,19 @@ Output ONLY the Markdown block below — no preamble, no closing remarks, no cod
 #### <Question title>
 
 <Instruction, if present>
-
 - [ ] <Answer option 1>
 - [ ] <Answer option 2>
 - [ ] <Answer option 3>
 
-##### Correct answer
-
+##### Correct answer(s)
 - <Correct option 1>
 - <Correct option 2> (only if multi-select and more than one is correct)
 
 ##### Explanation
-
 <Explanation text, rewritten as plain prose>
 ```
+
+Note the blank line placement carefully: it separates the three blocks (title+instruction+options / correct answer / explanation) from each other, but never appears *inside* a block — a heading is always immediately followed by its own content on the next line, no gap.
 
 ### Question title vs. instruction
 The screenshot uses visual hierarchy to distinguish these two, so use the same cue rather than guessing from wording alone: the **title** is the larger/bolder heading text, and the **instruction** (if present at all) is a second, visually lighter line right below it — even when that line is a full sentence rather than a short imperative like "Select all possible answers." Both are real and both matter: don't fold the instruction into the title just because it's a longer sentence, and don't drop the title just because the instruction happens to be the more "question-like" sentence of the two.
@@ -65,9 +70,9 @@ Sometimes a quoted example (a sample prompt, a piece of sample input) sits in it
 ### Answer options
 List every option exactly as shown, each as an unchecked checkbox (`- [ ] ...`), in the same order as the screenshot. Never mark a checkbox as selected — the whole point of this output is a fresh, unanswered version of the question. Icons, colors, and selection state from the screenshot must not leak into this list at all.
 
-### Correct answer
-- Single-select question: exactly one bullet, the correct option's text.
-- Multi-select question: one bullet per correct option (per the checkmark rule above), even if the user missed one of them.
+### Correct answer(s)
+- Single-select question, or a multi-select question where only one option turns out to be correct: exactly one bullet, heading stays singular — `##### Correct answer`.
+- Multi-select question with more than one correct option (per the checkmark rule above, counting gray checkmarks too, even if the user missed one): one bullet per correct option, and the heading becomes plural — `##### Correct answers` — since it's grammatically describing more than one thing.
 - Don't repeat all the options here, and don't add letters/numbers unless they're part of the option text itself.
 
 ### Explanation
@@ -93,10 +98,8 @@ Given a screenshot where the question reads "Which mode makes sense for processi
 - [ ] Pro mode
 
 ##### Correct answer
-
 - Flash mode
 
 ##### Explanation
-
 Flash mode handles volume quickly. Save Thinking and Pro modes for tasks that genuinely need deeper reasoning.
 ```
