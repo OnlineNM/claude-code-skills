@@ -89,14 +89,21 @@ Call `EnterPlanMode` immediately. All work happens in plan-mode to prevent accid
 
 #### Granularity choice (before invoking writing-plans)
 
-Present exactly these three options in chat and wait for the user's choice:
+Default to **"Balanced — one step per logical unit of work"** and proceed silently — do not ask the user, since Balanced is already the documented default and re-asking on every run adds friction without adding signal in the common case.
+
+Only surface the three-option question when the input content clearly signals, in qualitative terms (no numeric thresholds), unusually large/complex or unusually trivial scope. Example signals:
+- The scope spans multiple independent subsystems or user-facing flows.
+- The description itself calls out unusual risk, migration, or rollback complexity.
+- The change is a single-line/trivial fix with no meaningful design decisions.
+
+These examples guide judgment — they don't replace it with a threshold. When one of these (or a comparable) signal is present, present exactly these three options in chat and wait for the user's choice:
 - **1. Fewer, larger steps** — faster execution, less intermediate validation
 - **2. Balanced** (default — recommend this unless the input suggests otherwise) — one step per logical unit of work
 - **3. More, smaller steps** — maximum checkpoints, more context-switch overhead
 
 Wording must differ by input type: when the input is `ISSUE-N.md` (already a single vertical slice from `prd`), the three options size **implementation tasks within that slice**, not features — replace "steps" wording with "implementation tasks" in the ISSUE-N.md case to avoid re-litigating PRD-level decomposition.
 
-Hold the user's literal choice (e.g. `"Balanced — one step per logical unit of work"`) — it is interpolated into OVERRIDE 7 below when invoking `writing-plans`.
+Hold the resulting choice — whether auto-selected Balanced or the user's literal answer to the three-option question (e.g. `"Balanced — one step per logical unit of work"`) — it is interpolated into OVERRIDE 7 below when invoking `writing-plans`.
 
 Use the `Skill` tool to invoke `superpowers:writing-plans` with these overrides:
 
@@ -118,7 +125,7 @@ Use the `Skill` tool to invoke `superpowers:writing-plans` with these overrides:
 > 3. If the user provides feedback, update the file accordingly and ask again.
 > 4. When the user explicitly approves (e.g. "looks good", "approve", "done", "ok"), return control — do NOT commit here.
 
-> **OVERRIDE 7 — granularity:** The user already chose a granularity above this invocation. Include that choice **verbatim** here (e.g. "OVERRIDE 7 — granularity: the user chose 'Balanced — one step per logical unit of work'; size all plan steps accordingly"), since writing-plans is an invoked skill, not a typed API — the constraint only takes effect if it is literally present in this prompt.
+> **OVERRIDE 7 — granularity:** A granularity was determined above this invocation (auto-selected Balanced, or the user's explicit choice). Include that choice **verbatim** here (e.g. "OVERRIDE 7 — granularity: the user chose 'Balanced — one step per logical unit of work'; size all plan steps accordingly"), since writing-plans is an invoked skill, not a typed API — the constraint only takes effect if it is literally present in this prompt.
 
 Follow every other writing-plans step as written.
 
