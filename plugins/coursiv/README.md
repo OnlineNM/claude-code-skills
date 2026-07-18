@@ -14,3 +14,12 @@ Converts a screenshot of a Coursiv.io quiz question into a clean, copy/paste-rea
 - **Output:** a single Markdown block, ready to paste into notes or a question bank — no preamble, no commentary.
 
 See [skills/question/SKILL.md](skills/question/SKILL.md) for the full behavior and formatting rules.
+
+### `lesson` — `/coursiv:lesson`
+
+Expands the `%id_kind%` placeholder markers (e.g. `%1_q%`, `%5q%`, `%4p%`) inside a Coursiv.io lesson Markdown export into real content, by dispatching each marker to the matching sub-skill and substituting its output in place.
+
+- **Input:** a path to a lesson Markdown file exported from Coursiv.io.
+- **Output:** a sibling `<name>.expanded.md` file (the source export is never overwritten). Markers of kind `q` are resolved via the `question` skill; markers with no registered sub-skill (e.g. kind `p`) are left untouched for now.
+
+See [skills/lesson/SKILL.md](skills/lesson/SKILL.md) for the full behavior.

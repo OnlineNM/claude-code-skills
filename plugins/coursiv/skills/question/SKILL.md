@@ -71,9 +71,10 @@ List every option exactly as shown, each as an unchecked checkbox (`- [ ] ...`),
 - Don't repeat all the options here, and don't add letters/numbers unless they're part of the option text itself.
 
 ### Explanation
-Take the explanation text shown under the revealed-answer callout (labeled "Correct answer", "Incorrect answer", or "Almost right!" in the UI) and rewrite it as plain prose:
+Take the explanation text shown under the revealed-answer callout (labeled "Correct answer", "Incorrect answer", "Almost right!", "Amazing!", etc. in the UI) and rewrite it as plain prose:
 - Drop the callout heading itself — it never appears in the output.
-- Preserve the meaning and content exactly; don't add commentary, don't summarize further, and don't mention whether the user got it right or wrong.
+- The callout body itself often opens with its own short exclamation before the real explanation starts — things like "Bullseye!", "Exactly!", "Right!", "Well done!", "Nice!". Drop that leading interjection too, even though it's technically part of the same paragraph as the explanation — it's just enthusiasm about the user's answer, not part of the concept being explained. Start the output at the first sentence that actually explains something.
+- Preserve the meaning and content of the real explanation exactly; don't add commentary, don't summarize further, and don't mention whether the user got it right or wrong.
 - If the callout says "Incorrect answer" or "Almost right!", the explanation text underneath still just explains the concept — write it the same way you would for a "Correct answer" callout.
 
 ## Ignore all UI chrome
