@@ -41,7 +41,7 @@ If the user confirms, proceed. If not, wait.
 
 These rules govern everything this skill prints to the main conversation — subagent dispatch prompts (which go to a clean subagent context) are unaffected.
 
-- **Never paste full file contents into the main conversation.** Plan/spec file content is passed to subagents inside their dispatch prompt only; in the main thread, refer to files by path (`docs/<idea-slug>-PLAN.md`), not by quoting them.
+- **Never paste full file contents into the main conversation.** Subagents receive the plan's absolute path and read it themselves, in their own context; in the main thread, refer to files by path (`docs/<idea-slug>-PLAN.md`), not by quoting them.
 - **Subagent reports must come back as short summaries**, not raw logs: task count done/total, pass/fail test counts, and a one-line verdict. Do not relay a subagent's full internal transcript.
 - **On test failures, show only the essentials**: failing test names and a 1–3 line error excerpt each (assertion message, not full stack trace). Full stack traces or raw command output are shown only if the user explicitly asks for them.
 - **Batch divergences instead of dumping them.** If Step 3 finds more than ~5 divergences, first give a one-line count + the 3–5 most significant ones, then ask whether to walk through the rest one by one — don't flood the chat with every proposed edit at once.

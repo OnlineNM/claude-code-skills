@@ -607,4 +607,57 @@ Expected: both return no output.
 Read each of `plugins/spec-driven-development/skills/finalize/SKILL.md`, `plugins/spec-driven-development/skills/implement/SKILL.md`, `plugins/spec-driven-development/skills/plan/SKILL.md`, and `plugins/spec-driven-development/skills/verify/SKILL.md` in full, end-to-end, and confirm: each reads coherently with no duplicated instructions, no contradictions with adjacent steps, and every one of the 6 findings' fixes is present exactly where the spec describes it (by heading/section, matching the spec's own Verification section checks 1-2).
 
 No commit needed for this task — it is read-only verification confirming Tasks 1-6 are complete and correct.
+
+---
+
+### Task 8: Finding 2 follow-up — fix stale "content passed to subagents" rule (found during `sdd:verify`, Codex technical review)
+
+**Files:**
+- Modify: `plugins/spec-driven-development/skills/implement/SKILL.md`
+
+**Interfaces:** None (standalone doc line rewrite).
+
+The "Output and Context Rules" bullet at line 44 still reads: `**Never paste full file contents into the main conversation.** Plan/spec file content is passed to subagents inside their dispatch prompt only; in the main thread, refer to files by path (\`docs/<idea-slug>-PLAN.md\`), not by quoting them.` This describes the pre-Task-2 behavior (plan content pasted into the dispatch prompt) that Task 2/Finding 2 removed — the Step 2 and Step 4 templates now pass `<PLAN_PATH>` and instruct the subagent to read the file itself. This line contradicts those templates and could lead a future editor to reintroduce content-pasting.
+
+- [ ] **Step 1: Verify current stale wording (test-before-fix)**
+
+```bash
+grep -n "is passed to subagents inside their dispatch prompt only" plugins/spec-driven-development/skills/implement/SKILL.md
+```
+
+Expected: one match, inside `## Output and Context Rules`.
+
+- [ ] **Step 2: Rewrite the bullet**
+
+Using the `Edit` tool, replace:
+
+```markdown
+- **Never paste full file contents into the main conversation.** Plan/spec file content is passed to subagents inside their dispatch prompt only; in the main thread, refer to files by path (`docs/<idea-slug>-PLAN.md`), not by quoting them.
+```
+
+with:
+
+```markdown
+- **Never paste full file contents into the main conversation.** Subagents receive the plan's absolute path and read it themselves, in their own context; in the main thread, refer to files by path (`docs/<idea-slug>-PLAN.md`), not by quoting them.
+```
+
+- [ ] **Step 3: Verify the fix is present (test-after-fix)**
+
+```bash
+grep -n "Subagents receive the plan's absolute path and read it themselves" plugins/spec-driven-development/skills/implement/SKILL.md
+grep -n "is passed to subagents inside their dispatch prompt only" plugins/spec-driven-development/skills/implement/SKILL.md
+```
+
+Expected: first grep returns one match; second grep returns no output.
+
+- [ ] **Step 4: Re-read the edited region end-to-end**
+
+Read `plugins/spec-driven-development/skills/implement/SKILL.md` lines 38-50 and confirm the bullet now reads coherently with the rest of `## Output and Context Rules`, and no longer contradicts the `<PLAN_PATH>` dispatch templates further down the file.
+
+- [ ] **Step 5: Commit**
+
+```bash
+git add plugins/spec-driven-development/skills/implement/SKILL.md
+git commit -m "docs(sdd): fix stale plan-content-passed-to-subagents rule in implement Output and Context Rules (verify follow-up)"
+```
 </content>
