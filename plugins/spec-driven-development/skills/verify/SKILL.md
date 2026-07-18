@@ -64,9 +64,17 @@ Report only issues with confidence ≥ 80, as per the agent's standard threshold
 
 ### Step 3 — Technical review (Codex)
 
-Run `/codex:review --wait` to get an independent technical check from Codex on the same working tree.
+`codex:review` is a slash command with `disable-model-invocation: true` and cannot be invoked via the `Skill` tool — instead, run the `codex` binary directly through the Bash tool, non-interactively, with a bounded timeout:
 
-This pass catches defects that Claude may have missed — it has no plan context and reviews purely for technical correctness. When relaying its findings in Step 5, summarize each as a 1-2 line issue statement — do not paste Codex's raw output or full diff commentary into the chat.
+```bash
+codex review --uncommitted "Review the uncommitted changes in this working tree for correctness, adherence to the plan, and code quality. Report concrete issues found."
+```
+
+Use the Bash tool's `timeout` parameter set to 300000 (300 seconds / 5 minutes).
+
+If the `codex` binary is unavailable, the command exits non-zero (auth failure, etc.), or it hits the timeout, report that the Codex review could not run and let the user decide whether to proceed to Step 4 without it or stop and fix Codex access first — do not silently skip this step or block indefinitely.
+
+This pass catches defects that Claude may have missed — it has no plan context and reviews purely for technical correctness. Any findings Codex does return are advisory input into Step 5's overall PASS/FAIL determination alongside `verify`'s other checks — they don't auto-fail the run on their own, but weigh them the same way findings from `verify`'s other steps are weighed when producing the final verdict. When relaying its findings in Step 5, summarize each as a 1-2 line issue statement — do not paste Codex's raw output or full diff commentary into the chat.
 
 ### Step 4 — Definition of Done
 
