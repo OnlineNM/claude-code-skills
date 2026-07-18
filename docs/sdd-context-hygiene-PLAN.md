@@ -660,4 +660,57 @@ Read `plugins/spec-driven-development/skills/implement/SKILL.md` lines 38-50 and
 git add plugins/spec-driven-development/skills/implement/SKILL.md
 git commit -m "docs(sdd): fix stale plan-content-passed-to-subagents rule in implement Output and Context Rules (verify follow-up)"
 ```
+
+---
+
+### Task 9: Finding 5 follow-up — drop the unfulfillable "adherence to the plan" claim from the Codex prompt (found during `sdd:verify`, Codex technical review)
+
+**Files:**
+- Modify: `plugins/spec-driven-development/skills/verify/SKILL.md`
+
+**Interfaces:** None (standalone doc line rewrite). Does not touch the `codex review --uncommitted` invocation mechanism itself (that concern, if any, is explicitly out of scope for this task) — only the prompt string's wording.
+
+The Step 3 Codex prompt at line 70 asks Codex to review "correctness, adherence to the plan, and code quality," but line 77 states this same pass "has no plan context" — the plan is never passed into the `codex review` invocation. Codex has no basis to judge plan adherence as literally instructed by its own prompt, which can produce misleading plan-compliance judgments. Fix: remove the unfulfillable "adherence to the plan" clause from the prompt string, keeping it scoped to what Codex can actually assess.
+
+- [ ] **Step 1: Verify current contradictory wording (test-before-fix)**
+
+```bash
+grep -n "adherence to the plan" plugins/spec-driven-development/skills/verify/SKILL.md
+```
+
+Expected: one match, inside the Step 3 Codex prompt string.
+
+- [ ] **Step 2: Rewrite the prompt string**
+
+Using the `Edit` tool, replace:
+
+```markdown
+codex review --uncommitted "Review the uncommitted changes in this working tree for correctness, adherence to the plan, and code quality. Report concrete issues found."
+```
+
+with:
+
+```markdown
+codex review --uncommitted "Review the uncommitted changes in this working tree for correctness and code quality. Report concrete issues found."
+```
+
+- [ ] **Step 3: Verify the fix is present (test-after-fix)**
+
+```bash
+grep -n "adherence to the plan" plugins/spec-driven-development/skills/verify/SKILL.md
+grep -n "Review the uncommitted changes in this working tree for correctness and code quality" plugins/spec-driven-development/skills/verify/SKILL.md
+```
+
+Expected: first grep returns no output; second grep returns one match.
+
+- [ ] **Step 4: Re-read the edited region end-to-end**
+
+Read `plugins/spec-driven-development/skills/verify/SKILL.md` around `### Step 3` (lines 65-77) and confirm the prompt string no longer claims plan-adherence review, and reads coherently with line 77's "has no plan context" statement (no remaining contradiction).
+
+- [ ] **Step 5: Commit**
+
+```bash
+git add plugins/spec-driven-development/skills/verify/SKILL.md
+git commit -m "docs(sdd): drop unfulfillable plan-adherence claim from Codex review prompt (verify follow-up)"
+```
 </content>
