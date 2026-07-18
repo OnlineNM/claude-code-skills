@@ -17,6 +17,10 @@ Conduct all dialogue with the user — questions, status updates, presented opti
 
 All deliverables this skill produces or drives (commit messages, merge/PR content) must always be written in English, independent of the Romanian dialogue above.
 
+## Before Starting
+
+Tell the user: *"Please run `/clear` first to start with a clean context, then re-invoke this skill."* If the user has already cleared, proceed. If this skill was invoked directly by `sdd:verify` Step 7 (same-session handoff after a PASS verdict), skip this prompt and proceed directly — the handoff is intentional and doesn't need a fresh context.
+
 ## Output and Context Rules
 
 This skill orchestrates git operations and other skills — the risk here is echoing raw command output or another skill's full output instead of a short conclusion. Apply these rules throughout:
