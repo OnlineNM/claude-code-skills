@@ -67,7 +67,7 @@ Report only issues with confidence ≥ 80, as per the agent's standard threshold
 `codex:review` is a slash command with `disable-model-invocation: true` and cannot be invoked via the `Skill` tool — instead, run the `codex` binary directly through the Bash tool, non-interactively, with a bounded timeout:
 
 ```bash
-codex review --uncommitted "Review the uncommitted changes in this working tree for correctness, adherence to the plan, and code quality. Report concrete issues found."
+codex review --uncommitted "Review the uncommitted changes in this working tree for correctness and code quality. Report concrete issues found."
 ```
 
 Use the Bash tool's `timeout` parameter set to 300000 (300 seconds / 5 minutes).
