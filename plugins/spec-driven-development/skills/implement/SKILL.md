@@ -67,9 +67,9 @@ Use the `Agent` tool to spawn a subagent with this prompt (substitute actual pla
 ```
 You are implementing a TDD plan. Read this plan carefully and execute it step by step.
 
-<plan>
-<PLAN_CONTENT>
-</plan>
+<plan_path>
+<PLAN_PATH>
+</plan_path>
 
 Instructions:
 - Use the `superpowers:subagent-driven-development` skill to implement this plan task-by-task.
@@ -81,7 +81,7 @@ Instructions:
 - Report back concisely: task count completed/total, overall test pass/fail counts, and any issues encountered in 1-2 lines each. Do not paste full test output or file contents in your report.
 ```
 
-Replace `<PLAN_CONTENT>` with the full content of the plan file read in Step 1.
+Replace `<PLAN_PATH>` with the absolute path of the plan file read in Step 1. Read that file yourself, in your own context, before starting work — do not rely on any plan content being pasted into this prompt.
 
 Wait for the implementation subagent to complete before proceeding. Relay its report to the user as the short summary described in **Output and Context Rules**, not the raw subagent transcript.
 
@@ -102,9 +102,9 @@ Use the `Agent` tool to spawn a subagent with this prompt:
 ```
 You are verifying an implementation against a TDD plan. Do NOT modify any code.
 
-<plan>
-<PLAN_CONTENT>
-</plan>
+<plan_path>
+<PLAN_PATH>
+</plan_path>
 
 Instructions:
 - Read the test commands and verification steps defined in the plan above.
@@ -113,7 +113,7 @@ Instructions:
 - Do NOT fix anything — only report what you find.
 ```
 
-Replace `<PLAN_CONTENT>` with the full content of the plan file.
+Replace `<PLAN_PATH>` with the absolute path of the plan file read in Step 1. Read that file yourself, in your own context, before starting work — do not rely on any plan content being pasted into this prompt.
 
 If the testing subagent reports any failures:
 1. Spawn a new **fix subagent** using the Agent tool, giving it the failing test output and the plan content. Instruct it to fix only the failing implementation (minimal change, do not alter tests), and to report back with a 1-2 line summary of the fix, not a diff dump.
