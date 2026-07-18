@@ -75,6 +75,7 @@ Instructions:
 - Use the `superpowers:subagent-driven-development` skill to implement this plan task-by-task.
 - Each task must follow `superpowers:test-driven-development`.
 - Do NOT skip any step.
+- Before every use of the `Edit` tool on an existing file — even one you believe a prior task already created — use the `Read` tool on it first, in this subagent's own context; using `Write` to create a genuinely new file needs no prior Read. If `Edit` or `Write` fails, `Read` the file (or confirm it doesn't exist) and retry the same tool — never fall back to a raw shell command (e.g. `sed`, `cat >`) to force the change through.
 - Do NOT modify tests to make them pass — fix the implementation instead.
 - For framework-specific patterns (React hooks, routing, auth, database ORM, etc.), verify against official documentation before implementing.
 - After all tasks are complete, run the full test suite and confirm all tests pass.
@@ -110,6 +111,7 @@ Instructions:
 - Read the test commands and verification steps defined in the plan above.
 - Run every test and verification command.
 - Report concisely: pass/fail counts, an overall PASS / FAIL verdict, and for each failing test only its name plus a 1-3 line error excerpt (not the full stack trace or raw command output).
+- Before every use of the `Edit` tool on an existing file — even one you believe a prior task already created — use the `Read` tool on it first, in this subagent's own context; using `Write` to create a genuinely new file needs no prior Read. If `Edit` or `Write` fails, `Read` the file (or confirm it doesn't exist) and retry the same tool — never fall back to a raw shell command (e.g. `sed`, `cat >`) to force the change through.
 - Do NOT fix anything — only report what you find.
 ```
 
