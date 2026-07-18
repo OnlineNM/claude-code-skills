@@ -231,6 +231,48 @@ git add plugins/spec-driven-development/skills/implement/SKILL.md
 git commit -m "docs(sdd): fix leftover plan-content lead-in text in implement Step 2 (verify follow-up)"
 ```
 
+- [ ] **Step 8: Move the read-the-file instruction inside both fenced dispatch prompts (found during `sdd:verify` — Codex technical review, Problem 1)**
+
+Both the Step 2 and Step 4 fenced prompt blocks currently rely on a sentence placed *after* the closing ``` fence ("Replace `<PLAN_PATH>` with the absolute path... Read that file yourself, in your own context, before starting work — do not rely on any plan content being pasted into this prompt.") to tell the dispatched subagent to actually open the plan file. Because that sentence is outside the fence, it is prose for whoever fills in the template, not part of the literal text that gets copy-pasted into the `Agent` tool's prompt argument — the subagent's actual received prompt never contains an explicit instruction to read the file at `<PLAN_PATH>`.
+
+Fix: add an explicit imperative line inside each fenced block, immediately after the `<plan_path>...</plan_path>` tag, instructing the subagent to read that file before proceeding. In the Step 2 template, after `</plan_path>` and before `Instructions:`, insert:
+
+```markdown
+Read the plan file at the path above before doing anything else.
+```
+
+In the Step 4 template, after `</plan_path>` and before `Instructions:`, insert the same line:
+
+```markdown
+Read the plan file at the path above before doing anything else.
+```
+
+Leave the post-fence "Replace `<PLAN_PATH>` with the absolute path..." prose sentence in place — it still correctly instructs the orchestrator (not the subagent) on how to fill the placeholder; it no longer needs to also carry the read-the-file instruction, but removing it isn't required either.
+
+Verify: `grep -c "Read the plan file at the path above before doing anything else." plugins/spec-driven-development/skills/implement/SKILL.md` returns `2`.
+
+```bash
+git add plugins/spec-driven-development/skills/implement/SKILL.md
+git commit -m "docs(sdd): move read-the-file instruction inside both fenced dispatch prompts (verify follow-up, Problem 1)"
+```
+
+- [ ] **Step 9: Stop passing "the plan content" to the fix subagent in the retry loop (found during `sdd:verify` — Codex technical review, Problem 2)**
+
+The Step 4 retry loop (the numbered list right after the Step 4 template, currently: "1. Spawn a new **fix subagent** using the Agent tool, giving it the failing test output and the plan content. ...") still tells the orchestrator to hand the fix subagent "the plan content", reintroducing the exact content-pasting behavior Finding 2 removed from the main dispatch templates.
+
+Fix: replace that bullet's wording so the fix subagent receives the plan's absolute path instead of pasted content:
+
+```markdown
+1. Spawn a new **fix subagent** using the Agent tool, giving it the failing test output and the plan file's absolute path (instruct it to read the plan file itself, not a pasted copy). Instruct it to fix only the failing implementation (minimal change, do not alter tests), and to report back with a 1-2 line summary of the fix, not a diff dump.
+```
+
+Verify: `grep -n "giving it the failing test output and the plan content" plugins/spec-driven-development/skills/implement/SKILL.md` returns no output; `grep -n "giving it the failing test output and the plan file's absolute path" plugins/spec-driven-development/skills/implement/SKILL.md` returns one match.
+
+```bash
+git add plugins/spec-driven-development/skills/implement/SKILL.md
+git commit -m "docs(sdd): pass plan path instead of plan content to fix subagent in retry loop (verify follow-up, Problem 2)"
+```
+
 ---
 
 ### Task 3: Finding 3 — granularity checkpoint no longer fires on every `plan` run
