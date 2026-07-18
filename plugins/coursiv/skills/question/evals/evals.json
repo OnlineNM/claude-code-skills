@@ -1,0 +1,54 @@
+{
+  "skill_name": "question",
+  "evals": [
+    {
+      "id": 0,
+      "name": "single-select-incorrect-callout",
+      "prompt": "Convert this Coursiv quiz screenshot into the Markdown format we use for question notes: /Users/lairimia/VSCode/claude-code-skills/tmp/1_q.png",
+      "expected_output": "See /Users/lairimia/VSCode/claude-code-skills/tmp/1q.md — single-select question, screenshot shows an 'Incorrect answer' callout (user picked the wrong option, shown with a red X), the actually-correct option has a gray checkmark.",
+      "files": ["/Users/lairimia/VSCode/claude-code-skills/tmp/1_q.png"]
+    },
+    {
+      "id": 1,
+      "name": "single-select-with-quoted-prompt",
+      "prompt": "Convert this Coursiv quiz screenshot into the Markdown format we use for question notes: /Users/lairimia/VSCode/claude-code-skills/tmp/2_q.png",
+      "expected_output": "See /Users/lairimia/VSCode/claude-code-skills/tmp/2q.md — single-select question whose title includes a quoted example prompt that must be preserved verbatim, 'Almost right!' callout.",
+      "files": ["/Users/lairimia/VSCode/claude-code-skills/tmp/2_q.png"]
+    },
+    {
+      "id": 2,
+      "name": "multi-select-partial-correct",
+      "prompt": "Convert this Coursiv quiz screenshot into the Markdown format we use for question notes: /Users/lairimia/VSCode/claude-code-skills/tmp/3_q.png",
+      "expected_output": "See /Users/lairimia/VSCode/claude-code-skills/tmp/3q.md — multi-select question ('Select all possible answers'), user selected 2 of 3 correct options (green checks), missed the third which shows a gray checkmark and must still be listed as a correct answer. Callout is 'Almost right!'.",
+      "files": ["/Users/lairimia/VSCode/claude-code-skills/tmp/3_q.png"]
+    },
+    {
+      "id": 3,
+      "name": "single-select-correct-callout",
+      "prompt": "Convert this Coursiv quiz screenshot into the Markdown format we use for question notes: /Users/lairimia/VSCode/claude-code-skills/tmp/5q.png",
+      "expected_output": "See /Users/lairimia/VSCode/claude-code-skills/tmp/5q.md — single-select question with 4 options and a 'Correct answer' callout.",
+      "files": ["/Users/lairimia/VSCode/claude-code-skills/tmp/5q.png"]
+    },
+    {
+      "id": 4,
+      "name": "single-select-no-instruction-line",
+      "prompt": "Convert this Coursiv quiz screenshot into the Markdown format we use for question notes: /Users/lairimia/VSCode/claude-code-skills/tmp/6q.png",
+      "expected_output": "See /Users/lairimia/VSCode/claude-code-skills/tmp/6q.md — single-select question with no instruction line at all (no 'Select one/all' text), the instruction section must be omitted entirely.",
+      "files": ["/Users/lairimia/VSCode/claude-code-skills/tmp/6q.png"]
+    },
+    {
+      "id": 5,
+      "name": "single-select-four-options",
+      "prompt": "Convert this Coursiv quiz screenshot into the Markdown format we use for question notes: /Users/lairimia/VSCode/claude-code-skills/tmp/7q.png",
+      "expected_output": "See /Users/lairimia/VSCode/claude-code-skills/tmp/7q.md — single-select question, 3 options.",
+      "files": ["/Users/lairimia/VSCode/claude-code-skills/tmp/7q.png"]
+    },
+    {
+      "id": 6,
+      "name": "single-select-four-options-b",
+      "prompt": "Convert this Coursiv quiz screenshot into the Markdown format we use for question notes: /Users/lairimia/VSCode/claude-code-skills/tmp/8q.png",
+      "expected_output": "See /Users/lairimia/VSCode/claude-code-skills/tmp/8q.md — single-select question with 4 options.",
+      "files": ["/Users/lairimia/VSCode/claude-code-skills/tmp/8q.png"]
+    }
+  ]
+}
