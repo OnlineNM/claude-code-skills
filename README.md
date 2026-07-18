@@ -32,14 +32,34 @@ A group of related skills becomes a plugin in `plugins/` with its own namespace 
 | `skill-check` | [plugins/skill-check/](plugins/skill-check/) | `detect-claude`, `declaudeify`, `convert`, `lint` — skill portability |
 | `wbs` | [plugins/website/](plugins/website/) | `mockup`, `screenshot`, `css`, `design-recreation` |
 | `telegram` | [plugins/telegram/](plugins/telegram/) | `notify`, `status`, `toggle` |
+| `coursiv` | [plugins/coursiv/](plugins/coursiv/) | `question`, `lesson` — processing Coursiv.io lessons |
+
+## Installing a plugin for the first time on another machine
+
+Once a new plugin has been pushed to `main`, pull it in on another machine:
+
+```
+/plugin marketplace add OnlineNM/claude-code-skills
+```
+
+Only needed if that machine hasn't registered the `claude-skills-laur` marketplace before. Skip straight to the next step if it already has (e.g. it already runs other plugins from this repo).
+
+```
+/plugin marketplace update claude-skills-laur
+/plugin install <plugin>@claude-skills-laur
+```
+
+`marketplace update` refreshes the plugin list from the pushed commit; `install` is only needed once per new plugin — plugins already installed pick up future updates via the section below, not another `install`.
 
 ## Updating an installed plugin after local changes
 
 Plugins installed from the `claude-skills-laur` marketplace run from a **cached copy** under
 `~/.claude/plugins/cache/claude-skills-laur/<plugin>/<version>/`, not from this repo's working
-directory. Bumping a plugin's version here (`plugin.json`) does not update that cache — the
-marketplace metadata and the plugin itself must be refreshed explicitly, then the session
-restarted:
+directory. The cache is keyed by version, so bumping `version` in a plugin's `plugin.json` is
+what makes a change visible as an update at all — it's a manual step, not automated by a script
+or hook, so do it as part of committing the change, before pushing. Bumping the version alone
+does not update the cache on other machines — the marketplace metadata and the plugin itself
+must be refreshed explicitly there, then the session restarted:
 
 ```
 claude plugin marketplace update claude-skills-laur

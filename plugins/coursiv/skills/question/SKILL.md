@@ -44,7 +44,6 @@ Output ONLY the Markdown block below — no preamble, no closing remarks, no cod
 
 ```markdown
 #### <Question title>
-
 <Instruction, if present>
 - [ ] <Answer option 1>
 - [ ] <Answer option 2>
@@ -58,7 +57,7 @@ Output ONLY the Markdown block below — no preamble, no closing remarks, no cod
 <Explanation text, rewritten as plain prose>
 ```
 
-Note the blank line placement carefully: it separates the three blocks (title+instruction+options / correct answer / explanation) from each other, but never appears *inside* a block — a heading is always immediately followed by its own content on the next line, no gap.
+Note the blank line placement carefully — it's easy to get this wrong by reflexively adding a blank line after every heading the way plain Markdown usually reads. There is **no blank line after `#### <Question title>`** — the title, the instruction (if present), any quoted example, and the options list all run as consecutive lines with no gaps between them, forming one tight block. A blank line only ever appears in exactly two places: right before `##### Correct answer(s)`, and right before `##### Explanation`. Inside each of those two sections, the heading is immediately followed by its content on the very next line too — no blank line there either. So across the whole output there are exactly two blank lines, full stop; don't add a third one after the title out of habit.
 
 ### Question title vs. instruction
 The screenshot uses visual hierarchy to distinguish these two, so use the same cue rather than guessing from wording alone: the **title** is the larger/bolder heading text, and the **instruction** (if present at all) is a second, visually lighter line right below it — even when that line is a full sentence rather than a short imperative like "Select all possible answers." Both are real and both matter: don't fold the instruction into the title just because it's a longer sentence, and don't drop the title just because the instruction happens to be the more "question-like" sentence of the two.
@@ -92,7 +91,6 @@ Given a screenshot where the question reads "Which mode makes sense for processi
 
 ```markdown
 #### Which mode makes sense for processing 200 responses quickly?
-
 - [ ] Thinking mode
 - [ ] Flash mode
 - [ ] Pro mode
