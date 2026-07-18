@@ -71,6 +71,8 @@ You are implementing a TDD plan. Read this plan carefully and execute it step by
 <PLAN_PATH>
 </plan_path>
 
+Read the plan file at the path above before doing anything else.
+
 Instructions:
 - Use the `superpowers:subagent-driven-development` skill to implement this plan task-by-task.
 - Each task must follow `superpowers:test-driven-development`.
@@ -107,6 +109,8 @@ You are verifying an implementation against a TDD plan. Do NOT modify any code.
 <PLAN_PATH>
 </plan_path>
 
+Read the plan file at the path above before doing anything else.
+
 Instructions:
 - Read the test commands and verification steps defined in the plan above.
 - Run every test and verification command.
@@ -118,7 +122,7 @@ Instructions:
 Replace `<PLAN_PATH>` with the absolute path of the plan file read in Step 1. Read that file yourself, in your own context, before starting work — do not rely on any plan content being pasted into this prompt.
 
 If the testing subagent reports any failures:
-1. Spawn a new **fix subagent** using the Agent tool, giving it the failing test output and the plan content. Instruct it to fix only the failing implementation (minimal change, do not alter tests), and to report back with a 1-2 line summary of the fix, not a diff dump.
+1. Spawn a new **fix subagent** using the Agent tool, giving it the failing test output and the plan file's absolute path (instruct it to read the plan file itself, not a pasted copy). Instruct it to fix only the failing implementation (minimal change, do not alter tests), and to report back with a 1-2 line summary of the fix, not a diff dump.
 2. Re-dispatch the testing subagent.
 3. Repeat until all tests pass.
 
