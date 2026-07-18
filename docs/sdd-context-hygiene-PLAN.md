@@ -214,6 +214,23 @@ git add plugins/spec-driven-development/skills/implement/SKILL.md
 git commit -m "docs(sdd): pass plan by path instead of pasted content in implement dispatch templates (Finding 2)"
 ```
 
+- [ ] **Step 7: Fix leftover contradictory lead-in text (found during `sdd:verify`)**
+
+The Step 2 dispatch lead-in at line 65 still reads: `Use the \`Agent\` tool to spawn a subagent with this prompt (substitute actual plan content):` — the `(substitute actual plan content)` parenthetical is stale text from before the `<PLAN_PATH>` fix and contradicts line 85's explicit "do not rely on any plan content being pasted into this prompt."
+
+Using the `Edit` tool, replace that lead-in line with:
+
+```markdown
+Use the `Agent` tool to spawn a subagent with this prompt (substitute the absolute plan path):
+```
+
+Verify: `grep -n "substitute actual plan content" plugins/spec-driven-development/skills/implement/SKILL.md` returns no output; `grep -n "substitute the absolute plan path" plugins/spec-driven-development/skills/implement/SKILL.md` returns one match.
+
+```bash
+git add plugins/spec-driven-development/skills/implement/SKILL.md
+git commit -m "docs(sdd): fix leftover plan-content lead-in text in implement Step 2 (verify follow-up)"
+```
+
 ---
 
 ### Task 3: Finding 3 — granularity checkpoint no longer fires on every `plan` run

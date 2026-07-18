@@ -62,7 +62,7 @@ Extract `<idea-slug>` from the filename:
 
 **Always** dispatch implementation to a subagent — never run it inline, regardless of plan size. A clean, uncontaminated context is required for reliable implementation.
 
-Use the `Agent` tool to spawn a subagent with this prompt (substitute actual plan content):
+Use the `Agent` tool to spawn a subagent with this prompt (substitute the absolute plan path):
 
 ```
 You are implementing a TDD plan. Read this plan carefully and execute it step by step.
