@@ -31,6 +31,10 @@
     {
       "name": "pmpt",
       "source": "./plugins/prompt"
+    },
+    {
+      "name": "coursiv",
+      "source": "./plugins/coursiv"
     }
   ]
 }
