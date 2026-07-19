@@ -13,7 +13,11 @@ Two `.png` files, from the same exercise:
 - one shows the exercise's **initial state**: the title, the instruction, an incomplete prompt with bracketed placeholders like `[tone]` or `[command]`, and a tray of answer options to fill them in with.
 - one shows the exercise's **completed state**: the same prompt with the options already filled in, sent to an AI tool (Gemini, etc.), followed by that tool's response.
 
-Don't assume which argument is which based on order or on filename — some are named with a trailing `q`/`a` (`400pq.png` / `400pa.png`) but that convention won't always hold. Instead, read both images and tell them apart by what's actually on screen: the one with visible bracketed placeholders and a row of option chips is the initial state; the one with a chat bubble showing a fully-written prompt followed by an AI response is the completed state.
+### Telling the two images apart
+
+Filenames for this exercise type usually follow a naming convention: `<id>p<q|a>.png` — a numeric `id`, then `p` for "prompt" (marking which sub-skill handles it, same idea as the `%id_kind%` markers the `lesson` skill dispatches on), then either `q` (question — the initial state) or `a` (answer — the completed state). So `400pq.png` is the initial state and `400pa.png` is the completed state of the same exercise (id `400`).
+
+When both filenames follow this pattern, use it — it's the fastest way to know which is which, and lets you pair up the two images by their shared `id` even if given alongside other files. But don't treat it as gospel: filenames get renamed, copied, and re-saved constantly, so if the naming doesn't clearly follow this convention (or the two given files don't share an `id`), fall back to reading both images and telling them apart by what's actually on screen — the one with visible bracketed placeholders and a row of option chips is the initial state; the one with a chat bubble showing a fully-written prompt followed by an AI response is the completed state. If the filename convention and the actual on-screen content ever disagree, trust the content — it can't be renamed into being wrong.
 
 ### Resolving the file paths
 
