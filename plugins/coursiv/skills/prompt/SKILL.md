@@ -78,6 +78,7 @@ Transcribe the AI tool's response as faithfully as possible:
 - Don't invent text that isn't visible — if the response is cut off in the screenshot, transcribe only the visible part.
 - If the response is only an image or a generated visual artifact with no readable text, write `[AI generated image]` or `[AI generated artifact]` (whichever fits what's shown) instead of transcribing anything.
 - Leave out interface chrome: success labels like "Amazing!", "Continue" buttons, icons, the tool's name badge, platform feedback banners, and navigation elements. None of that is part of the response itself.
+- Sometimes the completed-state screenshot shows the filled-in prompt and a completion banner (e.g. "Amazing! You're right on track with your approach") but never actually reveals what the AI generated — the exercise moves on without capturing that part of the screen. That banner is UI chrome per the rule above, not a response, so don't transcribe it; but don't invent a plausible-looking response to fill the gap either, and don't stop to ask what to do. Default to writing `[AI response not captured in screenshot]` in the `text` block and continue producing the rest of the output normally — the title, instruction, initial prompt, options, and final prompt are usually all still fully visible even when the response isn't, so there's no reason to hold up the whole block over one missing section.
 
 ## Ignore all UI chrome
 
