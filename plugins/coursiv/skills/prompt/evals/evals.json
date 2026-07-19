@@ -1,0 +1,26 @@
+{
+  "skill_name": "prompt",
+  "evals": [
+    {
+      "id": 0,
+      "name": "single-blank-tone-rewrite",
+      "prompt": "Convert this Coursiv prompt exercise into the Markdown format we use for exercise notes: /Users/lairimia/VSCode/claude-code-skills/tmp/400pq.png and /Users/lairimia/VSCode/claude-code-skills/tmp/400pa.png",
+      "expected_output": "See /Users/lairimia/VSCode/claude-code-skills/tmp/400.md for the target shape. Note: that reference file's option order does not match the screenshot's visual tray order (it matches final-prompt usage order instead) — per user decision, the skill preserves visual order, so the option list legitimately differs from this file. Everything else (title, instruction, placeholders, final prompt, AI response) should match.",
+      "files": ["/Users/lairimia/VSCode/claude-code-skills/tmp/400pq.png", "/Users/lairimia/VSCode/claude-code-skills/tmp/400pa.png"]
+    },
+    {
+      "id": 1,
+      "name": "four-blanks-long-response",
+      "prompt": "Convert this Coursiv prompt exercise into the Markdown format we use for exercise notes: /Users/lairimia/VSCode/claude-code-skills/tmp/410pq.png and /Users/lairimia/VSCode/claude-code-skills/tmp/410pa.png",
+      "expected_output": "See /Users/lairimia/VSCode/claude-code-skills/tmp/410.md — same option-order caveat as eval 0 applies. Also a good check for a long, multi-section AI response (headings + bullets) transcribed faithfully.",
+      "files": ["/Users/lairimia/VSCode/claude-code-skills/tmp/410pq.png", "/Users/lairimia/VSCode/claude-code-skills/tmp/410pa.png"]
+    },
+    {
+      "id": 2,
+      "name": "three-blanks-visual-and-usage-order-match",
+      "prompt": "Convert this Coursiv prompt exercise into the Markdown format we use for exercise notes: /Users/lairimia/VSCode/claude-code-skills/tmp/420pq.png and /Users/lairimia/VSCode/claude-code-skills/tmp/420pa.png",
+      "expected_output": "See /Users/lairimia/VSCode/claude-code-skills/tmp/420.md — should match exactly, this is the case where visual order and final-prompt usage order happen to coincide.",
+      "files": ["/Users/lairimia/VSCode/claude-code-skills/tmp/420pq.png", "/Users/lairimia/VSCode/claude-code-skills/tmp/420pa.png"]
+    }
+  ]
+}

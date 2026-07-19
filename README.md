@@ -32,7 +32,7 @@ A group of related skills becomes a plugin in `plugins/` with its own namespace 
 | `skill-check` | [plugins/skill-check/](plugins/skill-check/) | `detect-claude`, `declaudeify`, `convert`, `lint` — skill portability |
 | `wbs` | [plugins/website/](plugins/website/) | `mockup`, `screenshot`, `css`, `design-recreation` |
 | `telegram` | [plugins/telegram/](plugins/telegram/) | `notify`, `status`, `toggle` |
-| `coursiv` | [plugins/coursiv/](plugins/coursiv/) | `question`, `lesson` — processing Coursiv.io lessons |
+| `coursiv` | [plugins/coursiv/](plugins/coursiv/) | `question`, `prompt`, `lesson` — processing Coursiv.io lessons |
 
 ## Installing a plugin for the first time on another machine
 

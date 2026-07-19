@@ -15,6 +15,15 @@ Converts a screenshot of a Coursiv.io quiz question into a clean, copy/paste-rea
 
 See [skills/question/SKILL.md](skills/question/SKILL.md) for the full behavior and formatting rules.
 
+### `prompt` — `/coursiv:prompt`
+
+Converts a pair of screenshots from a Coursiv.io "complete the prompt" exercise (incomplete prompt + option chips, and completed prompt + AI response) into a clean, copy/paste-ready Markdown block.
+
+- **Input:** two `.png` screenshots (order doesn't matter — the skill tells them apart by content), each resolved the same way as `question`'s single image (explicit path, or bare filename falling back to `0_Inbox`).
+- **Output:** a Markdown block with the exercise title/instruction, the incomplete prompt with its placeholder options (in the screenshot's visual order), the completed final prompt, and the AI's response.
+
+See [skills/prompt/SKILL.md](skills/prompt/SKILL.md) for the full behavior and formatting rules.
+
 ### `lesson` — `/coursiv:lesson`
 
 Expands the `%id_kind%` placeholder markers (e.g. `%1_q%`, `%5q%`, `%4p%`) inside a Coursiv.io lesson Markdown export into real content, by dispatching each marker to the matching sub-skill and substituting its output in place.
