@@ -5,7 +5,7 @@ description: Expands `%id_kind%` markers inside a Coursiv.io lesson Markdown exp
 
 # Coursiv Lesson Expander
 
-Coursiv.io lesson exports (Markdown, via a clipper like Obsidian Web Clipper) contain placeholder markers where interactive elements — quiz questions today, other element types later — used to be. This skill walks the file, resolves each marker to real content, and writes out an expanded copy.
+Coursiv.io lesson exports (Markdown, via a clipper like Obsidian Web Clipper) contain placeholder markers where interactive elements — quiz questions, prompt/column/step exercises — used to be. This skill walks the file, resolves each marker to real content, and overwrites the file in place with the expanded result.
 
 ## Input
 
@@ -48,9 +48,9 @@ Take the Markdown block that comes back and use it as the replacement for this m
 
 Replace each resolved marker in the document with its generated Markdown block (surrounded by the same blank-line spacing the marker had, so the result reads as normal Markdown rather than everything jammed together). Leave unresolved markers (unknown `kind`) in place.
 
-Save the result as a new file next to the input, named `<original-name>.expanded.md` (e.g. `Coursiv.md` → `Coursiv.expanded.md`) — don't overwrite the source export, since it's the user's clipped original and they may want to re-run this after new sub-skills are added.
+Write the result back to the same file you read it from, overwriting it in place — there's no separate `.expanded.md` output file.
 
-Tell the user where you saved it, how many markers you resolved, and list any markers you had to leave untouched (with their `kind`) so they know what's still pending.
+Tell the user that the file was overwritten in place, how many markers you resolved, and list any markers you had to leave untouched (with their `kind`) so they know what's still pending — that's especially important here since, unlike a sibling output file, there's no separate copy left to compare against.
 
 ## Example
 
