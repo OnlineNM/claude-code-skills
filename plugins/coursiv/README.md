@@ -50,3 +50,12 @@ Expands the `%id_kind%` placeholder markers (e.g. `%1_q%`, `%5q%`, `%6p%`, `%7c%
 - **Output:** the same file, overwritten in place with the markers expanded (no separate output file). Markers of kind `q` are resolved via the `question` skill; kind `p` via `prompt` (`<id>pq.png` / `<id>pa.png`); kind `c` via `columns` (`<id>cq.png` / `<id>ca.png`); kind `w` via `workflow` (`<id>wq.png` / `<id>wa.png`); markers of any other kind have no registered sub-skill yet and are left untouched.
 
 See [skills/lesson/SKILL.md](skills/lesson/SKILL.md) for the full behavior.
+
+### `cleanup` — `/coursiv:cleanup`
+
+Prepares a clipped Coursiv lesson note (under `Clippings/<course>/*.md` in the Obsidian vault) for standalone offline use: strips YAML frontmatter, generates a Quizblock quiz from the lesson content (per `Clippings/quiz_course.md`), and embeds every remote image as a size-capped base64 `data:` URI so the note needs no internet access.
+
+- **Input:** a path to a lesson note under `Clippings/`.
+- **Output:** the same note, edited in place — no frontmatter, a `## Quiz` section, and inline images. Uses a bundled script (`scripts/process_note.py`) for the mechanical, file-size-sensitive parts (frontmatter stripping, image download/compress/embed); quiz *content* generation is done by Claude directly, guided by `quiz_course.md`.
+
+See [skills/cleanup/SKILL.md](skills/cleanup/SKILL.md) for the full behavior.
