@@ -1,0 +1,26 @@
+{
+  "skill_name": "columns",
+  "evals": [
+    {
+      "id": 0,
+      "name": "identity-mapping-four-pairs",
+      "prompt": "Convert this Coursiv column-matching exercise into the Markdown format we use for exercise notes: /Users/lairimia/VSCode/claude-code-skills/tmp/600cq.png and /Users/lairimia/VSCode/claude-code-skills/tmp/600ca.png",
+      "expected_output": "See /Users/lairimia/VSCode/claude-code-skills/tmp/600c.md — matches exactly, including the correct-matches mapping (1→A, 2→D, 3→C, 4→B).",
+      "files": ["/Users/lairimia/VSCode/claude-code-skills/tmp/600cq.png", "/Users/lairimia/VSCode/claude-code-skills/tmp/600ca.png"]
+    },
+    {
+      "id": 1,
+      "name": "scrambled-mapping-four-pairs",
+      "prompt": "Convert this Coursiv column-matching exercise into the Markdown format we use for exercise notes: /Users/lairimia/VSCode/claude-code-skills/tmp/610cq.png and /Users/lairimia/VSCode/claude-code-skills/tmp/610ca.png",
+      "expected_output": "See /Users/lairimia/VSCode/claude-code-skills/tmp/610c.md for the target shape, BUT that reference file's column order does not match the unsolved screenshot's actual visual order (it follows the solved screenshot's row grouping instead) — verified against the images directly. Per user decision (same call made for the `prompt` skill's option-order discrepancy), the skill preserves the unsolved screenshot's original order, so this eval's column order and correct-matches mapping legitimately differ from 610c.md. Confirmed correct mapping from the images: 1→D, 2→C, 3→A, 4→B (left/right numbered per the unsolved screenshot's own order: left = Single big title, Three boxes in a row, Button centered under text, Section split into two columns; right = Call-to-action, Two-column layout, Feature grid, Header).",
+      "files": ["/Users/lairimia/VSCode/claude-code-skills/tmp/610cq.png", "/Users/lairimia/VSCode/claude-code-skills/tmp/610ca.png"]
+    },
+    {
+      "id": 2,
+      "name": "no-reference-regression-check",
+      "prompt": "Convert this Coursiv column-matching exercise into the Markdown format we use for exercise notes: /Users/lairimia/VSCode/claude-code-skills/tmp/620cq.png and /Users/lairimia/VSCode/claude-code-skills/tmp/620ca.png",
+      "expected_output": "No .md reference exists for this pair — used only as a regression/consistency check (same shape, same rules applied) since 600/610 already validate correctness against real images.",
+      "files": ["/Users/lairimia/VSCode/claude-code-skills/tmp/620cq.png", "/Users/lairimia/VSCode/claude-code-skills/tmp/620ca.png"]
+    }
+  ]
+}
