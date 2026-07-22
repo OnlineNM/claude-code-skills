@@ -1,11 +1,11 @@
 ---
 name: lesson
-description: Expands `%id_kind%` markers inside a Coursiv.io lesson Markdown export (e.g. `%1_q%`, `%5q%`, `%6p%`, `%7c%`, `%8w%`) into real content, by dispatching each marker to the matching Coursiv sub-skill (`question` for quiz markers, `prompt` for fill-in-the-blank prompt exercises, `columns` for column-matching exercises, `workflow` for step-ordering exercises) and substituting its output in place. Use this whenever the user gives a path to a lesson Markdown file exported from Coursiv.io and wants those `%...%` placeholders filled in, or invokes `/coursiv:lesson`. Trigger it even if they just paste a `.md` path and say something like "process this lesson" or "fill in the questions" — that's exactly this skill's job.
+description: Expands `%id_kind%` markers inside a Coursiv.io lesson Markdown export (e.g. `%1_q%`, `%5q%`, `%6p%`, `%7c%`, `%8w%`) into real content, by dispatching each marker to the matching Coursiv sub-skill (`question` for quiz markers, `prompt` for fill-in-the-blank prompt exercises, `columns` for column-matching exercises, `workflow` for step-ordering exercises), substituting its output in place, then running the `cleanup` skill on the same file to strip frontmatter, embed images, and add a quiz. Use this whenever the user gives a path to a lesson Markdown file exported from Coursiv.io and wants those `%...%` placeholders filled in, or invokes `/coursiv:lesson`. Trigger it even if they just paste a `.md` path and say something like "process this lesson" or "fill in the questions" — that's exactly this skill's job.
 ---
 
 # Coursiv Lesson Expander
 
-Coursiv.io lesson exports (Markdown, via a clipper like Obsidian Web Clipper) contain placeholder markers where interactive elements — quiz questions, prompt/column/step exercises — used to be. This skill walks the file, resolves each marker to real content, and overwrites the file in place with the expanded result.
+Coursiv.io lesson exports (Markdown, via a clipper like Obsidian Web Clipper) contain placeholder markers where interactive elements — quiz questions, prompt/column/step exercises — used to be. This skill walks the file, resolves each marker to real content, overwrites the file in place with the expanded result, then hands the same file to the `cleanup` skill so the note ends up fully self-contained (no frontmatter, a quiz, images embedded offline) in one invocation.
 
 ## Input
 
@@ -50,7 +50,13 @@ Replace each resolved marker in the document with its generated Markdown block (
 
 Write the result back to the same file you read it from, overwriting it in place — there's no separate `.expanded.md` output file.
 
-Tell the user that the file was overwritten in place, how many markers you resolved, and list any markers you had to leave untouched (with their `kind`) so they know what's still pending — that's especially important here since, unlike a sibling output file, there's no separate copy left to compare against.
+## Step 4: Clean up the file
+
+Once the markers are substituted and saved, run the `cleanup` skill (`/coursiv:cleanup`, at `../cleanup/SKILL.md` relative to this file) on that same file path. Follow its steps as written — the prep script for frontmatter removal and image embedding, then the quiz-generation step guided by `Clippings/quiz_course.md`, then its verify step. This is what turns the expanded lesson into a finished, self-contained note in one pass, instead of leaving the user to run `/coursiv:cleanup` separately afterward.
+
+If the file isn't under `Clippings/` (e.g. it's a scratch/test path outside the vault), `cleanup`'s steps still work mechanically on any Markdown file — just be aware its `quiz_course.md` lookup assumes the vault root, so if that file can't be found, say so rather than silently skipping the quiz step.
+
+Tell the user, in one summary: how many markers were resolved (and which, if any, were left untouched with their `kind`), and the outcome of the cleanup pass (frontmatter removed or not, how many images embedded, how many quiz questions added) — since the file was overwritten in place at every stage, this final report is the only record of what changed.
 
 ## Example
 
