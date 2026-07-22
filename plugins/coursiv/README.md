@@ -44,9 +44,9 @@ See [skills/workflow/SKILL.md](skills/workflow/SKILL.md) for the full behavior a
 
 ### `lesson` — `/coursiv:lesson`
 
-Expands the `%id_kind%` placeholder markers (e.g. `%1_q%`, `%5q%`, `%6p%`) inside a Coursiv.io lesson Markdown export into real content, by dispatching each marker to the matching sub-skill and substituting its output in place.
+Expands the `%id_kind%` placeholder markers (e.g. `%1_q%`, `%5q%`, `%6p%`, `%7c%`, `%8w%`) inside a Coursiv.io lesson Markdown export into real content, by dispatching each marker to the matching sub-skill and substituting its output in place.
 
 - **Input:** a path to a lesson Markdown file exported from Coursiv.io.
-- **Output:** a sibling `<name>.expanded.md` file (the source export is never overwritten). Markers of kind `q` are resolved via the `question` skill; markers of kind `p` are resolved via the `prompt` skill (passing it `<id>pq.png` and `<id>pa.png`); markers of any other kind have no registered sub-skill yet and are left untouched.
+- **Output:** a sibling `<name>.expanded.md` file (the source export is never overwritten). Markers of kind `q` are resolved via the `question` skill; kind `p` via `prompt` (`<id>pq.png` / `<id>pa.png`); kind `c` via `columns` (`<id>cq.png` / `<id>ca.png`); kind `w` via `workflow` (`<id>wq.png` / `<id>wa.png`); markers of any other kind have no registered sub-skill yet and are left untouched.
 
 See [skills/lesson/SKILL.md](skills/lesson/SKILL.md) for the full behavior.

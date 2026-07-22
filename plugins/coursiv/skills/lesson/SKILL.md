@@ -1,6 +1,6 @@
 ---
 name: lesson
-description: Expands `%id_kind%` markers inside a Coursiv.io lesson Markdown export (e.g. `%1_q%`, `%5q%`, `%6p%`) into real content, by dispatching each marker to the matching Coursiv sub-skill (`question` for quiz markers, `prompt` for fill-in-the-blank prompt exercise markers) and substituting its output in place. Use this whenever the user gives a path to a lesson Markdown file exported from Coursiv.io and wants those `%...%` placeholders filled in, or invokes `/coursiv:lesson`. Trigger it even if they just paste a `.md` path and say something like "process this lesson" or "fill in the questions" — that's exactly this skill's job.
+description: Expands `%id_kind%` markers inside a Coursiv.io lesson Markdown export (e.g. `%1_q%`, `%5q%`, `%6p%`, `%7c%`, `%8w%`) into real content, by dispatching each marker to the matching Coursiv sub-skill (`question` for quiz markers, `prompt` for fill-in-the-blank prompt exercises, `columns` for column-matching exercises, `workflow` for step-ordering exercises) and substituting its output in place. Use this whenever the user gives a path to a lesson Markdown file exported from Coursiv.io and wants those `%...%` placeholders filled in, or invokes `/coursiv:lesson`. Trigger it even if they just paste a `.md` path and say something like "process this lesson" or "fill in the questions" — that's exactly this skill's job.
 ---
 
 # Coursiv Lesson Expander
@@ -31,6 +31,14 @@ Go through the markers in order and handle them by `kind`:
 Take the Markdown block that comes back and use it as the replacement for this marker.
 
 **`kind == "p"` (fill-in-the-blank prompt exercise):** This maps to the `prompt` skill (`/coursiv:prompt`, at `../prompt/SKILL.md` relative to this file). That skill needs two images — the exercise's initial state and its completed state — so build both filenames from the marker's `id` and `kind` by appending `q` and `a` respectively, then `.png`: for marker `%6p%`, pass `6pq.png` (initial state) and `6pa.png` (completed state), in that order. Both are bare filenames with no path, so `prompt`'s own fallback logic will look for them relative to the current directory and then in `0_Inbox` — hand off the two filenames and let it resolve them itself, the same way you already do for `question`.
+
+Take the Markdown block that comes back and use it as the replacement for this marker.
+
+**`kind == "c"` (match-the-columns exercise):** This maps to the `columns` skill (`/coursiv:columns`, at `../columns/SKILL.md` relative to this file). Same two-image pattern as `prompt`: build both filenames from the marker's `id` and `kind` by appending `q` and `a`, then `.png` — for marker `%7c%`, pass `7cq.png` (unsolved state) and `7ca.png` (solved state), in that order. Both are bare filenames; let `columns`'s own fallback resolve them (current directory, then `0_Inbox`).
+
+Take the Markdown block that comes back and use it as the replacement for this marker.
+
+**`kind == "w"` (step-ordering exercise):** This maps to the `workflow` skill (`/coursiv:workflow`, at `../workflow/SKILL.md` relative to this file). Same two-image pattern again: for marker `%8w%`, pass `8wq.png` (scrambled state) and `8wa.png` (solved state), in that order, as bare filenames.
 
 Take the Markdown block that comes back and use it as the replacement for this marker.
 
@@ -78,8 +86,6 @@ Most professionals can handle individual documents. The real challenge is synthe
 ## Meet Gemini
 ```
 
-A marker like `%6p%` resolves the same way, just via `prompt` instead of `question`: run the `prompt` skill against `6pq.png` and `6pa.png`, get back its Markdown block, and substitute it in.
+A marker like `%6p%` resolves the same way, just via `prompt` instead of `question`: run the `prompt` skill against `6pq.png` and `6pa.png`, get back its Markdown block, and substitute it in. `%7c%` and `%8w%` follow the identical pattern via `columns` (`7cq.png` / `7ca.png`) and `workflow` (`8wq.png` / `8wa.png`) respectively.
 
 A marker of a kind with no sub-skill registered yet (say, hypothetically, `%9x%`) stays as `%9x%` in the output, untouched.
-
-A marker like `%4p%`, with no sub-skill registered for kind `p`, stays as `%4p%` in the output, untouched.
