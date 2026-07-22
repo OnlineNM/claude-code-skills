@@ -1,0 +1,26 @@
+{
+  "skill_name": "workflow",
+  "evals": [
+    {
+      "id": 0,
+      "name": "alphabetical-scramble-order",
+      "prompt": "Convert this Coursiv step-ordering exercise into the Markdown format we use for exercise notes: /Users/lairimia/VSCode/claude-code-skills/tmp/500wq.png and /Users/lairimia/VSCode/claude-code-skills/tmp/500wa.png",
+      "expected_output": "See /Users/lairimia/VSCode/claude-code-skills/tmp/500w.md — matches exactly, including the correct order (c, d, a, b).",
+      "files": ["/Users/lairimia/VSCode/claude-code-skills/tmp/500wq.png", "/Users/lairimia/VSCode/claude-code-skills/tmp/500wa.png"]
+    },
+    {
+      "id": 1,
+      "name": "non-alphabetical-scramble-order",
+      "prompt": "Convert this Coursiv step-ordering exercise into the Markdown format we use for exercise notes: /Users/lairimia/VSCode/claude-code-skills/tmp/510wq.png and /Users/lairimia/VSCode/claude-code-skills/tmp/510wa.png",
+      "expected_output": "See /Users/lairimia/VSCode/claude-code-skills/tmp/510w.md for the target shape, BUT that reference file's 'Initial order' section (d, a, c, b) does not match the scrambled screenshot's actual visual order — verified directly against the image, which shows cards printed top-to-bottom as a, b, c, d. Per the same judgment call made for the `prompt` and `columns` skills' analogous discrepancies, the skill follows the actual screenshot, so this eval's initial order legitimately differs from 510w.md. Confirmed correct order from the images: d, a, c, b (unchanged from the reference — only the initial-order transcription differs).",
+      "files": ["/Users/lairimia/VSCode/claude-code-skills/tmp/510wq.png", "/Users/lairimia/VSCode/claude-code-skills/tmp/510wa.png"]
+    },
+    {
+      "id": 2,
+      "name": "third-example-regression-check",
+      "prompt": "Convert this Coursiv step-ordering exercise into the Markdown format we use for exercise notes: /Users/lairimia/VSCode/claude-code-skills/tmp/520wq.png and /Users/lairimia/VSCode/claude-code-skills/tmp/520wa.png",
+      "expected_output": "See /Users/lairimia/VSCode/claude-code-skills/tmp/520.md — matches exactly, including the correct order (c, d, b, a).",
+      "files": ["/Users/lairimia/VSCode/claude-code-skills/tmp/520wq.png", "/Users/lairimia/VSCode/claude-code-skills/tmp/520wa.png"]
+    }
+  ]
+}

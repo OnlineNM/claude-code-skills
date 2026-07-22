@@ -33,6 +33,15 @@ Converts a pair of screenshots from a Coursiv.io "match the columns" exercise (u
 
 See [skills/columns/SKILL.md](skills/columns/SKILL.md) for the full behavior and formatting rules.
 
+### `workflow` — `/coursiv:workflow`
+
+Converts a pair of screenshots from a Coursiv.io "put the steps in order" exercise (scrambled step cards, and the same cards rearranged into the correct order) into a clean, copy/paste-ready Markdown block.
+
+- **Input:** two `.png` screenshots (order doesn't matter — the skill tells them apart by content), each resolved the same way as `question`'s single image (explicit path, or bare filename falling back to `0_Inbox`).
+- **Output:** a Markdown block with the title/instruction, the steps in the scrambled screenshot's original order (using each card's own printed letter), and the correct sequence worked out from the solved screenshot.
+
+See [skills/workflow/SKILL.md](skills/workflow/SKILL.md) for the full behavior and formatting rules.
+
 ### `lesson` — `/coursiv:lesson`
 
 Expands the `%id_kind%` placeholder markers (e.g. `%1_q%`, `%5q%`, `%6p%`) inside a Coursiv.io lesson Markdown export into real content, by dispatching each marker to the matching sub-skill and substituting its output in place.
